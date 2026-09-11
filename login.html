@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>CampusConnect - Login</title>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+
+            background-image:
+
+                linear-gradient(rgba(0, 0, 0, 0.70),
+                    rgba(0, 0, 0, 0.70)),
+
+                url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=80");
+
+
+            background-size: cover;
+
+            background-position: center;
+
+        }
+
+
+        .login-box {
+
+            width: 380px;
+
+            padding: 35px;
+
+            background-color: white;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+
+        }
+
+
+        .login-box h1 {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .tagline {
+
+            color: #555;
+
+        }
+
+
+        .login-box h2 {
+
+            margin-top: 30px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            text-align: left;
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+        }
+
+
+        .login-button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background-color: black;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+        }
+
+
+        .login-button:hover {
+
+            background-color: #333;
+
+        }
+
+
+        a {
+
+            color: black;
+
+            text-decoration: none;
+
+        }
+
+
+        .home {
+
+            display: block;
+
+            margin-top: 20px;
+
+        }
+    </style>
+
+</head>
+
+
+<body class="auth-page">
+
+
+    <div class="login-box">
+
+
+        <h1>CampusConnect</h1>
+
+
+        <p class="tagline">
+            Connect. Collaborate. Grow.
+        </p>
+
+
+        <h2>Welcome Back</h2>
+
+
+        <p>
+            Login to connect with your campus community.
+        </p>
+
+
+        <form id="loginForm">
+
+
+            <label>Email</label>
+
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+
+            <label>Password</label>
+
+            <input type="password" id="password" placeholder="Enter your password" required>
+
+
+            <p align="right">
+
+                <span class="message" data-message></span>
+
+            </p>
+
+
+            <button type="submit" class="login-button">
+
+                Login
+
+            </button>
+
+
+        </form>
+
+
+        <p>
+
+            Don't have an account?
+
+            <a href="register.html">
+                Create Account
+            </a>
+
+        </p>
+
+
+        <!-- BACK TO HOME -->
+
+        <a href="index.html" class="home">
+
+            ← Back to Home
+
+        </a>
+
+
+    </div>
+    <script src="app.js"></script>
+    <script>loginForm.addEventListener('submit', async event => { event.preventDefault(); try { const data = await api('/auth/login', { method:'POST', body:JSON.stringify({ email:email.value, password:password.value }) }); setUser(data.user); window.location.href='dashboard.html'; } catch(error) { showMessage(error.message,'error'); } });</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project Showcase - CampusConnect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>
+            <a href="index.html">CampusConnect</a>
+        </h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+        </div>
+
+    </nav>
+
+
+    <section class="section">
+
+        <h1>Project Showcase</h1>
+
+        <p>
+            Explore student projects and showcase your own work.
+        </p>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Upload Project</h3>
+
+                <p>
+                    Showcase your project to other students.
+                </p>
+
+                <button class="button" onclick="uploadProject()">
+                    Upload
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Browse Projects</h3>
+
+                <p>
+                    Explore interesting projects made by students.
+                </p>
+
+                <button class="button" onclick="browseProjects()">
+                    Browse
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>My Projects</h3>
+
+                <p>
+                    View projects you have uploaded.
+                </p>
+
+                <button class="button" onclick="myProjects()">
+                    View
+                </button>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html" class="button">
+            ← Back to Home
+        </a>
+
+    </section>
+
+
+    <script>
+
+        function checkLogin() {
+
+            if (!localStorage.getItem("campusUser")) {
+
+                alert("Please login first.");
+
+                window.location.href = "login.html";
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+
+        function uploadProject() {
+
+            if (checkLogin()) {
+                alert("Project upload section opened.");
+            }
+
+        }
+
+
+        function browseProjects() {
+
+            alert("Student projects will appear here.");
+
+        }
+
+
+        function myProjects() {
+
+            if (checkLogin()) {
+                alert("Your projects will appear here.");
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

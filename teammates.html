@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Find Teammates - CampusConnect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>
+            <a href="index.html">CampusConnect</a>
+        </h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+        </div>
+
+    </nav>
+
+
+    <section class="section">
+
+        <h1>Find Teammates</h1>
+
+        <p>
+            Find students with the right skills for your project,
+            hackathon or competition.
+        </p>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Find by Skills</h3>
+                <p>Search students based on their technical skills.</p>
+                <button class="button" onclick="searchSkills()">
+                    Search
+                </button>
+            </div>
+
+
+            <div class="card">
+                <h3>Create Team</h3>
+                <p>Create your own team and invite students.</p>
+                <button class="button" onclick="createTeam()">
+                    Create Team
+                </button>
+            </div>
+
+
+            <div class="card">
+                <h3>My Teams</h3>
+                <p>View the teams you have joined.</p>
+                <button class="button" onclick="myTeams()">
+                    View Teams
+                </button>
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html" class="button">
+            ← Back to Home
+        </a>
+
+    </section>
+
+
+    <script>
+
+        function searchSkills() {
+
+            if (!localStorage.getItem("campusUser")) {
+
+                alert("Please login first.");
+
+                window.location.href = "login.html";
+
+            } else {
+
+                alert("Skill search section opened.");
+
+            }
+
+        }
+
+
+        function createTeam() {
+
+            if (!localStorage.getItem("campusUser")) {
+
+                alert("Please login first.");
+
+                window.location.href = "login.html";
+
+            } else {
+
+                alert("Create Team section opened.");
+
+            }
+
+        }
+
+
+        function myTeams() {
+
+            if (!localStorage.getItem("campusUser")) {
+
+                alert("Please login first.");
+
+                window.location.href = "login.html";
+
+            } else {
+
+                alert("Your teams will appear here.");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

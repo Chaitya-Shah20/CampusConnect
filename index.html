@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CampusConnect</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial;
+            background-color: #f5f5f5;
+        }
+
+
+        .hero {
+            height: 550px;
+            color: white;
+
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                url("https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            width: 90%;
+            margin: auto;
+            padding: 25px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        /* MAIN TEXT */
+
+        .hero-text {
+            text-align: center;
+            margin-top: 120px;
+        }
+
+        .hero-text h1 {
+            font-size: 50px;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 20px 5px;
+
+            background-color: white;
+            color: black;
+
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .dark-button {
+            background-color: black;
+            color: white;
+        }
+
+        /* FEATURES */
+
+        .features {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            width: 280px;
+            padding: 25px;
+
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .card p {
+            color: #555;
+        }
+
+
+        .about {
+            text-align: center;
+            padding: 50px 15%;
+            background-color: white;
+        }
+
+        .about p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+
+            background-color: black;
+            color: white;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <section class="hero">
+
+        <nav>
+
+            <h2>CampusConnect</h2>
+
+            <div>
+
+                <a href="index.html">Home</a>
+
+                <a href="teammates.html">Find Teammates</a>
+
+                <a href="hackathons.html">Hackathons</a>
+
+                <a href="project.html">Projects</a>
+
+                <a href="opportunities.html">Opportunities</a>
+
+                <a href="mentorship.html">Mentorship</a>
+
+                <a href="resources.html">Resources</a>
+
+                <a href="#features">Features</a>
+
+                <a href="login.html">Login</a>
+
+            </div>
+
+        </nav>
+
+
+        <div class="hero-text hero-content">
+
+            <p class="eyebrow">A BETTER WAY TO FIND YOUR PEOPLE</p>
+
+            <h1>Connect. Collaborate. Grow.</h1>
+
+            <p>
+                One campus. Endless connections. Find teammates, discover opportunities, showcase your work and grow together.
+            </p>
+
+            <a href="login.html" class="button">
+                Get Started
+            </a>
+
+
+            <a href="#features" class="button dark-button">
+                Explore Campus
+            </a>
+
+        </div>
+
+        <div class="scene" aria-label="Students walking through campus">
+            <div class="building"></div><div class="tree one"></div><div class="tree two"></div><div class="bench"></div>
+            <div class="student"><i class="head"></i><i class="body"></i><i class="arm"></i><i class="arm right"></i><i class="leg"></i><i class="leg right"></i></div>
+            <div class="student"><i class="head"></i><i class="body"></i><i class="arm"></i><i class="arm right"></i><i class="leg"></i><i class="leg right"></i></div>
+            <div class="student"><i class="head"></i><i class="body"></i><i class="arm"></i><i class="arm right"></i><i class="leg"></i><i class="leg right"></i></div>
+            <div class="student"><i class="head"></i><i class="body"></i><i class="arm"></i><i class="arm right"></i><i class="leg"></i><i class="leg right"></i></div>
+        </div>
+
+    </section>
+
+    <section class="features" id="features">
+
+        <h2>Everything You Need on Campus</h2>
+
+        <p>
+            CampusConnect brings students, ideas and opportunities together.
+        </p>
+
+
+        <div class="cards">
+
+
+            <div class="card">
+
+                <h3>Find Teammates</h3>
+
+                <p>
+                    Find students with the right skills
+                    for projects and hackathons.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Hackathon Teams</h3>
+
+                <p>
+                    Create teams and connect with students
+                    who have different skills.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Project Showcase</h3>
+
+                <p>
+                    Share your projects and explore
+                    student projects.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Campus Opportunities</h3>
+
+                <p>
+                    Discover internships, workshops,
+                    competitions and hackathons.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Mentorship</h3>
+
+                <p>
+                    Connect with seniors and alumni
+                    for guidance.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Resource Sharing</h3>
+
+                <p>
+                    Share notes, tutorials and
+                    study material.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Campus Q&A</h3>
+
+                <p>
+                    Ask questions and get answers
+                    from your campus community.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Campus AI Assistant</h3>
+
+                <p>
+                    Get suggestions for projects,
+                    teammates and opportunities.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Student Achievements</h3>
+
+                <p>
+                    Showcase your projects,
+                    certificates and skills.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+    <section class="about" id="about">
+
+        <h2>About CampusConnect</h2>
+
+        <p>
+
+            CampusConnect is a student collaboration platform
+            designed to make campus life more connected.
+
+            Students can build teams, showcase their work,
+            find mentors, discover opportunities and share
+            useful resources.
+
+        </p>
+
+
+        <a href="login.html" class="button dark-button">
+            Join CampusConnect
+        </a>
+
+    </section>
+
+
+    <footer>
+
+        <h3>CampusConnect</h3>
+
+        <p>Connect. Collaborate. Grow.</p>
+
+        <p>© 2026 CampusConnect</p>
+
+    </footer>
+
+
+</body>
+
+</html>

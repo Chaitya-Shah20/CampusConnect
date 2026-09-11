@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Campus Opportunities - CampusConnect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>
+            <a href="index.html">CampusConnect</a>
+        </h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+        </div>
+
+    </nav>
+
+
+    <section class="section">
+
+        <h1>Campus Opportunities</h1>
+
+        <p>
+            Discover internships, workshops, competitions and hackathons.
+        </p>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Internships</h3>
+                <p>Find internship opportunities.</p>
+                <button class="button" onclick="show('Internships')">
+                    Explore
+                </button>
+            </div>
+
+
+            <div class="card">
+                <h3>Workshops</h3>
+                <p>Discover useful campus workshops.</p>
+                <button class="button" onclick="show('Workshops')">
+                    Explore
+                </button>
+            </div>
+
+
+            <div class="card">
+                <h3>Hackathons</h3>
+                <p>Find upcoming hackathons.</p>
+                <button class="button" onclick="show('Hackathons')">
+                    Explore
+                </button>
+            </div>
+
+
+            <div class="card">
+                <h3>Competitions</h3>
+                <p>Participate in student competitions.</p>
+                <button class="button" onclick="show('Competitions')">
+                    Explore
+                </button>
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html" class="button">
+            ← Back to Home
+        </a>
+
+    </section>
+
+
+    <script>
+
+        function show(type) {
+
+            alert(type + " opportunities will appear here.");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mentorship - CampusConnect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>
+            <a href="index.html">CampusConnect</a>
+        </h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+        </div>
+
+    </nav>
+
+
+    <section class="section">
+
+        <h1>Mentorship</h1>
+
+        <p>
+            Connect with seniors and alumni for guidance and career advice.
+        </p>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Career Guidance</h3>
+
+                <p>
+                    Get guidance about career paths and opportunities.
+                </p>
+
+                <button class="button" onclick="openMentor()">
+                    Find Mentor
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Project Guidance</h3>
+
+                <p>
+                    Get help from experienced students.
+                </p>
+
+                <button class="button" onclick="openMentor()">
+                    Find Mentor
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Interview Preparation</h3>
+
+                <p>
+                    Prepare for interviews with experienced mentors.
+                </p>
+
+                <button class="button" onclick="openMentor()">
+                    Get Help
+                </button>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html" class="button">
+            ← Back to Home
+        </a>
+
+    </section>
+
+
+    <script>
+
+        function openMentor() {
+
+            if (!localStorage.getItem("campusUser")) {
+
+                alert("Please login first.");
+
+                window.location.href = "login.html";
+
+            } else {
+
+                alert("Available mentors will appear here.");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
