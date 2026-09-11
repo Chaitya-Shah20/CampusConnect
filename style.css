@@ -355,3 +355,383 @@ body { background:var(--paper); color:var(--ink); font-family:var(--sans); line-
 .profile-layout { display:grid; grid-template-columns:.7fr 1.3fr; gap:18px; }.profile-card { text-align:center; background:var(--ink); color:#fff; padding:36px; border-radius:5px; }.profile-card p { color:#bdbdbd; }.avatar { display:grid; place-items:center; width:52px; height:52px; background:var(--accent); color:var(--ink); font-weight:bold; border-radius:50%; margin:auto; }.avatar.large { width:90px; height:90px; font-size:24px; margin-bottom:20px; }.form-panel { display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }.form-panel h2,.form-panel button,.form-panel [data-message] { grid-column:1/-1; }.resource-grid { text-align:left; }.resource-card h2 { font:26px var(--serif); margin:14px 0 5px; }.resource-card small,.resource-card .text-link { display:block; margin-top:16px; }.inline-form { grid-template-columns:repeat(4,1fr); margin-bottom:20px; }.inline-form button { align-self:end; }.inline-form label { margin:0; }
 @media(max-width:800px) { .nav-links { display:none; position:absolute; top:73px; left:0; right:0; background:#fff; color:var(--ink); padding:20px 5vw; flex-direction:column; align-items:flex-start; box-shadow:0 10px 25px #0002; }.nav-links.open { display:flex; }.menu-toggle { display:block; }.hero .nav-links { background:var(--ink); color:#fff; }.hero-content { padding-top:80px; }.scene { width:100%; height:190px; }.building { transform:scale(.7); transform-origin:bottom right; right:3%; }.student { transform:scale(.8); transform-origin:bottom left; }.student:nth-child(n+7) { display:none; }.stats-grid,.content-grid,.profile-layout { grid-template-columns:1fr 1fr; }.content-grid,.profile-layout { grid-template-columns:1fr; }.page-heading { display:block; }.inline-form,.form-panel { grid-template-columns:1fr; }.inline-form button,.form-panel h2,.form-panel button,.form-panel [data-message] { grid-column:auto; } }
 @media(max-width:500px) { .hero h1 { font-size:52px; }.hero-content { padding:72px 7vw 170px; }.stats-grid { gap:8px; }.stat { padding:17px; }.stat strong { font-size:32px; }.box { padding:26px 20px; } }
+
+/* ==========================================================================
+   FEATURE 1: IMAGE SLIDER ("Life at Campus")
+   Clean, responsive, black-and-white themed image slider with auto-play,
+   controls, captions, and pagination dots.
+   ========================================================================== */
+
+.campus-slider-section {
+    padding: 60px 5%;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.campus-slider-section h2 {
+    font-size: 32px;
+    margin: 0 0 10px;
+    color: #111;
+}
+
+.campus-slider-section .slider-description {
+    font-size: 16px;
+    color: #555;
+    max-width: 650px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+}
+
+.slider-container {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    background-color: #111;
+}
+
+.slider-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+
+.slide {
+    min-width: 100%;
+    position: relative;
+    height: 460px;
+    user-select: none;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 35px 25px 22px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 65%, transparent 100%);
+    color: #ffffff;
+    text-align: left;
+    pointer-events: none;
+}
+
+.slide-caption h4 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.slide-caption p {
+    margin: 0;
+    font-size: 14px;
+    color: #dcdcdc;
+    line-height: 1.4;
+}
+
+/* Slider Controls (Previous / Next Buttons) */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: rgba(17, 17, 17, 0.7);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.95);
+    transform: translateY(-50%) scale(1.08);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.slider-btn.prev-btn {
+    left: 16px;
+}
+
+.slider-btn.next-btn {
+    right: 16px;
+}
+
+/* Slider Pagination Dots */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.slider-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #bbb;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.slider-dots .dot:hover {
+    background-color: #666;
+}
+
+.slider-dots .dot.active {
+    background-color: #111;
+    width: 26px;
+    border-radius: 6px;
+}
+
+/* ==========================================================================
+   FEATURE 2: CAMPUS MAP ("Explore Your Campus")
+   Interactive OpenStreetMap via Leaflet with campus location markers and popups.
+   ========================================================================== */
+
+.campus-map-section {
+    padding: 60px 5%;
+    text-align: center;
+    background-color: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.campus-map-section h2 {
+    font-size: 32px;
+    margin: 0 0 10px;
+    color: #111;
+}
+
+.campus-map-section .map-description {
+    font-size: 16px;
+    color: #555;
+    max-width: 650px;
+    margin: 0 auto 25px;
+    line-height: 1.6;
+}
+
+/* Quick-select filter chips for campus locations */
+.map-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 960px;
+    margin: 0 auto 20px;
+}
+
+.map-chip {
+    background-color: #f2f2f2;
+    color: #222;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.map-chip:hover,
+.map-chip.active {
+    background-color: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+/* Map Container */
+.campus-map-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 450px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid #ddd;
+    position: relative;
+    z-index: 1;
+}
+
+/* Leaflet Map Popup Customization */
+.campus-map-container .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    font-family: Arial, sans-serif;
+    padding: 4px;
+}
+
+.campus-map-container .leaflet-popup-content {
+    margin: 12px 14px;
+    line-height: 1.4;
+}
+
+.map-popup-badge {
+    display: inline-block;
+    background-color: #111;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.map-popup-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111;
+    margin: 0 0 4px 0;
+}
+
+.map-popup-desc {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
+}
+
+/* User Live Location Marker & Animation */
+.user-location-marker {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    background-color: #0070f3;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 112, 243, 0.6);
+}
+
+.user-location-marker::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #0070f3;
+    animation: user-pulse 1.8s infinite ease-out;
+    opacity: 0.8;
+}
+
+@keyframes user-pulse {
+    0% {
+        transform: scale(0.6);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+.map-chip.live-loc-chip {
+    background-color: #111;
+    color: #fff;
+    border-color: #111;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.map-chip.live-loc-chip:hover {
+    background-color: #2a2a2a;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    display: inline-block;
+    animation: live-blink 1.5s infinite;
+}
+
+@keyframes live-blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+/* ==========================================================================
+   RESPONSIVE STYLES FOR SLIDER & MAP
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .campus-slider-section,
+    .campus-map-section {
+        padding: 40px 15px;
+    }
+
+    .slide {
+        height: 300px;
+    }
+
+    .slide-caption {
+        padding: 20px 15px 12px;
+    }
+
+    .slide-caption h4 {
+        font-size: 16px;
+    }
+
+    .slide-caption p {
+        font-size: 12px;
+    }
+
+    .slider-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .slider-btn.prev-btn {
+        left: 8px;
+    }
+
+    .slider-btn.next-btn {
+        right: 8px;
+    }
+
+    .campus-map-container {
+        height: 340px;
+    }
+
+    .map-chip {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slide {
+        height: 220px;
+    }
+
+    .campus-map-container {
+        height: 280px;
+    }
+}
