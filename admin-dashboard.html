@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin CMS Panel | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* CMS specific enhancements */
+    .admin-content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .admin-content-title h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .admin-content-title p {
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 13.5px;
+    }
+
+    .tab-panel {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+    .form-group .req {
+      color: #ef4444;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13.5px;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+    }
+
+    /* Modal Overlay for Project View */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 250;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 14px;
+      width: 580px;
+      max-width: 95vw;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      padding: 28px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Action buttons in tables */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-action-edit {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    .btn-action-edit:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .btn-action-del {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .btn-action-del:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+    .btn-action-app {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+    .btn-action-app:hover {
+      background: #16a34a;
+      color: #ffffff;
+    }
+    .btn-action-rej {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .btn-action-rej:hover {
+      background: #dc2626;
+      color: #ffffff;
+    }
+    .btn-action-feat {
+      background: #fef08a;
+      color: #854d0e;
+    }
+    .btn-action-feat.active {
+      background: #facc15;
+      color: #713f12;
+      box-shadow: 0 0 0 1px #eab308;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN 2-COLUMN SHELL -->
+  <div class="admin-shell">
+
+    <!-- FIXED LEFT SIDEBAR (240px) -->
+    <aside class="admin-sidebar">
+      <!-- Logo + Brand -->
+      <a href="admin-dashboard.html" class="admin-sidebar-brand">
+        <span class="au-badge">AU</span>
+        <div class="brand-text">
+          <span class="brand-name">CampusConnect</span>
+          <span class="brand-panel-tag">🛡️ Admin Panel</span>
+        </div>
+      </a>
+
+      <!-- Large Icon Navigation Tabs -->
+      <nav class="admin-sidebar-nav">
+        <button class="admin-nav-item active" data-tab="tab-verifications">
+          <div class="admin-nav-item-left">
+            <span>🛡️</span>
+            <span>Student Verifications</span>
+          </div>
+          <span class="admin-badge" id="sidebarPendingBadge">0</span>
+        </button>
+
+        <button class="admin-nav-item" data-tab="tab-hackathons">
+          <div class="admin-nav-item-left">
+            <span>⚡</span>
+            <span>Hackathons</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item" data-tab="tab-events">
+          <div class="admin-nav-item-left">
+            <span>🎉</span>
+            <span>Campus Events</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item" data-tab="tab-opportunities">
+          <div class="admin-nav-item-left">
+            <span>💼</span>
+            <span>Opportunities</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item" data-tab="tab-resources">
+          <div class="admin-nav-item-left">
+            <span>📚</span>
+            <span>Subject Resources</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item" data-tab="tab-projects">
+          <div class="admin-nav-item-left">
+            <span>🚀</span>
+            <span>Project Moderation</span>
+          </div>
+        </button>
+
+        <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <a href="dashboard.html" class="admin-nav-item" style="color: #cbd5e1;">
+            <div class="admin-nav-item-left">
+              <span>🎓</span>
+              <span>Student View</span>
+            </div>
+          </a>
+          <a href="index.html" class="admin-nav-item" style="color: #cbd5e1;">
+            <div class="admin-nav-item-left">
+              <span>🏠</span>
+              <span>Campus Home</span>
+            </div>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Admin Name & Logout Pinned to Bottom -->
+      <div class="admin-sidebar-user">
+        <div class="admin-user-info">
+          <div class="admin-avatar" id="sidebarAvatar">AU</div>
+          <div class="admin-user-details">
+            <div class="admin-user-name" id="sidebarAdminName">Administrator</div>
+            <div class="admin-user-role">Super Admin • Adani Uni</div>
+          </div>
+        </div>
+        <button class="admin-logout-btn" id="adminLogoutBtn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- RIGHT SCROLLABLE CONTENT AREA -->
+    <main class="admin-content">
+      <!-- Top Content Header -->
+      <header class="admin-content-header">
+        <div class="admin-content-title">
+          <h1>CampusConnect Central CMS</h1>
+          <p>Adani University, Ahmedabad • Shantigram Campus System Management</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="/api/database/export" download="adani_university_database.json" class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700; border: 1px solid rgba(215, 240, 90, 0.4); font-size: 13px; padding: 8px 16px;">
+            📥 Download Database (JSON)
+          </a>
+        </div>
+      </header>
+
+      <!-- TOP STATS STRIP (6 cards from /api/admin/overview) -->
+      <section class="stats-strip-6" id="overviewStatsStrip">
+        <div class="stat-card-mini">
+          <span class="stat-label">Students</span>
+          <div class="stat-val" id="statStudentsTotal">--</div>
+          <span class="stat-sub">Enrolled Campus Profiles</span>
+        </div>
+        <div class="stat-card-mini" style="border-left: 4px solid #f59e0b;">
+          <span class="stat-label">Pending</span>
+          <div class="stat-val" style="color: #b45309;" id="statStudentsPending">--</div>
+          <span class="stat-sub">Awaiting ID Verification</span>
+        </div>
+        <div class="stat-card-mini">
+          <span class="stat-label">Hackathons</span>
+          <div class="stat-val" id="statHackathons">--</div>
+          <span class="stat-sub">Innovation Challenges</span>
+        </div>
+        <div class="stat-card-mini">
+          <span class="stat-label">Campus Events</span>
+          <div class="stat-val" id="statEvents">--</div>
+          <span class="stat-sub">Fests, Talks & Sprints</span>
+        </div>
+        <div class="stat-card-mini">
+          <span class="stat-label">Opportunities</span>
+          <div class="stat-val" id="statOpportunities">--</div>
+          <span class="stat-sub">Internships & Jobs</span>
+        </div>
+        <div class="stat-card-mini">
+          <span class="stat-label">Resources</span>
+          <div class="stat-val" id="statResources">--</div>
+          <span class="stat-sub">Notes, PYQs & Syllabi</span>
+        </div>
+      </section>
+
+      <!-- TAB 1: STUDENT VERIFICATIONS -->
+      <section class="tab-panel active" id="tab-verifications">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Student Identity Verifications</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Verify student enrollment and authenticate official college IDs.</p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="studentSearchInput" class="form-control" placeholder="Search by name, email, ID..." style="width: 250px;">
+            <select id="studentStatusFilter" class="form-control" style="width: 160px;">
+              <option value="all">All Statuses</option>
+              <option value="pending" selected>Pending Review</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button class="button" style="margin: 0; padding: 9px 14px; background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1;" onclick="loadStudents()">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name & Email</th>
+                <th>College / Dept</th>
+                <th>Course & Year</th>
+                <th>College ID</th>
+                <th>Status</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+              <tr><td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">Loading students...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 2: HACKATHONS CRUD -->
+      <section class="tab-panel" id="tab-hackathons">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Campus Hackathons & Code Sprints</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Create and manage campus hackathons, prize pools, tracks and registrations.</p>
+          </div>
+          <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700;" onclick="openHackathonDrawer()">
+            + Add New Hackathon
+          </button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Hackathon Name</th>
+                <th>Date</th>
+                <th>Location / Venue</th>
+                <th>Mode</th>
+                <th>Prize Pool</th>
+                <th>Registered Teams</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hackathonsTableBody">
+              <tr><td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">Loading hackathons...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: CAMPUS EVENTS CRUD -->
+      <section class="tab-panel" id="tab-events">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Campus Events & Tech Fests</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Schedule technical workshops, guest lectures, orientations, and coding contests.</p>
+          </div>
+          <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700;" onclick="openEventDrawer()">
+            + Add Campus Event
+          </button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date & Time</th>
+                <th>Venue / Link</th>
+                <th>Speaker</th>
+                <th>RSVPs</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr><td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">Loading events...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 4: OPPORTUNITIES CRUD -->
+      <section class="tab-panel" id="tab-opportunities">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Campus Opportunities & Placements</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Curate internships, job openings, fellowship opportunities, and placement drives.</p>
+          </div>
+          <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700;" onclick="openOpportunityDrawer()">
+            + Post Opportunity
+          </button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Organization</th>
+                <th>Category</th>
+                <th>Stipend / CTC</th>
+                <th>Deadline</th>
+                <th>Skills Required</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="opportunitiesTableBody">
+              <tr><td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">Loading opportunities...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 5: RESOURCES CRUD -->
+      <section class="tab-panel" id="tab-resources">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Academic Notes & Study Resources</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Upload lecture notes, previous year questions (PYQs), official syllabi, and study drives.</p>
+          </div>
+          <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700;" onclick="openResourceDrawer()">
+            + Add Resource
+          </button>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div style="display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; background: #f8fafc; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <div style="flex: 1; min-width: 140px;">
+            <label style="font-size: 11.5px; font-weight: 700; color: #64748b;">FILTER BY BRANCH</label>
+            <select id="resourceBranchFilter" class="form-control" style="margin-top: 4px;" onchange="filterResources()">
+              <option value="all">All Branches</option>
+              <option value="CSE">CSE</option>
+              <option value="IT">IT</option>
+              <option value="AI&DS">AI & DS</option>
+              <option value="ECE">ECE</option>
+              <option value="ME">ME</option>
+              <option value="Civil">Civil</option>
+            </select>
+          </div>
+          <div style="flex: 1; min-width: 140px;">
+            <label style="font-size: 11.5px; font-weight: 700; color: #64748b;">FILTER BY SEMESTER</label>
+            <select id="resourceSemesterFilter" class="form-control" style="margin-top: 4px;" onchange="filterResources()">
+              <option value="all">All Semesters</option>
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+              <option value="Semester 4">Semester 4</option>
+              <option value="Semester 5">Semester 5</option>
+              <option value="Semester 6">Semester 6</option>
+              <option value="Semester 7">Semester 7</option>
+              <option value="Semester 8">Semester 8</option>
+            </select>
+          </div>
+          <div style="flex: 1; min-width: 140px;">
+            <label style="font-size: 11.5px; font-weight: 700; color: #64748b;">FILTER BY CATEGORY</label>
+            <select id="resourceCategoryFilter" class="form-control" style="margin-top: 4px;" onchange="filterResources()">
+              <option value="all">All Categories</option>
+              <option value="Notes">Notes / Handouts</option>
+              <option value="PYQ">Previous Year Questions (PYQs)</option>
+              <option value="Syllabus">Official Syllabus</option>
+              <option value="Textbook">Textbook Reference</option>
+              <option value="Video Playlist">Video Playlist</option>
+              <option value="Useful Link">Useful Link</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Branch</th>
+                <th>Semester</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="resourcesTableBody">
+              <tr><td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">Loading resources...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 6: PROJECTS MODERATION -->
+      <section class="tab-panel" id="tab-projects">
+        <div class="panel-action-bar">
+          <div>
+            <h2 style="font-size: 19px; margin: 0; color: #0f172a;">Student Project Showcase & Moderation</h2>
+            <p style="font-size: 13px; color: #64748b; margin: 3px 0 0;">Inspect submitted student projects, feature exceptional builds, or moderate inappropriate content.</p>
+          </div>
+          <button class="button" style="margin: 0; padding: 9px 14px; background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1;" onclick="loadProjects()">🔄 Refresh</button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title (Click to view)</th>
+                <th>Creator</th>
+                <th>Tech Stack</th>
+                <th>Likes</th>
+                <th>Featured</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody">
+              <tr><td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">Loading student projects...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- SLIDE-IN DRAWER (RIGHT-SIDE) -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <aside class="drawer" id="adminDrawer" aria-label="Admin Action Drawer">
+    <div class="drawer-header">
+      <h2 id="drawerTitle">Form Drawer</h2>
+      <button class="drawer-close" onclick="closeDrawer()" title="Close">&times;</button>
+    </div>
+    <div class="drawer-body" id="drawerBody">
+      <!-- Dynamic form injected via JS -->
+    </div>
+    <div class="drawer-footer">
+      <button class="button" style="background: #f1f5f9; color: #334155; margin: 0; border: 1px solid #cbd5e1;" onclick="closeDrawer()">Cancel</button>
+      <button class="button" style="background: #0f172a; color: #d7f05a; font-weight: 700; margin: 0;" id="drawerSubmitBtn">Save Changes</button>
+    </div>
+  </aside>
+
+  <!-- PROJECT DETAIL MODAL -->
+  <div class="modal-overlay" id="projectModal" style="display: none;">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+        <div>
+          <h2 id="modalProjectTitle" style="margin: 0; font-size: 20px; color: #0f172a;">Project Title</h2>
+          <p id="modalProjectTagline" style="margin: 4px 0 0; color: #64748b; font-size: 13px;"></p>
+        </div>
+        <button class="drawer-close" onclick="closeProjectModal()">&times;</button>
+      </div>
+      <div style="margin-bottom: 16px; padding: 12px; background: #f8fafc; border-radius: 8px;">
+        <div style="font-size: 13px; color: #334155;"><strong>Creator:</strong> <span id="modalProjectCreator">--</span></div>
+        <div style="font-size: 13px; color: #334155; margin-top: 4px;"><strong>Likes:</strong> <span id="modalProjectLikes">0</span></div>
+      </div>
+      <div class="form-group">
+        <label>Technologies Used</label>
+        <div id="modalProjectTech" class="skill-tags"></div>
+      </div>
+      <div class="form-group">
+        <label>Project Description</label>
+        <p id="modalProjectDesc" style="font-size: 13.5px; color: #334155; line-height: 1.6; white-space: pre-line; background: #fafaf9; padding: 12px; border-radius: 6px;"></p>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;" id="modalProjectLinks"></div>
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+        <button class="button" style="margin: 0; background: #0f172a; color: #fff;" onclick="closeProjectModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- APP SCRIPTS -->
+  <script src="app.js"></script>
+  <script>
+    // State
+    let currentUser = null;
+    let studentsCache = [];
+    let hackathonsCache = [];
+    let eventsCache = [];
+    let opportunitiesCache = [];
+    let resourcesCache = [];
+    let projectsCache = [];
+    let currentDrawerMode = ''; // 'add-hackathon', 'edit-hackathon', etc.
+    let currentEditId = null;
+
+    // Toast Manager (auto-dismiss 3s)
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? '✅' : '❌';
+      toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(60px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Init CMS
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      if (!currentUser || currentUser.role !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Populate sidebar user
+      document.getElementById('sidebarAdminName').textContent = currentUser.name || 'Adani Admin';
+      const initials = (currentUser.name || 'Admin').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('sidebarAvatar').textContent = initials;
+
+      // Wire sidebar tabs
+      document.querySelectorAll('.admin-nav-item[data-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          const target = document.getElementById(btn.getAttribute('data-tab'));
+          if (target) target.classList.add('active');
+        });
+      });
+
+      // Wire logout
+      document.getElementById('adminLogoutBtn').addEventListener('click', async () => {
+        await api('/auth/logout', { method: 'POST' });
+        window.location.href = 'login.html';
+      });
+
+      // Wire search live debounce
+      let searchTimeout = null;
+      document.getElementById('studentSearchInput').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          loadStudents();
+        }, 300);
+      });
+
+      document.getElementById('studentStatusFilter').addEventListener('change', () => {
+        loadStudents();
+      });
+
+      // Load all CMS datasets
+      loadOverview();
+      loadStudents();
+      loadHackathons();
+      loadEvents();
+      loadOpportunities();
+      loadResources();
+      loadProjects();
+    });
+
+    // 1. OVERVIEW STATS
+    async function loadOverview() {
+      try {
+        const stats = await api('/admin/overview');
+        document.getElementById('statStudentsTotal').textContent = stats.students?.total ?? 0;
+        document.getElementById('statStudentsPending').textContent = stats.students?.pending ?? 0;
+        document.getElementById('sidebarPendingBadge').textContent = stats.students?.pending ?? 0;
+        document.getElementById('statHackathons').textContent = stats.hackathons ?? 0;
+        document.getElementById('statEvents').textContent = stats.events ?? 0;
+        document.getElementById('statOpportunities').textContent = stats.opportunities ?? 0;
+        document.getElementById('statResources').textContent = stats.resources ?? 0;
+      } catch (err) {
+        console.error('Failed to load admin overview:', err);
+      }
+    }
+
+    // 2. TAB 1: STUDENT VERIFICATIONS
+    async function loadStudents() {
+      const tbody = document.getElementById('studentsTableBody');
+      const q = document.getElementById('studentSearchInput').value.trim();
+      const status = document.getElementById('studentStatusFilter').value;
+
+      try {
+        const queryParams = new URLSearchParams();
+        if (q) queryParams.set('q', q);
+        if (status !== 'all') queryParams.set('status', status);
+
+        const data = await api(`/admin/students?${queryParams.toString()}`);
+        studentsCache = data.students || [];
+
+        if (studentsCache.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6">
+                <div class="empty-state-box">
+                  <div class="empty-state-icon">🔍</div>
+                  <h3 class="empty-state-title">No Students Found</h3>
+                  <p class="empty-state-desc">No student accounts matched your search criteria "${escapeHtml(q || status)}".</p>
+                  <button class="button" style="margin: 0; padding: 6px 14px;" onclick="document.getElementById('studentSearchInput').value=''; document.getElementById('studentStatusFilter').value='all'; loadStudents();">Clear Filters</button>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = studentsCache.map(s => {
+          const statusBadge = s.verificationStatus === 'approved' 
+            ? '<span class="badge badge-approved">✅ Approved</span>'
+            : s.verificationStatus === 'rejected'
+            ? '<span class="badge badge-pending" style="background:#fee2e2; color:#b91c1c;">❌ Rejected</span>'
+            : '<span class="badge badge-pending">⏳ Pending</span>';
+
+          const actionBtns = `
+            <div style="display:flex; gap:6px; justify-content:flex-end;">
+              ${s.verificationStatus !== 'approved' ? `<button class="btn-action btn-action-app" onclick="verifyStudent('${s._id}', 'approved')">Approve</button>` : ''}
+              ${s.verificationStatus !== 'rejected' ? `<button class="btn-action btn-action-rej" onclick="verifyStudent('${s._id}', 'rejected')">Reject</button>` : ''}
+              ${s.verificationStatus !== 'pending' ? `<button class="btn-action btn-action-edit" onclick="verifyStudent('${s._id}', 'pending')">Reset</button>` : ''}
+            </div>
+          `;
+
+          return `
+            <tr>
+              <td>
+                <div style="font-weight: 700; color: #0f172a;">${escapeHtml(s.name)}</div>
+                <div style="font-size: 12px; color: #64748b;">${escapeHtml(s.email)}</div>
+              </td>
+              <td>${escapeHtml(s.college || 'Adani University')}</td>
+              <td>${escapeHtml(s.course || 'B.Tech')} • Year ${escapeHtml(s.year || '1')}</td>
+              <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:600;">${escapeHtml(s.collegeIdNumber || 'N/A')}</code></td>
+              <td>${statusBadge}</td>
+              <td style="text-align: right;">${actionBtns}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#ef4444;">Error loading students: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    async function verifyStudent(id, newStatus) {
+      try {
+        await api(`/admin/students/${id}/verify`, {
+          method: 'PUT',
+          body: JSON.stringify({ status: newStatus })
+        });
+        showToast(`Student identity set to '${newStatus}'!`, 'success');
+        loadStudents();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 3. TAB 2: HACKATHONS CRUD
+    async function loadHackathons() {
+      const tbody = document.getElementById('hackathonsTableBody');
+      try {
+        const data = await api('/admin/hackathons');
+        hackathonsCache = data.hackathons || [];
+
+        if (hackathonsCache.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state-box"><div class="empty-state-icon">⚡</div><h3 class="empty-state-title">No Hackathons Listed</h3><p class="empty-state-desc">Get started by creating the first innovation sprint for campus students.</p><button class="button" style="margin:0;" onclick="openHackathonDrawer()">+ Add Hackathon</button></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = hackathonsCache.map(h => `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:#0f172a;">${escapeHtml(h.name)}</div>
+              <div style="font-size:12px; color:#64748b;">${escapeHtml(h.tagline || '')}</div>
+            </td>
+            <td>${escapeHtml(h.date || 'TBA')}</td>
+            <td>${escapeHtml(h.location || 'Adani Campus')}</td>
+            <td><span class="pill pill-blue">${escapeHtml(h.mode || 'Hybrid')}</span></td>
+            <td><strong style="color:#854d0e;">${escapeHtml(h.prizePool || 'TBA')}</strong></td>
+            <td><span class="pill">${(h.registrations || []).length} registered</span></td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end;">
+                <button class="btn-action btn-action-edit" onclick="editHackathon('${h._id}')">Edit</button>
+                <button class="btn-action btn-action-del" onclick="deleteHackathon('${h._id}', '${escapeHtml(h.name)}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#ef4444;">Error: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function openHackathonDrawer(hackathon = null) {
+      currentDrawerMode = hackathon ? 'edit-hackathon' : 'add-hackathon';
+      currentEditId = hackathon ? hackathon._id : null;
+      document.getElementById('drawerTitle').textContent = hackathon ? 'Edit Hackathon' : '+ Add New Hackathon';
+
+      const h = hackathon || {};
+      const skillsVal = Array.isArray(h.skills) ? h.skills.join(', ') : (h.skills || '');
+
+      document.getElementById('drawerBody').innerHTML = `
+        <form id="drawerForm">
+          <div class="form-group">
+            <label>Hackathon Name <span class="req">*</span></label>
+            <input type="text" id="hName" class="form-control" required value="${escapeHtml(h.name || '')}">
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" id="hTagline" class="form-control" placeholder="Short inspiring theme" value="${escapeHtml(h.tagline || '')}">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date / Window <span class="req">*</span></label>
+              <input type="text" id="hDate" class="form-control" placeholder="e.g. Nov 14 - 16, 2026" required value="${escapeHtml(h.date || '')}">
+            </div>
+            <div class="form-group">
+              <label>Mode <span class="req">*</span></label>
+              <select id="hMode" class="form-control">
+                <option value="Hybrid" ${h.mode === 'Hybrid' ? 'selected' : ''}>Hybrid</option>
+                <option value="In-person" ${h.mode === 'In-person' ? 'selected' : ''}>In-person</option>
+                <option value="Online" ${h.mode === 'Online' ? 'selected' : ''}>Online</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Location / Venue</label>
+              <input type="text" id="hLocation" class="form-control" placeholder="Campus Auditorium / Lab" value="${escapeHtml(h.location || '')}">
+            </div>
+            <div class="form-group">
+              <label>Prize Pool</label>
+              <input type="text" id="hPrizePool" class="form-control" placeholder="e.g. ₹1,50,000" value="${escapeHtml(h.prizePool || '')}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Registration Deadline</label>
+              <input type="text" id="hDeadline" class="form-control" placeholder="e.g. Nov 10, 2026" value="${escapeHtml(h.registrationDeadline || '')}">
+            </div>
+            <div class="form-group">
+              <label>Team Size</label>
+              <input type="number" id="hTeamSize" class="form-control" min="1" max="6" value="${h.teamSize || 4}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Required Skills (Comma separated)</label>
+            <input type="text" id="hSkills" class="form-control" placeholder="Python, React, Robotics, PyTorch" value="${escapeHtml(skillsVal)}">
+          </div>
+          <div class="form-group">
+            <label>Schedule / Agenda</label>
+            <textarea id="hSchedule" class="form-control" placeholder="Day 1: Opening & Keynote&#10;Day 2: 24h Build Sprint&#10;Day 3: Pitching & Demos">${escapeHtml(Array.isArray(h.schedule) ? h.schedule.map(s => `${s.phase || ''}: ${s.detail || ''}`).join('\n') : '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Description & Problem Statements</label>
+            <textarea id="hDesc" class="form-control" rows="4">${escapeHtml(h.description || '')}</textarea>
+          </div>
+        </form>
+      `;
+
+      document.getElementById('drawerSubmitBtn').onclick = saveHackathon;
+      openDrawer();
+    }
+
+    async function saveHackathon() {
+      const name = document.getElementById('hName').value.trim();
+      const date = document.getElementById('hDate').value.trim();
+      if (!name || !date) {
+        showToast('Please fill in required fields (Name and Date).', 'error');
+        return;
+      }
+
+      const payload = {
+        name,
+        tagline: document.getElementById('hTagline').value.trim(),
+        date,
+        mode: document.getElementById('hMode').value,
+        location: document.getElementById('hLocation').value.trim(),
+        prizePool: document.getElementById('hPrizePool').value.trim(),
+        registrationDeadline: document.getElementById('hDeadline').value.trim(),
+        teamSize: Number(document.getElementById('hTeamSize').value) || 4,
+        requiredSkills: document.getElementById('hSkills').value.split(',').map(s => s.trim()).filter(Boolean),
+        description: document.getElementById('hDesc').value.trim()
+      };
+
+      try {
+        if (currentDrawerMode === 'edit-hackathon' && currentEditId) {
+          await api(`/admin/hackathons/${currentEditId}`, { method: 'PUT', body: JSON.stringify(payload) });
+          showToast('Hackathon updated successfully!', 'success');
+        } else {
+          await api('/admin/hackathons', { method: 'POST', body: JSON.stringify(payload) });
+          showToast('Hackathon created successfully!', 'success');
+        }
+        closeDrawer();
+        loadHackathons();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function editHackathon(id) {
+      const h = hackathonsCache.find(item => item._id === id);
+      if (h) openHackathonDrawer(h);
+    }
+
+    async function deleteHackathon(id, name) {
+      if (!confirm(`Are you sure you want to delete hackathon "${name}"? This action cannot be undone.`)) return;
+      try {
+        await api(`/admin/hackathons/${id}`, { method: 'DELETE' });
+        showToast('Hackathon deleted successfully.', 'success');
+        loadHackathons();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 4. TAB 3: EVENTS CRUD
+    async function loadEvents() {
+      const tbody = document.getElementById('eventsTableBody');
+      try {
+        const data = await api('/admin/events');
+        eventsCache = data.events || [];
+
+        if (eventsCache.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state-box"><div class="empty-state-icon">🎉</div><h3 class="empty-state-title">No Campus Events Scheduled</h3><p class="empty-state-desc">Publish workshops, guest lectures, orientations or fests.</p><button class="button" style="margin:0;" onclick="openEventDrawer()">+ Add Campus Event</button></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = eventsCache.map(e => `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:#0f172a;">${escapeHtml(e.title)}</div>
+            </td>
+            <td><span class="pill pill-green">${escapeHtml(e.category || 'Tech Fest')}</span></td>
+            <td>${escapeHtml(e.date || '')} <small style="display:block; color:#64748b;">${escapeHtml(e.time || '')}</small></td>
+            <td>${escapeHtml(e.venue || 'Campus Auditorium')}</td>
+            <td>
+              <div style="font-weight:600;">${escapeHtml(e.speakerName || e.speaker?.name || 'TBA')}</div>
+              <div style="font-size:11px; color:#64748b;">${escapeHtml(e.speakerTitle || e.speaker?.title || '')}</div>
+            </td>
+            <td><span class="pill">${(e.rsvps || []).length} / ${e.capacity || 200}</span></td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end;">
+                <button class="btn-action btn-action-edit" onclick="editEvent('${e._id}')">Edit</button>
+                <button class="btn-action btn-action-del" onclick="deleteEvent('${e._id}', '${escapeHtml(e.title)}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#ef4444;">Error: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function openEventDrawer(event = null) {
+      currentDrawerMode = event ? 'edit-event' : 'add-event';
+      currentEditId = event ? event._id : null;
+      document.getElementById('drawerTitle').textContent = event ? 'Edit Campus Event' : '+ Add Campus Event';
+
+      const e = event || {};
+
+      document.getElementById('drawerBody').innerHTML = `
+        <form id="drawerForm">
+          <div class="form-group">
+            <label>Event Title <span class="req">*</span></label>
+            <input type="text" id="evTitle" class="form-control" required value="${escapeHtml(e.title || '')}">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category <span class="req">*</span></label>
+              <select id="evCategory" class="form-control">
+                <option value="Tech Fest" ${e.category === 'Tech Fest' ? 'selected' : ''}>Tech Fest</option>
+                <option value="Workshop" ${e.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
+                <option value="Guest Lecture" ${e.category === 'Guest Lecture' ? 'selected' : ''}>Guest Lecture</option>
+                <option value="Coding Contest" ${e.category === 'Coding Contest' ? 'selected' : ''}>Coding Contest</option>
+                <option value="Orientation" ${e.category === 'Orientation' ? 'selected' : ''}>Orientation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date <span class="req">*</span></label>
+              <input type="text" id="evDate" class="form-control" placeholder="e.g. Nov 20, 2026" required value="${escapeHtml(e.date || '')}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Time</label>
+              <input type="text" id="evTime" class="form-control" placeholder="10:00 AM - 1:00 PM" value="${escapeHtml(e.time || '')}">
+            </div>
+            <div class="form-group">
+              <label>Seat Capacity</label>
+              <input type="number" id="evCapacity" class="form-control" value="${e.capacity || 200}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Venue / Location</label>
+            <input type="text" id="evVenue" class="form-control" placeholder="Auditorium A, Shantigram" value="${escapeHtml(e.venue || '')}">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Speaker Name</label>
+              <input type="text" id="evSpeakerName" class="form-control" placeholder="Dr. / Prof. / Speaker" value="${escapeHtml(e.speakerName || e.speaker?.name || '')}">
+            </div>
+            <div class="form-group">
+              <label>Speaker Title / Company</label>
+              <input type="text" id="evSpeakerTitle" class="form-control" placeholder="VP of Eng / Faculty" value="${escapeHtml(e.speakerTitle || e.speaker?.title || '')}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Virtual Meeting Link (Optional)</label>
+            <input type="url" id="evVirtualLink" class="form-control" placeholder="https://meet.google.com/..." value="${escapeHtml(e.virtualLink || '')}">
+          </div>
+          <div class="form-group">
+            <label>Agenda & Outline</label>
+            <textarea id="evAgenda" class="form-control" rows="4">${escapeHtml(e.agenda || '')}</textarea>
+          </div>
+        </form>
+      `;
+
+      document.getElementById('drawerSubmitBtn').onclick = saveEvent;
+      openDrawer();
+    }
+
+    async function saveEvent() {
+      const title = document.getElementById('evTitle').value.trim();
+      const date = document.getElementById('evDate').value.trim();
+      if (!title || !date) {
+        showToast('Please fill in required fields (Title and Date).', 'error');
+        return;
+      }
+
+      const payload = {
+        title,
+        category: document.getElementById('evCategory').value,
+        date,
+        time: document.getElementById('evTime').value.trim(),
+        venue: document.getElementById('evVenue').value.trim(),
+        capacity: Number(document.getElementById('evCapacity').value) || 200,
+        speakerName: document.getElementById('evSpeakerName').value.trim(),
+        speakerTitle: document.getElementById('evSpeakerTitle').value.trim(),
+        virtualLink: document.getElementById('evVirtualLink').value.trim(),
+        agenda: document.getElementById('evAgenda').value.trim()
+      };
+
+      try {
+        if (currentDrawerMode === 'edit-event' && currentEditId) {
+          await api(`/admin/events/${currentEditId}`, { method: 'PUT', body: JSON.stringify(payload) });
+          showToast('Event updated successfully!', 'success');
+        } else {
+          await api('/admin/events', { method: 'POST', body: JSON.stringify(payload) });
+          showToast('Campus Event scheduled successfully!', 'success');
+        }
+        closeDrawer();
+        loadEvents();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function editEvent(id) {
+      const e = eventsCache.find(item => item._id === id);
+      if (e) openEventDrawer(e);
+    }
+
+    async function deleteEvent(id, title) {
+      if (!confirm(`Are you sure you want to delete event "${title}"?`)) return;
+      try {
+        await api(`/admin/events/${id}`, { method: 'DELETE' });
+        showToast('Event deleted successfully.', 'success');
+        loadEvents();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 5. TAB 4: OPPORTUNITIES CRUD
+    async function loadOpportunities() {
+      const tbody = document.getElementById('opportunitiesTableBody');
+      try {
+        const data = await api('/admin/opportunities');
+        opportunitiesCache = data.opportunities || [];
+
+        if (opportunitiesCache.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state-box"><div class="empty-state-icon">💼</div><h3 class="empty-state-title">No Opportunities Posted</h3><p class="empty-state-desc">Post internships, placement drives, or fellowships for students.</p><button class="button" style="margin:0;" onclick="openOpportunityDrawer()">+ Post Opportunity</button></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = opportunitiesCache.map(o => `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:#0f172a;">${escapeHtml(o.title)}</div>
+            </td>
+            <td><strong>${escapeHtml(o.organization)}</strong></td>
+            <td><span class="pill pill-purple">${escapeHtml(o.category || 'Internship')}</span></td>
+            <td><strong style="color:#16a34a;">${escapeHtml(o.stipend || 'Competitive')}</strong></td>
+            <td>${escapeHtml(o.deadline || 'Rolling')}</td>
+            <td>
+              <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                ${(o.requiredSkills || []).slice(0, 3).map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('')}
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end;">
+                <button class="btn-action btn-action-edit" onclick="editOpportunity('${o._id}')">Edit</button>
+                <button class="btn-action btn-action-del" onclick="deleteOpportunity('${o._id}', '${escapeHtml(o.title)}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#ef4444;">Error: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function openOpportunityDrawer(opportunity = null) {
+      currentDrawerMode = opportunity ? 'edit-opportunity' : 'add-opportunity';
+      currentEditId = opportunity ? opportunity._id : null;
+      document.getElementById('drawerTitle').textContent = opportunity ? 'Edit Opportunity' : '+ Post Opportunity';
+
+      const o = opportunity || {};
+      const skillsVal = Array.isArray(o.requiredSkills) ? o.requiredSkills.join(', ') : '';
+      const tipsVal = Array.isArray(o.prepTips) ? o.prepTips.join('\n') : '';
+
+      document.getElementById('drawerBody').innerHTML = `
+        <form id="drawerForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Job / Role Title <span class="req">*</span></label>
+              <input type="text" id="opTitle" class="form-control" required value="${escapeHtml(o.title || '')}">
+            </div>
+            <div class="form-group">
+              <label>Organization / Company <span class="req">*</span></label>
+              <input type="text" id="opOrg" class="form-control" required value="${escapeHtml(o.organization || '')}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category <span class="req">*</span></label>
+              <select id="opCategory" class="form-control">
+                <option value="Internship" ${o.category === 'Internship' ? 'selected' : ''}>Internship</option>
+                <option value="Job" ${o.category === 'Job' ? 'selected' : ''}>Job</option>
+                <option value="Placement Drive" ${o.category === 'Placement Drive' ? 'selected' : ''}>Placement Drive</option>
+                <option value="Fellowship" ${o.category === 'Fellowship' ? 'selected' : ''}>Fellowship</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Location Mode</label>
+              <select id="opLocation" class="form-control">
+                <option value="On-site" ${o.location === 'On-site' ? 'selected' : ''}>On-site</option>
+                <option value="Remote" ${o.location === 'Remote' ? 'selected' : ''}>Remote</option>
+                <option value="Hybrid" ${o.location === 'Hybrid' ? 'selected' : ''}>Hybrid</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Stipend / CTC</label>
+              <input type="text" id="opStipend" class="form-control" placeholder="e.g. ₹35,000/mo or 12 LPA" value="${escapeHtml(o.stipend || '')}">
+            </div>
+            <div class="form-group">
+              <label>Application Deadline</label>
+              <input type="text" id="opDeadline" class="form-control" placeholder="e.g. Nov 30, 2026" value="${escapeHtml(o.deadline || '')}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Eligibility (Courses / Years)</label>
+            <input type="text" id="opEligibility" class="form-control" placeholder="B.Tech 3rd/4th Year, MCA, MBA" value="${escapeHtml(o.eligibility || '')}">
+          </div>
+          <div class="form-group">
+            <label>Required Skills (Comma separated)</label>
+            <input type="text" id="opSkills" class="form-control" placeholder="React, Node.js, Docker, SQL" value="${escapeHtml(skillsVal)}">
+          </div>
+          <div class="form-group">
+            <label>Preparation Tips (Learning roadmap)</label>
+            <textarea id="opTips" class="form-control" placeholder="One tip per line or paragraph...">${escapeHtml(tipsVal)}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Application Link (URL)</label>
+            <input type="url" id="opLink" class="form-control" placeholder="https://careers.adani.com/..." value="${escapeHtml(o.applicationLink || o.link || '')}">
+          </div>
+          <div class="form-group">
+            <label>Job Description</label>
+            <textarea id="opDesc" class="form-control" rows="3">${escapeHtml(o.description || '')}</textarea>
+          </div>
+        </form>
+      `;
+
+      document.getElementById('drawerSubmitBtn').onclick = saveOpportunity;
+      openDrawer();
+    }
+
+    async function saveOpportunity() {
+      const title = document.getElementById('opTitle').value.trim();
+      const organization = document.getElementById('opOrg').value.trim();
+      if (!title || !organization) {
+        showToast('Please fill in required fields (Title and Organization).', 'error');
+        return;
+      }
+
+      const payload = {
+        title,
+        organization,
+        category: document.getElementById('opCategory').value,
+        location: document.getElementById('opLocation').value,
+        stipend: document.getElementById('opStipend').value.trim(),
+        deadline: document.getElementById('opDeadline').value.trim(),
+        eligibility: document.getElementById('opEligibility').value.trim(),
+        requiredSkills: document.getElementById('opSkills').value.split(',').map(s => s.trim()).filter(Boolean),
+        preparationTips: document.getElementById('opTips').value.split('\n').map(t => t.trim()).filter(Boolean),
+        applicationLink: document.getElementById('opLink').value.trim(),
+        description: document.getElementById('opDesc').value.trim()
+      };
+
+      try {
+        if (currentDrawerMode === 'edit-opportunity' && currentEditId) {
+          await api(`/admin/opportunities/${currentEditId}`, { method: 'PUT', body: JSON.stringify(payload) });
+          showToast('Opportunity updated successfully!', 'success');
+        } else {
+          await api('/admin/opportunities', { method: 'POST', body: JSON.stringify(payload) });
+          showToast('Opportunity posted successfully!', 'success');
+        }
+        closeDrawer();
+        loadOpportunities();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function editOpportunity(id) {
+      const o = opportunitiesCache.find(item => item._id === id);
+      if (o) openOpportunityDrawer(o);
+    }
+
+    async function deleteOpportunity(id, title) {
+      if (!confirm(`Are you sure you want to delete opportunity "${title}"?`)) return;
+      try {
+        await api(`/admin/opportunities/${id}`, { method: 'DELETE' });
+        showToast('Opportunity deleted successfully.', 'success');
+        loadOpportunities();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 6. TAB 5: RESOURCES CRUD
+    async function loadResources() {
+      const tbody = document.getElementById('resourcesTableBody');
+      try {
+        const data = await api('/admin/resources');
+        resourcesCache = data.resources || [];
+        filterResources();
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#ef4444;">Error: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function filterResources() {
+      const tbody = document.getElementById('resourcesTableBody');
+      const branch = document.getElementById('resourceBranchFilter').value;
+      const sem = document.getElementById('resourceSemesterFilter').value;
+      const cat = document.getElementById('resourceCategoryFilter').value;
+
+      let list = resourcesCache;
+      if (branch !== 'all') list = list.filter(r => r.branch === branch);
+      if (sem !== 'all') list = list.filter(r => r.semester === sem);
+      if (cat !== 'all') list = list.filter(r => r.category === cat);
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state-box"><div class="empty-state-icon">📚</div><h3 class="empty-state-title">No Resources Match Filter</h3><p class="empty-state-desc">Try resetting your branch, semester or category filters.</p><button class="button" style="margin:0;" onclick="openResourceDrawer()">+ Add Resource</button></div></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => `
+        <tr>
+          <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:700;">${escapeHtml(r.subjectCode || 'GEN-01')}</code></td>
+          <td><strong>${escapeHtml(r.subject)}</strong></td>
+          <td><span class="pill pill-blue">${escapeHtml(r.branch || 'CSE')}</span></td>
+          <td>${escapeHtml(r.semester || 'Sem 1')}</td>
+          <td><span class="pill pill-green">${escapeHtml(r.category || 'Notes')}</span></td>
+          <td><a href="${escapeHtml(r.url)}" target="_blank" class="text-link" style="font-weight:600;">${escapeHtml(r.title)} ↗</a></td>
+          <td style="text-align: right;">
+            <div style="display:flex; gap:6px; justify-content:flex-end;">
+              <button class="btn-action btn-action-edit" onclick="editResource('${r._id}')">Edit</button>
+              <button class="btn-action btn-action-del" onclick="deleteResource('${r._id}', '${escapeHtml(r.title)}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openResourceDrawer(resource = null) {
+      currentDrawerMode = resource ? 'edit-resource' : 'add-resource';
+      currentEditId = resource ? resource._id : null;
+      document.getElementById('drawerTitle').textContent = resource ? 'Edit Resource' : '+ Add Study Resource';
+
+      const r = resource || {};
+
+      document.getElementById('drawerBody').innerHTML = `
+        <form id="drawerForm">
+          <div class="form-group">
+            <label>Resource Title <span class="req">*</span></label>
+            <input type="text" id="resTitle" class="form-control" placeholder="e.g. Complete Unit 1 to 5 Handouts" required value="${escapeHtml(r.title || '')}">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Subject Name <span class="req">*</span></label>
+              <input type="text" id="resSubject" class="form-control" placeholder="Data Structures & Algorithms" required value="${escapeHtml(r.subject || '')}">
+            </div>
+            <div class="form-group">
+              <label>Subject Code</label>
+              <input type="text" id="resCode" class="form-control" placeholder="CS301" value="${escapeHtml(r.subjectCode || '')}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Branch <span class="req">*</span></label>
+              <select id="resBranch" class="form-control">
+                <option value="CSE" ${r.branch === 'CSE' ? 'selected' : ''}>CSE</option>
+                <option value="IT" ${r.branch === 'IT' ? 'selected' : ''}>IT</option>
+                <option value="AI&DS" ${r.branch === 'AI&DS' ? 'selected' : ''}>AI & DS</option>
+                <option value="ECE" ${r.branch === 'ECE' ? 'selected' : ''}>ECE</option>
+                <option value="ME" ${r.branch === 'ME' ? 'selected' : ''}>ME</option>
+                <option value="Civil" ${r.branch === 'Civil' ? 'selected' : ''}>Civil</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Semester <span class="req">*</span></label>
+              <select id="resSemester" class="form-control">
+                ${[1,2,3,4,5,6,7,8].map(s => `<option value="Semester ${s}" ${r.semester === `Semester ${s}` ? 'selected' : ''}>Semester ${s}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Category <span class="req">*</span></label>
+            <select id="resCategory" class="form-control">
+              <option value="Notes" ${r.category === 'Notes' ? 'selected' : ''}>Notes / Lecture Handouts</option>
+              <option value="PYQ" ${r.category === 'PYQ' ? 'selected' : ''}>Previous Year Questions (PYQs)</option>
+              <option value="Syllabus" ${r.category === 'Syllabus' ? 'selected' : ''}>Official Syllabus</option>
+              <option value="Textbook" ${r.category === 'Textbook' ? 'selected' : ''}>Textbook Reference</option>
+              <option value="Video Playlist" ${r.category === 'Video Playlist' ? 'selected' : ''}>Curated Video Playlist</option>
+              <option value="Useful Link" ${r.category === 'Useful Link' ? 'selected' : ''}>Useful Link / Portal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Resource URL <span class="req">*</span></label>
+            <input type="url" id="resUrl" class="form-control" placeholder="https://drive.google.com/..." required value="${escapeHtml(r.url || '')}">
+          </div>
+          <div class="form-group">
+            <label>Uploaded By</label>
+            <input type="text" class="form-control" value="${escapeHtml(currentUser.name || 'Adani Admin')}" disabled>
+          </div>
+          <div class="form-group">
+            <label>Description / Notes</label>
+            <textarea id="resDesc" class="form-control">${escapeHtml(r.description || '')}</textarea>
+          </div>
+        </form>
+      `;
+
+      document.getElementById('drawerSubmitBtn').onclick = saveResource;
+      openDrawer();
+    }
+
+    async function saveResource() {
+      const title = document.getElementById('resTitle').value.trim();
+      const subject = document.getElementById('resSubject').value.trim();
+      const url = document.getElementById('resUrl').value.trim();
+      if (!title || !subject || !url) {
+        showToast('Please fill in required fields (Title, Subject, URL).', 'error');
+        return;
+      }
+
+      const payload = {
+        title,
+        subject,
+        subjectCode: document.getElementById('resCode').value.trim(),
+        branch: document.getElementById('resBranch').value,
+        semester: document.getElementById('resSemester').value,
+        category: document.getElementById('resCategory').value,
+        url,
+        description: document.getElementById('resDesc').value.trim()
+      };
+
+      try {
+        if (currentDrawerMode === 'edit-resource' && currentEditId) {
+          await api(`/admin/resources/${currentEditId}`, { method: 'PUT', body: JSON.stringify(payload) });
+          showToast('Resource updated successfully!', 'success');
+        } else {
+          await api('/admin/resources', { method: 'POST', body: JSON.stringify(payload) });
+          showToast('Resource published successfully!', 'success');
+        }
+        closeDrawer();
+        loadResources();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function editResource(id) {
+      const r = resourcesCache.find(item => item._id === id);
+      if (r) openResourceDrawer(r);
+    }
+
+    async function deleteResource(id, title) {
+      if (!confirm(`Are you sure you want to delete resource "${title}"?`)) return;
+      try {
+        await api(`/admin/resources/${id}`, { method: 'DELETE' });
+        showToast('Resource deleted successfully.', 'success');
+        loadResources();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // 7. TAB 6: PROJECTS MODERATION
+    async function loadProjects() {
+      const tbody = document.getElementById('projectsTableBody');
+      try {
+        const data = await api('/admin/projects');
+        projectsCache = data.projects || [];
+
+        if (projectsCache.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state-box"><div class="empty-state-icon">🚀</div><h3 class="empty-state-title">No Projects Submitted Yet</h3><p class="empty-state-desc">Student project prototypes will appear here for review and moderation.</p></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = projectsCache.map(p => `
+          <tr>
+            <td>
+              <a href="javascript:void(0)" onclick="viewProjectDetails('${p._id}')" style="font-weight:700; color:#0284c7; text-decoration:underline;">
+                ${escapeHtml(p.title)}
+              </a>
+              <div style="font-size:12px; color:#64748b;">${escapeHtml(p.tagline || '')}</div>
+            </td>
+            <td>
+              <div style="font-weight:600;">${escapeHtml(p.creator?.name || 'Student')}</div>
+              <div style="font-size:11px; color:#64748b;">${escapeHtml(p.creator?.course || 'AU')}</div>
+            </td>
+            <td>
+              <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                ${(p.technologies || []).map(t => `<span class="skill-tag">${escapeHtml(t)}</span>`).join('')}
+              </div>
+            </td>
+            <td><strong>${(p.likes || []).length}</strong> likes</td>
+            <td>
+              <button class="btn-action btn-action-feat ${p.featured ? 'active' : ''}" onclick="toggleFeatureProject('${p._id}')">
+                ${p.featured ? '⭐ Featured' : '☆ Feature'}
+              </button>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-action btn-action-del" onclick="deleteProject('${p._id}', '${escapeHtml(p.title)}')">Delete</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:#ef4444;">Error: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    async function toggleFeatureProject(id) {
+      try {
+        const res = await api(`/admin/projects/${id}/feature`, { method: 'PUT' });
+        showToast(res.message, 'success');
+        loadProjects();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function deleteProject(id, title) {
+      if (!confirm(`Are you sure you want to delete project "${title}"?`)) return;
+      try {
+        await api(`/admin/projects/${id}`, { method: 'DELETE' });
+        showToast('Project deleted by admin.', 'success');
+        loadProjects();
+        loadOverview();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function viewProjectDetails(id) {
+      const p = projectsCache.find(item => item._id === id);
+      if (!p) return;
+
+      document.getElementById('modalProjectTitle').textContent = p.title;
+      document.getElementById('modalProjectTagline').textContent = p.tagline || 'Student Showcase Prototype';
+      document.getElementById('modalProjectCreator').textContent = `${p.creator?.name || 'Student'} (${p.creator?.course || 'AU'}, Year ${p.creator?.year || '1'})`;
+      document.getElementById('modalProjectLikes').textContent = (p.likes || []).length;
+      document.getElementById('modalProjectDesc').textContent = p.description || 'No description provided.';
+
+      const techBox = document.getElementById('modalProjectTech');
+      techBox.innerHTML = (p.technologies || []).map(t => `<span class="skill-tag">${escapeHtml(t)}</span>`).join('') || '<span style="color:#94a3b8;">None specified</span>';
+
+      const linksBox = document.getElementById('modalProjectLinks');
+      linksBox.innerHTML = `
+        ${p.github ? `<a href="${escapeHtml(p.github)}" target="_blank" class="button" style="margin:0; background:#24292e; color:#fff; font-size:12px; padding:6px 12px;">GitHub Repository ↗</a>` : ''}
+        ${p.demo ? `<a href="${escapeHtml(p.demo)}" target="_blank" class="button" style="margin:0; background:#0284c7; color:#fff; font-size:12px; padding:6px 12px;">Live Demo ↗</a>` : ''}
+      `;
+
+      document.getElementById('projectModal').style.display = 'flex';
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').style.display = 'none';
+    }
+
+    // Drawer Helpers
+    function openDrawer() {
+      document.getElementById('drawerOverlay').classList.add('open');
+      document.getElementById('adminDrawer').classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawerOverlay').classList.remove('open');
+      document.getElementById('adminDrawer').classList.remove('open');
+    }
+  </script>
+</body>
+</html>

@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusConnect</title>
     <link rel="stylesheet" href="style.css">
     <!-- Leaflet CSS for Campus Map -->
@@ -20,7 +22,9 @@
 
 
         .hero {
-            height: 550px;
+            min-height: 660px;
+            height: auto;
+            padding-bottom: 50px;
             color: white;
 
             background-image:
@@ -32,24 +36,106 @@
         }
 
         /* NAVIGATION */
-
-        nav {
-            width: 90%;
-            margin: auto;
-            padding: 25px;
-
+        .top-nav {
+            position: relative;
+            z-index: 50;
+            background: rgba(12, 17, 28, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 12px 5%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.45);
         }
 
-        nav h2 {
-            margin: 0;
-        }
-
-        nav a {
-            color: white;
+        .top-nav .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             text-decoration: none;
-            margin-left: 25px;
+            cursor: pointer;
+        }
+
+        .top-nav .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            background: #d7f05a;
+            color: #111;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(215, 240, 90, 0.4);
+        }
+
+        .top-nav .brand-text {
+            color: #ffffff;
+            font-size: 19px;
+            font-weight: bold;
+            letter-spacing: -0.4px;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .top-nav .brand-sub {
+            display: block;
+            font-size: 10px;
+            color: #d7f05a;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+        }
+
+        .top-nav-links a {
+            color: #ffffff !important;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 7px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .top-nav-links a:hover {
+            color: #d7f05a !important;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .top-nav-links a.btn-login {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            margin-left: 6px;
+        }
+
+        .top-nav-links a.btn-login:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff !important;
+        }
+
+        .top-nav-links a.btn-dashboard {
+            background: #d7f05a;
+            color: #111111 !important;
+            font-weight: 700;
+            margin-left: 4px;
+            box-shadow: 0 2px 10px rgba(215, 240, 90, 0.35);
+        }
+
+        .top-nav-links a.btn-dashboard:hover {
+            background: #c6df44;
+            color: #000000 !important;
         }
 
         /* MAIN TEXT */
@@ -82,6 +168,10 @@
         .dark-button {
             background-color: black;
             color: white;
+        }
+
+        .hero-content .button {
+            margin: 0;
         }
 
         /* FEATURES */
@@ -136,56 +226,36 @@
 
 
 <body>
+    <div id="app-nav"></div>
 
     <section class="hero">
 
-        <nav>
-
-            <h2>CampusConnect</h2>
-
-            <div>
-
-                <a href="index.html">Home</a>
-
-                <a href="teammates.html">Find Teammates</a>
-
-                <a href="hackathons.html">Hackathons</a>
-
-                <a href="project.html">Projects</a>
-
-                <a href="opportunities.html">Opportunities</a>
-
-                <a href="mentorship.html">Mentorship</a>
-
-                <a href="resources.html">Resources</a>
-
-                <a href="#features">Features</a>
-
-                <a href="login.html">Login</a>
-
-            </div>
-
-        </nav>
+        
 
 
         <div class="hero-text hero-content">
 
-            <p class="eyebrow">A BETTER WAY TO FIND YOUR PEOPLE</p>
+            <p class="eyebrow">ADANI UNIVERSITY, AHMEDABAD • SHANTIGRAM CAMPUS</p>
 
             <h1>Connect. Collaborate. Grow.</h1>
 
             <p>
-                One campus. Endless connections. Find teammates, discover opportunities, showcase your work and grow together.
+                The unified student collaboration hub for Adani University (FSET & AIDTM). Discover teammates, hackathons, Adani Group internships, showcase your work, and innovate together.
             </p>
 
-            <a href="login.html" class="button">
-                Get Started
-            </a>
+            <div style="margin-top: 28px; margin-bottom: 40px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;">
+                <a href="login.html" class="button">
+                    Get Started
+                </a>
 
+                <a href="#campus-map" class="button dark-button">
+                    Explore Campus Map
+                </a>
 
-            <a href="#features" class="button dark-button">
-                Explore Campus
-            </a>
+                <a href="#features" class="button" style="background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.35);">
+                    View Campus Features ↓
+                </a>
+            </div>
 
         </div>
 
@@ -266,136 +336,101 @@
     </section>
 
     <section class="features" id="features">
-
         <h2>Everything You Need on Campus</h2>
-
         <p>
-            CampusConnect brings students, ideas and opportunities together.
+            CampusConnect brings students, ideas and opportunities together at Adani University.
         </p>
 
-
         <div class="cards">
-
-
-            <div class="card">
-
-                <h3>Find Teammates</h3>
-
-                <p>
-                    Find students with the right skills
-                    for projects and hackathons.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🤝 Find Teammates</h3>
+                    <p>Find students with the right skills in Python, AI, React, or BIM for projects and hackathons.</p>
+                </div>
+                <a href="teammates.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Find Teammates →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Hackathon Teams</h3>
-
-                <p>
-                    Create teams and connect with students
-                    who have different skills.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">⚡ Hackathon Teams</h3>
+                    <p>Create teams, collaborate on ideas, and register for HackAdani and statewide hackathons.</p>
+                </div>
+                <a href="hackathons.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">View Hackathons →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Project Showcase</h3>
-
-                <p>
-                    Share your projects and explore
-                    student projects.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🎉 Campus Events & Fests</h3>
+                    <p>Explore upcoming TechFests, keynote lectures, hands-on workshops, and coding leagues.</p>
+                </div>
+                <a href="events.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Explore Events →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Campus Opportunities</h3>
-
-                <p>
-                    Discover internships, workshops,
-                    competitions and hackathons.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🚀 Project Showcase</h3>
+                    <p>Publish your engineering prototypes, smart campus systems, and explore fellow student work.</p>
+                </div>
+                <a href="project.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Explore Projects →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Mentorship</h3>
-
-                <p>
-                    Connect with seniors and alumni
-                    for guidance.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🎯 Campus Opportunities</h3>
+                    <p>Discover internships with Adani Group, GIFT City FinTech, technical workshops, and contests.</p>
+                </div>
+                <a href="opportunities.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">View Opportunities →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Resource Sharing</h3>
-
-                <p>
-                    Share notes, tutorials and
-                    study material.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🎓 Senior Mentorship</h3>
+                    <p>Connect with experienced senior students and alumni for guidance on career and placements.</p>
+                </div>
+                <a href="mentorship.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Connect with Mentors →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Campus Q&A</h3>
-
-                <p>
-                    Ask questions and get answers
-                    from your campus community.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">📚 Resource Sharing</h3>
+                    <p>Access and upload placement sheets, curriculum study notes, lecture guides, and code templates.</p>
+                </div>
+                <a href="resources.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Browse Resources →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Campus AI Assistant</h3>
-
-                <p>
-                    Get suggestions for projects,
-                    teammates and opportunities.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">💬 Campus Q&A</h3>
+                    <p>Ask technical questions and get helpful answers directly from your campus peer network.</p>
+                </div>
+                <a href="qa.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Ask Questions →</a>
             </div>
 
-
-            <div class="card">
-
-                <h3>Student Achievements</h3>
-
-                <p>
-                    Showcase your projects,
-                    certificates and skills.
-                </p>
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🤖 Campus AI Assistant</h3>
+                    <p>Get instant guidance for technical projects, resume tips, and teammate matching algorithms.</p>
+                </div>
+                <a href="ai-assistant.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">Open AI Assistant →</a>
             </div>
 
-
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+                <div>
+                    <h3 style="margin-top:0;">🏆 Student Achievements</h3>
+                    <p>Showcase verified university milestones, hackathon awards, certificates, and achievements.</p>
+                </div>
+                <a href="achievements.html" class="button" style="margin:14px 0 0; font-size:13px; text-align:center;">View Achievements →</a>
+            </div>
         </div>
-
     </section>
  
     <!-- =================================================================
          FEATURE 2: CAMPUS MAP ("Explore Your Campus")
          ================================================================= -->
     <section class="campus-map-section" id="campus-map">
-        <h2>Explore Your Campus</h2>
+        <h2>Explore Adani University Campus</h2>
         <p class="map-description">
-            Find important campus locations and navigate your way around.
+            Explore Adani University campus facilities at Shantigram, SG Highway, Ahmedabad. Navigate the grounds and pinpoint your location across campus buildings.
         </p>
 
         <!-- Quick location selection chips -->
@@ -403,13 +438,13 @@
             <button class="map-chip live-loc-chip" data-loc="user"><span class="live-dot"></span> 📍 My Current Location</button>
             <button class="map-chip active" data-loc="all">All Campus Locations</button>
             <button class="map-chip" data-loc="gate">Main Gate</button>
-            <button class="map-chip" data-loc="admin">Administration Building</button>
-            <button class="map-chip" data-loc="library">Library</button>
-            <button class="map-chip" data-loc="lab">Computer Lab</button>
-            <button class="map-chip" data-loc="auditorium">Auditorium</button>
-            <button class="map-chip" data-loc="canteen">Canteen</button>
+            <button class="map-chip" data-loc="admin">Admin Block</button>
+            <button class="map-chip" data-loc="library">Knowledge Centre</button>
+            <button class="map-chip" data-loc="fset">FSET & AI Lab</button>
+            <button class="map-chip" data-loc="aidtm">AIDTM Wing</button>
+            <button class="map-chip" data-loc="canteen">Food Court</button>
             <button class="map-chip" data-loc="hostel">Hostel</button>
-            <button class="map-chip" data-loc="sports">Sports Ground</button>
+            <button class="map-chip" data-loc="sports">Sports Arena</button>
         </div>
 
         <!-- Interactive Leaflet Map Container -->
@@ -417,36 +452,39 @@
     </section>
 
     <section class="about" id="about">
-
-        <h2>About CampusConnect</h2>
-
+        <h2>About CampusConnect • Adani University</h2>
         <p>
-
-            CampusConnect is a student collaboration platform
-            designed to make campus life more connected.
-
-            Students can build teams, showcase their work,
-            find mentors, discover opportunities and share
-            useful resources.
-
+            CampusConnect is the dedicated student collaboration and campus ecosystem platform for <strong>Adani University, Ahmedabad</strong> located at Shantigram on SG Highway. Connecting undergraduate and postgraduate scholars across the Faculty of Science, Engineering & Technology (FSET) and Adani Institute of Digital Technology Management (AIDTM).
         </p>
-
-
-        <a href="login.html" class="button dark-button">
-            Join CampusConnect
-        </a>
-
+        <p style="color: #666; font-size: 15px; max-width: 700px; margin: 10px auto 25px;">
+            Students can build teams for hackathons, share engineering projects, find senior mentors, and discover curated Adani Group and Gujarat tech internships.
+        </p>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;">
+            <a href="login.html" class="button dark-button">
+                Join CampusConnect
+            </a>
+            <a href="dashboard.html" class="button" style="background: #111; color: #fff;">
+                Open Dashboard
+            </a>
+        </div>
     </section>
 
 
     <footer>
-
-        <h3>CampusConnect</h3>
-
-        <p>Connect. Collaborate. Grow.</p>
-
-        <p>© 2026 CampusConnect</p>
-
+        <h3>CampusConnect • Adani University</h3>
+        <p>Shantigram, Near Vaishnodevi Circle, SG Highway, Ahmedabad, Gujarat 382421</p>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin: 14px 0; font-size: 14px;">
+            <a href="index.html" style="color: #e2e8f0;">Home</a>
+            <a href="teammates.html" style="color: #e2e8f0;">Find Teammates</a>
+            <a href="hackathons.html" style="color: #e2e8f0;">Hackathons</a>
+            <a href="events.html" style="color: #e2e8f0;">Events</a>
+            <a href="project.html" style="color: #e2e8f0;">Projects</a>
+            <a href="opportunities.html" style="color: #e2e8f0;">Opportunities</a>
+            <a href="mentorship.html" style="color: #e2e8f0;">Mentorship</a>
+            <a href="resources.html" style="color: #e2e8f0;">Resources</a>
+            <a href="login.html" style="color: #e2e8f0;">Login</a>
+        </div>
+        <p style="color: #94a3b8; font-size: 13px;">© 2026 Adani University. All rights reserved.</p>
     </footer>
 
     <!-- Leaflet JS CDN for Interactive OpenStreetMap -->
@@ -603,7 +641,7 @@
             if (!mapElement || typeof L === 'undefined') return;
 
             // Default fallback center coordinates (if geolocation is denied)
-            let currentCenter = [19.1334, 72.9133];
+            let currentCenter = [23.1539, 72.5446];
             const initialZoom = 16;
 
             // Initialize Leaflet map
@@ -623,67 +661,67 @@
             const campusLayoutTemplates = [
                 {
                     id: 'gate',
-                    name: 'Main Gate',
+                    name: 'Main Gate (Shantigram Entrance)',
                     badge: 'Entrance',
                     latOff: -0.0028,
                     lngOff: -0.0012,
-                    description: 'Main entrance and security checkpoint of the campus.'
+                    description: 'Main entrance and security checkpoint of Adani University at Shantigram.'
                 },
                 {
                     id: 'admin',
-                    name: 'Administration Building',
+                    name: 'Adani University Admin Block',
                     badge: 'Offices',
                     latOff: -0.0012,
                     lngOff: -0.0003,
-                    description: 'Admissions, registrar office, student affairs, and central administration.'
+                    description: 'Admissions, registrar office, student affairs, and central university administration.'
                 },
                 {
                     id: 'library',
-                    name: 'Library',
+                    name: 'Central Knowledge Centre & Library',
                     badge: 'Academic',
                     latOff: 0.0007,
                     lngOff: -0.0018,
-                    description: 'Central library with study spaces, digital archives, and academic resources.'
+                    description: 'Central library with study spaces, digital research archives, and academic learning pods.'
                 },
                 {
-                    id: 'lab',
-                    name: 'Computer Lab',
+                    id: 'fset',
+                    name: 'FSET & AI Research Lab',
                     badge: 'Tech & Dev',
                     latOff: 0.0018,
                     lngOff: 0.0007,
-                    description: 'High-tech computer lab with programming and development setups.'
+                    description: 'Faculty of Science, Engineering & Technology computing labs and AI clusters.'
                 },
                 {
-                    id: 'auditorium',
-                    name: 'Auditorium',
-                    badge: 'Events',
+                    id: 'aidtm',
+                    name: 'AIDTM Management & Auditorium Wing',
+                    badge: 'Management',
                     latOff: -0.0004,
                     lngOff: 0.0027,
-                    description: 'Main campus auditorium for events, seminars, conferences, and cultural fests.'
+                    description: 'Adani Institute of Digital Technology Management lecture halls and university auditorium.'
                 },
                 {
                     id: 'canteen',
-                    name: 'Canteen',
+                    name: 'Shantigram Food Court & Dining',
                     badge: 'Dining',
                     latOff: 0.0011,
                     lngOff: 0.0032,
-                    description: 'Campus cafeteria offering meals, snacks, beverages, and student social spaces.'
+                    description: 'Campus cafeteria offering meals, snacks, refreshments, and student hangout lounges.'
                 },
                 {
                     id: 'hostel',
-                    name: 'Hostel',
+                    name: 'Student Residences (Hostel)',
                     badge: 'Residence',
                     latOff: 0.0036,
                     lngOff: -0.0008,
-                    description: 'Student residential campus and living quarters.'
+                    description: 'On-campus modern student housing and residential facilities.'
                 },
                 {
                     id: 'sports',
-                    name: 'Sports Ground',
+                    name: 'Shantigram Sports Arena',
                     badge: 'Athletics',
                     latOff: 0.0031,
                     lngOff: 0.0042,
-                    description: 'Outdoor sports complex for football, cricket, track and field athletics.'
+                    description: 'Outdoor sports complex for cricket, football, tennis, and athletics.'
                 }
             ];
 
@@ -824,6 +862,8 @@
         })();
     </script>
 
+    <script src="app.js"></script>
+    <script src="nav.js"></script>
 </body>
 
 </html>

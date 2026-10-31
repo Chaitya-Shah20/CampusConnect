@@ -1,1 +1,360 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resources | CampusConnect</title><link rel="stylesheet" href="style.css"></head><body class="app-shell"><div id="app-nav"></div><main class="page-wrap"><div class="page-heading"><div><p class="eyebrow">SHARED KNOWLEDGE</p><h1>Campus resources</h1><p class="lede">Notes, papers and links shared by students.</p></div><button class="button" onclick="document.getElementById('resourceForm').hidden=false">Upload resource</button></div><form class="panel form-panel inline-form" id="resourceForm" hidden><label>Title<input id="resourceTitle" required></label><label>Subject<input id="resourceSubject" required></label><label>Category<select id="resourceCategory"><option>Notes</option><option>Study Material</option><option>Previous Papers</option><option>Tutorials</option><option>Useful Links</option></select></label><label>Link<input id="resourceUrl" type="url" placeholder="https://..."></label><button class="button" type="submit">Publish</button><p data-message></p></form><section class="cards resource-grid" id="resourceList"><div class="panel"><h2>Loading resources...</h2></div></section></main><script src="app.js"></script><script src="nav.js"></script><script>document.addEventListener('DOMContentLoaded', async()=>{const list=document.getElementById('resourceList');try{const data=await api('/resources');list.innerHTML=data.resources.map(r=>`<article class="resource-card"><span class="eyebrow">${r.category||'RESOURCE'}</span><h2>${r.title}</h2><p>${r.subject}</p><small>Shared by ${r.uploadedBy?.name||'student'}</small><a class="text-link" href="${r.url||'#'}" target="_blank">Download resource ↗</a></article>`).join('')||'<div class="panel"><h2>No resources yet</h2></div>';}catch(e){list.innerHTML='<div class="panel"><h2>Log in to view resources.</h2></div>';} resourceForm.addEventListener('submit',async e=>{e.preventDefault();try{await api('/resources',{method:'POST',body:JSON.stringify({title:resourceTitle.value,subject:resourceSubject.value,category:resourceCategory.value,url:resourceUrl.value})});location.reload();}catch(error){showMessage(error.message,'error');}});});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Resources | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .resource-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .resource-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+    .res-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 8px 0 12px;
+    }
+    .code-pill {
+      background: #0f172a;
+      color: #d7f05a;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body class="app-shell">
+  <div id="app-nav"></div>
+
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" style="color: #667b00;">SHARED KNOWLEDGE & CURRICULUM</p>
+        <h1>Adani Academic Subject Resources</h1>
+        <p class="lede">Comprehensive lecture notes, solved previous year papers (PYQs), official university syllabus guides, and textbook materials.</p>
+      </div>
+      <div>
+        <button class="button" onclick="openContributeModal()">+ Contribute Resource</button>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <section class="toolbar" style="flex-wrap: wrap;">
+      <div class="toolbar-group" style="flex-wrap: wrap;">
+        <input type="text" id="resSearchInput" class="input-control" placeholder="Search by subject code (CS301), subject, or topic..." style="min-width: 260px;">
+        
+        <select id="resBranchFilter" class="input-control">
+          <option value="all">All Branches</option>
+          <option value="CSE">CSE (Computer Science)</option>
+          <option value="AI/DS">AI & Data Science</option>
+          <option value="IT">Information Technology</option>
+          <option value="Civil/Infra">Civil & Infrastructure</option>
+          <option value="Management">Management (AIDTM)</option>
+        </select>
+
+        <select id="resSemesterFilter" class="input-control">
+          <option value="all">All Semesters</option>
+          <option value="Semester 1">Semester 1</option>
+          <option value="Semester 2">Semester 2</option>
+          <option value="Semester 3">Semester 3</option>
+          <option value="Semester 4">Semester 4</option>
+          <option value="Semester 5">Semester 5</option>
+          <option value="Semester 6">Semester 6</option>
+          <option value="Semester 7">Semester 7</option>
+          <option value="Semester 8">Semester 8</option>
+        </select>
+
+        <select id="resCategoryFilter" class="input-control">
+          <option value="all">All Resource Types</option>
+          <option value="Lecture Notes">Lecture Notes</option>
+          <option value="PYQs">Previous Year Papers (PYQs)</option>
+          <option value="Official Syllabus">Official Syllabus</option>
+          <option value="Recommended Textbooks">Recommended Textbooks</option>
+          <option value="Curated Video Playlists">Curated Video Playlists</option>
+        </select>
+      </div>
+
+      <div class="toolbar-group">
+        <span id="resCountLabel" style="font-size: 13px; color: var(--muted); font-weight: 500;">Loading resources...</span>
+      </div>
+    </section>
+
+    <!-- Resource Cards Grid -->
+    <section id="resourcesGrid" class="grid-cards">
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+        Loading academic resources from database...
+      </div>
+    </section>
+  </main>
+
+  <!-- Contribute Resource Modal -->
+  <div id="contributeModal" class="modal-overlay hidden">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closeContributeModal()">&times;</button>
+      <p class="eyebrow">CONTRIBUTE TO CAMPUS</p>
+      <h2 style="margin: 0 0 10px;">Share Academic Material</h2>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+        Upload Google Drive, GitHub, or YouTube study material links for your branch.
+      </p>
+
+      <form id="contributeResourceForm">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Resource Title *</label>
+          <input type="text" id="resTitle" class="input-control" style="width: 100%;" placeholder="e.g. Operating Systems (CS401) Mid-Sem Solved Papers" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Subject Name *</label>
+            <input type="text" id="resSubject" class="input-control" style="width: 100%;" placeholder="e.g. Operating Systems" required>
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Subject Code</label>
+            <input type="text" id="resCode" class="input-control" style="width: 100%;" placeholder="e.g. CS401">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Branch *</label>
+            <select id="resBranch" class="input-control" style="width: 100%;" required>
+              <option value="CSE">CSE (Computer Science)</option>
+              <option value="AI/DS">AI & Data Science</option>
+              <option value="IT">Information Technology</option>
+              <option value="Civil/Infra">Civil & Infrastructure</option>
+              <option value="Management">Management (AIDTM)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Semester *</label>
+            <select id="resSemester" class="input-control" style="width: 100%;" required>
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+              <option value="Semester 4">Semester 4</option>
+              <option value="Semester 5" selected>Semester 5</option>
+              <option value="Semester 6">Semester 6</option>
+              <option value="Semester 7">Semester 7</option>
+              <option value="Semester 8">Semester 8</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Resource Category *</label>
+            <select id="resCategory" class="input-control" style="width: 100%;" required>
+              <option value="Lecture Notes">Lecture Notes</option>
+              <option value="PYQs">Previous Year Papers (PYQs)</option>
+              <option value="Official Syllabus">Official Syllabus</option>
+              <option value="Recommended Textbooks">Recommended Textbooks</option>
+              <option value="Curated Video Playlists">Curated Video Playlists</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">File / Content Type</label>
+            <select id="resFileType" class="input-control" style="width: 100%;">
+              <option value="PDF">PDF Document</option>
+              <option value="Drive Link">Google Drive Folder</option>
+              <option value="Video Playlist">YouTube Playlist</option>
+              <option value="Doc">Word / Doc</option>
+              <option value="Zip">Zip Archive</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Resource Link URL *</label>
+          <input type="url" id="resUrl" class="input-control" style="width: 100%;" placeholder="https://drive.google.com/..." required>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Description / Covered Topics</label>
+          <textarea id="resDesc" class="input-control" rows="3" style="width: 100%; resize: vertical;" placeholder="Units covered, professors who taught, exam tips..."></textarea>
+        </div>
+
+        <div id="resModalMsg" style="display: none; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 13px;"></div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-sm btn-secondary" onclick="closeContributeModal()">Cancel</button>
+          <button type="submit" class="button" style="margin: 0; padding: 10px 20px;">Publish Resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let allResources = [];
+
+    function openContributeModal() {
+      if (!currentUser) {
+        toast('Please log in to contribute academic study materials.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1200);
+        return;
+      }
+      document.getElementById('contributeModal').classList.remove('hidden');
+    }
+
+    function closeContributeModal() {
+      document.getElementById('contributeModal').classList.add('hidden');
+      document.getElementById('contributeResourceForm').reset();
+      document.getElementById('resModalMsg').style.display = 'none';
+    }
+
+    async function loadResources() {
+      try {
+        const data = await api('/resources');
+        allResources = data.resources || [];
+        filterAndRenderResources();
+      } catch (err) {
+        document.getElementById('resourcesGrid').innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: #dc2626; padding: 30px;">
+            Failed to load resources: ${err.message}
+          </div>
+        `;
+      }
+    }
+
+    function filterAndRenderResources() {
+      const q = document.getElementById('resSearchInput').value.toLowerCase().trim();
+      const branch = document.getElementById('resBranchFilter').value;
+      const sem = document.getElementById('resSemesterFilter').value;
+      const cat = document.getElementById('resCategoryFilter').value;
+
+      let filtered = allResources;
+
+      if (branch !== 'all') filtered = filtered.filter(r => r.branch === branch);
+      if (sem !== 'all') filtered = filtered.filter(r => r.semester === sem);
+      if (cat !== 'all') filtered = filtered.filter(r => r.category === cat);
+
+      if (q) {
+        filtered = filtered.filter(r => {
+          const matchTitle = (r.title || '').toLowerCase().includes(q);
+          const matchSub = (r.subject || '').toLowerCase().includes(q);
+          const matchCode = (r.subjectCode || '').toLowerCase().includes(q);
+          const matchDesc = (r.description || '').toLowerCase().includes(q);
+          return matchTitle || matchSub || matchCode || matchDesc;
+        });
+      }
+
+      document.getElementById('resCountLabel').textContent = `${filtered.length} material${filtered.length === 1 ? '' : 's'} found`;
+      renderResources(filtered);
+    }
+
+    function renderResources(items) {
+      const grid = document.getElementById('resourcesGrid');
+      if (!items || items.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: #fff; border: 1px solid var(--line); border-radius: 8px;">
+            <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">No academic resources found</p>
+            <p style="color: var(--muted); margin-bottom: 20px;">Try adjusting your branch/semester filter or upload the first study guide!</p>
+            <button class="button" onclick="openContributeModal()">+ Contribute Resource</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map(r => {
+        let pillColor = 'pill-blue';
+        if (r.category === 'Lecture Notes') pillColor = 'pill-green';
+        if (r.category === 'PYQs') pillColor = 'pill-accent';
+        if (r.category === 'Official Syllabus') pillColor = 'pill-purple';
+
+        const uploader = r.uploadedBy || {};
+
+        return `
+          <article class="resource-box">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                <span class="pill ${pillColor}">${escapeHtml(r.category || 'Notes')}</span>
+                <span class="pill" style="background:#e2e8f0; color:#334155;">${escapeHtml(r.fileType || 'PDF')}</span>
+              </div>
+
+              <div class="res-meta">
+                ${r.subjectCode ? `<span class="code-pill">${escapeHtml(r.subjectCode)}</span>` : ''}
+                <span style="font-weight: bold; color: #1e293b; font-size: 14px;">${escapeHtml(r.subject)}</span>
+                <span style="color: var(--muted); font-size: 12px;">· ${escapeHtml(r.branch || 'CSE')} (${escapeHtml(r.semester || 'Sem 5')})</span>
+              </div>
+
+              <h2 style="font-size: 18px; margin: 6px 0 10px; line-height: 1.35;">
+                ${escapeHtml(r.title)}
+              </h2>
+
+              <p style="font-size: 13px; color: #475569; line-height: 1.5; margin-bottom: 14px;">
+                ${escapeHtml(r.description || 'Verified academic resource for Adani University curriculum.')}
+              </p>
+            </div>
+
+            <div style="border-top: 1px solid var(--line); padding-top: 14px; margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+              <small style="color: var(--muted);">Shared by <b>${escapeHtml(uploader.name || 'Adani Member')}</b></small>
+              <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="button" style="margin: 0; padding: 7px 16px; font-size: 12px; background: #111; color: #d7f05a; font-weight: bold;">
+                View / Download ↗
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('contributeResourceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('resModalMsg');
+      try {
+        const payload = {
+          title: document.getElementById('resTitle').value,
+          subject: document.getElementById('resSubject').value,
+          subjectCode: document.getElementById('resCode').value,
+          branch: document.getElementById('resBranch').value,
+          semester: document.getElementById('resSemester').value,
+          category: document.getElementById('resCategory').value,
+          fileType: document.getElementById('resFileType').value,
+          url: document.getElementById('resUrl').value,
+          description: document.getElementById('resDesc').value
+        };
+
+        await api('/resources', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        toast('Academic resource contributed successfully!', 'success');
+        closeContributeModal();
+        await loadResources();
+      } catch (err) {
+        msg.style.display = 'block';
+        msg.style.background = '#fee2e2';
+        msg.style.color = '#b91c1c';
+        msg.textContent = err.message;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await loadResources();
+      document.getElementById('resSearchInput').addEventListener('input', filterAndRenderResources);
+      document.getElementById('resBranchFilter').addEventListener('change', filterAndRenderResources);
+      document.getElementById('resSemesterFilter').addEventListener('change', filterAndRenderResources);
+      document.getElementById('resCategoryFilter').addEventListener('change', filterAndRenderResources);
+    });
+  </script>
+</body>
+</html>

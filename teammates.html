@@ -1,130 +1,254 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Find Teammates - CampusConnect</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find Teammates | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="app-shell">
+  <div id="app-nav"></div>
 
-<body>
-
-    <nav>
-
-        <h2>
-            <a href="index.html">CampusConnect</a>
-        </h2>
-
-        <div>
-            <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
-        </div>
-
-    </nav>
-
-
-    <section class="section">
-
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow">CAMPUS TALENT DIRECTORY</p>
         <h1>Find Teammates</h1>
+        <p class="lede">Connect with classmates and peers with the complementary skills you need for hackathons, startups, and coursework.</p>
+      </div>
+    </div>
 
-        <p>
-            Find students with the right skills for your project,
-            hackathon or competition.
-        </p>
-
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Find by Skills</h3>
-                <p>Search students based on their technical skills.</p>
-                <button class="button" onclick="searchSkills()">
-                    Search
-                </button>
-            </div>
-
-
-            <div class="card">
-                <h3>Create Team</h3>
-                <p>Create your own team and invite students.</p>
-                <button class="button" onclick="createTeam()">
-                    Create Team
-                </button>
-            </div>
-
-
-            <div class="card">
-                <h3>My Teams</h3>
-                <p>View the teams you have joined.</p>
-                <button class="button" onclick="myTeams()">
-                    View Teams
-                </button>
-            </div>
-
-        </div>
-
-        <br>
-
-        <a href="index.html" class="button">
-            ← Back to Home
-        </a>
-
+    <!-- Search & Skill Chips Toolbar -->
+    <section class="toolbar">
+      <div class="toolbar-group" style="flex: 1;">
+        <input type="text" id="studentSearchInput" class="input-control" placeholder="Search by skill (e.g. Python, React), name, college, or course..." style="width: 100%; max-width: 480px;">
+      </div>
+      <div class="toolbar-group">
+        <span id="studentsFoundCount" style="font-size: 13px; color: var(--muted); font-weight: 500;">Searching directory...</span>
+      </div>
     </section>
 
+    <!-- Quick Skill Filter Chips -->
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
+      <span style="font-size: 13px; font-weight: bold; align-self: center; color: var(--muted); margin-right: 6px;">Popular Skills:</span>
+      <button class="map-chip active" onclick="setSkillFilter('')">All</button>
+      <button class="map-chip" onclick="setSkillFilter('React')">React</button>
+      <button class="map-chip" onclick="setSkillFilter('Python')">Python</button>
+      <button class="map-chip" onclick="setSkillFilter('Machine Learning')">Machine Learning</button>
+      <button class="map-chip" onclick="setSkillFilter('Node.js')">Node.js</button>
+      <button class="map-chip" onclick="setSkillFilter('UI/UX')">UI/UX</button>
+      <button class="map-chip" onclick="setSkillFilter('C++')">C++</button>
+      <button class="map-chip" onclick="setSkillFilter('DSA')">DSA</button>
+    </div>
 
-    <script>
+    <!-- Toast Feedback Notification -->
+    <div id="connectionToast" style="display: none; padding: 12px 18px; border-radius: 6px; margin-bottom: 20px; font-weight: 500;"></div>
 
-        function searchSkills() {
+    <!-- Teammates Grid -->
+    <section id="teammatesGrid" class="grid-cards">
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+        Loading students from database...
+      </div>
+    </section>
+  </main>
 
-            if (!localStorage.getItem("campusUser")) {
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let myConnections = [];
+    let currentSkillFilter = '';
 
-                alert("Please login first.");
+    function showFeedback(msg, isSuccess = true) {
+      const toast = document.getElementById('connectionToast');
+      toast.style.display = 'block';
+      toast.textContent = msg;
+      if (isSuccess) {
+        toast.style.background = '#dcfce7';
+        toast.style.color = '#15803d';
+        toast.style.border = '1px solid #bbf7d0';
+      } else {
+        toast.style.background = '#fee2e2';
+        toast.style.color = '#b91c1c';
+        toast.style.border = '1px solid #fecaca';
+      }
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    }
 
-                window.location.href = "login.html";
+    async function loadDirectory(query = '') {
+      try {
+        const q = query || currentSkillFilter;
+        const res = await api(`/users?q=${encodeURIComponent(q)}`);
+        const users = res.users || [];
+        document.getElementById('studentsFoundCount').textContent = `${users.length} student${users.length === 1 ? '' : 's'} available`;
+        renderTeammates(users);
+      } catch (err) {
+        document.getElementById('teammatesGrid').innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: #dc2626; padding: 30px;">
+            Error loading students: ${err.message}
+          </div>
+        `;
+      }
+    }
 
-            } else {
+    async function loadMyConnections() {
+      try {
+        const data = await api('/connections');
+        myConnections = data.connections || [];
+      } catch (e) {
+        console.error('Failed to load connections:', e);
+      }
+    }
 
-                alert("Skill search section opened.");
+    function getConnectionState(targetUserId) {
+      for (const c of myConnections) {
+        const fromId = c.from ? (c.from._id || c.from) : null;
+        const toId = c.to ? (c.to._id || c.to) : null;
 
-            }
+        if (String(fromId) === String(targetUserId) || String(toId) === String(targetUserId)) {
+          return c.status; // 'pending' or 'accepted' or 'rejected'
+        }
+      }
+      return null;
+    }
 
+    function renderTeammates(users) {
+      const grid = document.getElementById('teammatesGrid');
+      if (!users || users.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: #fff; border: 1px solid var(--line); border-radius: 8px;">
+            <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">No students found</p>
+            <p style="color: var(--muted);">Try searching for a different skill, course, or college.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = users.map(user => {
+        const connState = getConnectionState(user._id);
+
+        let buttonHtml = '';
+        if (connState === 'accepted') {
+          buttonHtml = `<button class="btn-sm btn-secondary" disabled style="opacity: 0.8; cursor: default;">🤝 Connected</button>`;
+        } else if (connState === 'pending') {
+          buttonHtml = `<button class="btn-sm btn-secondary" disabled style="opacity: 0.8; cursor: default;">⏳ Request Sent</button>`;
+        } else {
+          buttonHtml = `<button class="button" style="margin: 0; padding: 8px 16px; font-size: 13px;" onclick="sendConnection('${user._id}', this)">+ Connect</button>`;
         }
 
-
-        function createTeam() {
-
-            if (!localStorage.getItem("campusUser")) {
-
-                alert("Please login first.");
-
-                window.location.href = "login.html";
-
-            } else {
-
-                alert("Create Team section opened.");
-
-            }
-
+        let verifiedBadge = '';
+        if (user.verificationStatus === 'approved') {
+          verifiedBadge = '<span class="badge badge-approved" style="font-size: 11px; padding: 2px 8px;">✓ Verified</span>';
+        } else {
+          verifiedBadge = '<span class="badge badge-pending" style="font-size: 11px; padding: 2px 8px;">Pending</span>';
         }
 
+        const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
-        function myTeams() {
+        return `
+          <article class="interactive-card">
+            <div>
+              <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+                <div class="avatar" style="margin: 0; width: 48px; height: 48px; font-size: 16px;">${initials}</div>
+                <div>
+                  <div style="font-weight: bold; font-size: 17px; line-height: 1.2;">${escapeHtml(user.name)}</div>
+                  <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">
+                    ${escapeHtml(user.course)} (${escapeHtml(user.year)})
+                  </div>
+                  <div style="font-size: 12px; font-weight: 500; color: #444;">
+                    ${escapeHtml(user.college)}
+                  </div>
+                </div>
+              </div>
 
-            if (!localStorage.getItem("campusUser")) {
+              <div style="margin-bottom: 12px;">
+                ${verifiedBadge}
+              </div>
 
-                alert("Please login first.");
+              <div style="margin-bottom: 14px;">
+                <div style="font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase; margin-bottom: 5px;">Skills</div>
+                <div>
+                  ${(user.skills || []).map(s => `<span class="tag-pill" style="cursor: pointer;" onclick="setSkillFilter('${escapeHtml(s)}')">${escapeHtml(s)}</span>`).join('')}
+                </div>
+              </div>
 
-                window.location.href = "login.html";
+              ${(user.interests && user.interests.length > 0) ? `
+                <div style="margin-bottom: 14px;">
+                  <div style="font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase; margin-bottom: 5px;">Interests</div>
+                  <div>
+                    ${user.interests.map(i => `<span class="tag-pill" style="background:#fff;border:1px solid #e0e0dc;">${escapeHtml(i)}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
 
-            } else {
+            <div class="card-actions" style="margin-top: 15px;">
+              <span style="font-size: 12px; color: var(--muted);">ID: ${escapeHtml(user.collegeIdNumber || 'Verified')}</span>
+              ${buttonHtml}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
 
-                alert("Your teams will appear here.");
+    async function sendConnection(targetUserId, btn) {
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
 
-            }
+        const res = await api(`/connections/${targetUserId}`, { method: 'POST' });
+        showFeedback(res.message || 'Connection request sent successfully!', true);
 
+        btn.className = 'btn-sm btn-secondary';
+        btn.textContent = '⏳ Request Sent';
+        btn.style.opacity = '0.8';
+
+        await loadMyConnections();
+      } catch (err) {
+        showFeedback(err.message, false);
+        btn.disabled = false;
+        btn.textContent = '+ Connect';
+      }
+    }
+
+    function setSkillFilter(skill) {
+      currentSkillFilter = skill;
+      document.querySelectorAll('.map-chip').forEach(chip => {
+        if (chip.textContent.trim().toLowerCase() === (skill || 'all').toLowerCase()) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
         }
+      });
+      document.getElementById('studentSearchInput').value = skill;
+      loadDirectory(skill);
+    }
 
-    </script>
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
 
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await loadMyConnections();
+      loadDirectory();
+
+      let debounceTimer = null;
+      document.getElementById('studentSearchInput').addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          loadDirectory(e.target.value.trim());
+        }, 300);
+      });
+    });
+  </script>
 </body>
-
 </html>

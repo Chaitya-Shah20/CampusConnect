@@ -1,1 +1,106 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Profile | CampusConnect</title><link rel="stylesheet" href="style.css"></head><body class="app-shell"><div id="app-nav"></div><main class="page-wrap narrow"><div class="page-heading"><div><p class="eyebrow">YOUR PROFILE</p><h1>Make your work discoverable.</h1></div></div><section class="profile-layout"><div class="profile-card"><div class="avatar large" data-avatar>CC</div><h2 data-profile-name>Student</h2><p data-profile-course>Course</p><div class="tag-list" data-profile-skills></div><a class="button" href="#edit">Edit profile</a></div><form class="panel form-panel" id="profileForm"><h2>Profile details</h2><label>Full name<input id="profileName" required></label><label>College / University<input id="profileCollege" required></label><label>Course<input id="profileCourse" required></label><label>Year<input id="profileYear" required></label><label>Skills<input id="profileSkills" placeholder="Python, UI/UX, Web Development"></label><label>Interests<input id="profileInterests" placeholder="Startups, climate, design"></label><button class="button" type="submit">Save changes</button><p data-message></p></form></section></main><script src="app.js"></script><script src="nav.js"></script><script>document.addEventListener('DOMContentLoaded', async () => { const user = await loadUser(); if (!user) return; profileName.value=user.name; profileCollege.value=user.college; profileCourse.value=user.course; profileYear.value=user.year; profileSkills.value=user.skills.join(', '); profileInterests.value=user.interests.join(', '); profileForm.addEventListener('submit', async e => { e.preventDefault(); try { const data=await api('/users/me',{method:'PUT',body:JSON.stringify({name:profileName.value,college:profileCollege.value,course:profileCourse.value,year:profileYear.value,skills:profileSkills.value,interests:profileInterests.value})}); showMessage('Profile updated successfully.','success'); document.querySelector('[data-profile-name]').textContent=data.user.name; } catch(error) { showMessage(error.message,'error'); } }); });</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-shell">
+  <div id="app-nav"></div>
+
+  <main class="page-wrap narrow">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow">YOUR PROFILE</p>
+        <h1>Make your work discoverable.</h1>
+      </div>
+    </div>
+
+    <section class="profile-layout">
+      <div class="profile-card">
+        <div class="avatar large" data-avatar>CC</div>
+        <h2 data-profile-name style="margin: 10px 0 4px;">Student</h2>
+        <p data-profile-course style="margin-bottom: 12px; font-size: 14px;">Course</p>
+        <div id="profileVerificationBadge" style="margin-bottom: 16px;">
+          <span class="badge badge-pending">Pending Verification</span>
+        </div>
+        <div class="tag-list" data-profile-skills style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 20px;"></div>
+        <div style="font-size: 12px; opacity: 0.8;">College ID: <span id="profileDisplayId">--</span></div>
+      </div>
+
+      <form class="panel form-panel" id="profileForm">
+        <h2>Profile details</h2>
+        <label>Full name<input id="profileName" required></label>
+        <label>College / University<input id="profileCollege" placeholder="Adani University, Ahmedabad" required></label>
+        <label>Course<input id="profileCourse" required></label>
+        <label>Year<input id="profileYear" required></label>
+        <label>College ID / Roll Number<input id="profileCollegeId" placeholder="e.g. AU-2024-CSE001" required></label>
+        <label>Skills<input id="profileSkills" placeholder="Python, UI/UX, Web Development"></label>
+        <label style="grid-column: 1/-1;">Interests<input id="profileInterests" placeholder="Startups, climate, design"></label>
+        <button class="button" type="submit">Save changes</button>
+        <p data-message></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await loadUser();
+      if (!user) return;
+
+      profileName.value = user.name || '';
+      profileCollege.value = user.college || '';
+      profileCourse.value = user.course || '';
+      profileYear.value = user.year || '';
+      profileCollegeId.value = user.collegeIdNumber || '';
+      profileSkills.value = (user.skills || []).join(', ');
+      profileInterests.value = (user.interests || []).join(', ');
+
+      document.querySelector('[data-profile-name]').textContent = user.name;
+      document.querySelector('[data-profile-course]').textContent = `${user.course} (${user.year}) · ${user.college}`;
+      document.getElementById('profileDisplayId').textContent = user.collegeIdNumber || 'Not set';
+
+      const initials = (user.name || 'CC').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.querySelector('[data-avatar]').textContent = initials;
+
+      const badgeContainer = document.getElementById('profileVerificationBadge');
+      if (user.verificationStatus === 'approved') {
+        badgeContainer.innerHTML = '<span class="badge badge-approved">✅ Verified Student</span>';
+      } else if (user.verificationStatus === 'rejected') {
+        badgeContainer.innerHTML = '<span class="badge badge-rejected">❌ Verification Rejected</span>';
+      } else {
+        badgeContainer.innerHTML = '<span class="badge badge-pending">⏳ Verification Pending</span>';
+      }
+
+      const skillsContainer = document.querySelector('[data-profile-skills]');
+      skillsContainer.innerHTML = (user.skills || []).map(s => `<span class="tag-pill" style="background:rgba(255,255,255,0.2);color:#fff;">${s}</span>`).join('');
+
+      profileForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        try {
+          const data = await api('/users/me', {
+            method: 'PUT',
+            body: JSON.stringify({
+              name: profileName.value,
+              college: profileCollege.value,
+              course: profileCourse.value,
+              year: profileYear.value,
+              collegeIdNumber: profileCollegeId.value,
+              skills: profileSkills.value,
+              interests: profileInterests.value
+            })
+          });
+          showMessage('Profile updated successfully.', 'success');
+          document.querySelector('[data-profile-name]').textContent = data.user.name;
+          document.getElementById('profileDisplayId').textContent = data.user.collegeIdNumber || 'Not set';
+        } catch (error) {
+          showMessage(error.message, 'error');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

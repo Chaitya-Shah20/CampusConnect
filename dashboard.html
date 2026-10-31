@@ -1,1 +1,1061 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard | CampusConnect</title><link rel="stylesheet" href="style.css"></head><body class="app-shell"><div id="app-nav"></div><main class="page-wrap"><div class="page-heading"><div><p class="eyebrow">YOUR CAMPUS, IN ONE PLACE</p><h1>Welcome, <span data-user-name>student</span>.</h1><p class="lede">Pick up where you left off and find your next collaboration.</p></div><a class="button" href="project.html">Share a project</a></div><section class="stats-grid"><article class="stat"><span>Profile completion</span><strong>72%</strong><div class="progress"><i style="width:72%"></i></div></article><article class="stat"><span>My teams</span><strong>03</strong><small>2 active projects</small></article><article class="stat"><span>Saved opportunities</span><strong>08</strong><small>3 closing this week</small></article><article class="stat"><span>Connections</span><strong>24</strong><small>5 new this month</small></article></section><div class="content-grid"><section class="panel"><div class="panel-head"><div><p class="eyebrow">DISCOVER</p><h2>Upcoming on campus</h2></div><a href="opportunities.html">View all</a></div><div class="activity-list"><div><b>Build for Bharat</b><span>Hackathon · Aug 28 · Innovation Lab</span></div><div><b>Design systems workshop</b><span>Workshop · Sep 03 · Design Studio</span></div><div><b>Open source office hours</b><span>Mentorship · Sep 07 · Library West</span></div></div></section><section class="panel dark-panel"><p class="eyebrow">CAMPUS ASSISTANT</p><h2>Have a question?</h2><p>Get ideas for projects, teammates, interviews and more.</p><a class="button light" href="ai-assistant.html">Ask the assistant</a></section></div><section class="panel"><div class="panel-head"><div><p class="eyebrow">YOUR MOMENTUM</p><h2>Recent campus activity</h2></div><a href="teammates.html">Find people</a></div><div class="activity-list compact"><div><b>Arjun Mehta joined your team invite</b><span>Today · Product Lab</span></div><div><b>Your project received 6 likes</b><span>Yesterday · Project Showcase</span></div></div></section></main><script src="app.js"></script><script src="nav.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Dashboard-specific refined styles */
+    .btn-share-project {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #d7f05a, #b8e03a);
+      color: #111111;
+      font-weight: 700;
+      padding: 11px 24px;
+      border-radius: 50px;
+      box-shadow: 0 4px 14px rgba(215, 240, 90, 0.45);
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-share-project:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(215, 240, 90, 0.55);
+    }
+
+    .dismiss-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      color: #64748b;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .dismiss-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: #0f172a;
+    }
+
+    .panel-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+      margin-bottom: 22px;
+    }
+    .panel-box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .panel-box-head h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Delete inline confirmation */
+    .delete-confirm-box {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #991b1b;
+      margin-top: 10px;
+    }
+
+    /* Outline chip links */
+    .chip-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      font-size: 11.5px;
+      color: #334155;
+      text-decoration: none;
+      background: #f8fafc;
+      transition: all 0.15s;
+    }
+    .chip-link:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    /* Slide animation for declining cards */
+    .slide-out {
+      transition: all 0.35s ease;
+      transform: translateX(-100%);
+      opacity: 0;
+      max-height: 0;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* Highlight placeholder card */
+    .placeholder-card {
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      background: #fafaf9;
+    }
+  </style>
+</head>
+<body class="app-shell">
+  <!-- Dynamic Top Navigation -->
+  <div id="app-nav"></div>
+
+  <main class="page-wrap" style="max-width: 1280px; padding: 28px 4vw;">
+
+    <!-- 1.1 TOP GREETING BAR -->
+    <div class="student-greeting-bar" id="studentGreetingBar">
+      <div>
+        <h1 id="greetingHeading" style="font-size: 26px; font-weight: 800; color: #0f172a; margin: 0;">Welcome!</h1>
+        <p id="greetingSub" style="margin: 4px 0 0; color: #94a3b8; font-size: 13.5px;">Adani University • Shantigram Campus</p>
+      </div>
+      <div>
+        <button class="btn-share-project" id="topShareProjectBtn" onclick="openProjectDrawer()">
+          <span>+</span> Share a Project
+        </button>
+      </div>
+    </div>
+
+    <!-- 1.2 IDENTITY VERIFICATION BANNER -->
+    <div id="verificationBanner" class="student-v-banner pending" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 26px;" id="vBannerIcon">⏳</span>
+        <div>
+          <strong id="vBannerTitle" style="font-size: 14.5px;">Verification Pending Review</strong>
+          <p id="vBannerDesc" style="margin: 2px 0 0; font-size: 13px; color: #64748b;">Your college student ID is being reviewed by Adani University administration.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;" id="vBannerActionArea">
+        <span id="vBannerBadge" class="badge badge-pending">Pending Review</span>
+      </div>
+    </div>
+
+    <!-- 1.3 4-STAT STRIP -->
+    <section class="stats-strip-4">
+      <article class="stat-card-mini stat-identity">
+        <span class="stat-label">Identity Status</span>
+        <div class="stat-val" id="statVStatus" style="font-size: 24px; font-family: inherit;">--</div>
+        <span class="stat-sub" id="statCollegeSub">Adani University</span>
+      </article>
+
+      <article class="stat-card-mini stat-projects">
+        <span class="stat-label">My Projects</span>
+        <div class="stat-val" id="statMyProjectsCount">0</div>
+        <span class="stat-sub"><a href="project.html" class="text-link">Explore community →</a></span>
+      </article>
+
+      <article class="stat-card-mini stat-peers">
+        <span class="stat-label">Connected Peers</span>
+        <div class="stat-val" id="statPeersCount">0</div>
+        <span class="stat-sub" id="statIncomingRequests">0 pending requests</span>
+      </article>
+
+      <article class="stat-card-mini stat-opps">
+        <span class="stat-label">Campus Opportunities</span>
+        <div class="stat-val" id="statOppsCount">0</div>
+        <span class="stat-sub"><a href="opportunities.html" class="text-link">Browse placements →</a></span>
+      </article>
+    </section>
+
+    <!-- 1.4 QUICK-ACTION CARDS ROW (5 colorful cards) -->
+    <section class="quick-cards">
+      <a href="hackathons.html" class="quick-card qc-hackathons">
+        <div class="qc-icon">⚡</div>
+        <div class="qc-count" id="qcHackathonsCount"><span class="skeleton" style="width:40px; height:26px;"></span></div>
+        <div class="qc-label" style="font-weight: 600; color: #854d0e;">Campus Hackathons</div>
+        <div class="qc-link">Explore →</div>
+      </a>
+      <a href="events.html" class="quick-card qc-events">
+        <div class="qc-icon">🎉</div>
+        <div class="qc-count" id="qcEventsCount"><span class="skeleton" style="width:40px; height:26px;"></span></div>
+        <div class="qc-label" style="font-weight: 600; color: #166534;">Upcoming Events</div>
+        <div class="qc-link">Explore →</div>
+      </a>
+      <a href="project.html" class="quick-card qc-projects">
+        <div class="qc-icon">🚀</div>
+        <div class="qc-count" id="qcProjectsCount"><span class="skeleton" style="width:40px; height:26px;"></span></div>
+        <div class="qc-label" style="font-weight: 600; color: #1e40af;">Student Projects</div>
+        <div class="qc-link">Explore →</div>
+      </a>
+      <a href="opportunities.html" class="quick-card qc-opportunities">
+        <div class="qc-icon">💼</div>
+        <div class="qc-count" id="qcOppsCount"><span class="skeleton" style="width:40px; height:26px;"></span></div>
+        <div class="qc-label" style="font-weight: 600; color: #6b21a8;">Jobs & Internships</div>
+        <div class="qc-link">Explore →</div>
+      </a>
+      <a href="resources.html" class="quick-card qc-resources">
+        <div class="qc-icon">📚</div>
+        <div class="qc-count" id="qcResourcesCount"><span class="skeleton" style="width:40px; height:26px;"></span></div>
+        <div class="qc-label" style="font-weight: 600; color: #c2410c;">Academic Resources</div>
+        <div class="qc-link">Explore →</div>
+      </a>
+    </section>
+
+    <!-- 2-COLUMN DASHBOARD LAYOUT -->
+    <div class="dashboard-2col-layout">
+
+      <!-- LEFT COLUMN: MY PROJECTS & CONNECTIONS -->
+      <div class="left-col">
+
+        <!-- 1.5 MY PROJECTS PANEL -->
+        <section class="panel-box">
+          <div class="panel-box-head">
+            <div>
+              <p class="eyebrow" style="color: #0284c7; margin: 0 0 2px;">MY PORTFOLIO</p>
+              <h2>My Uploaded Projects</h2>
+            </div>
+            <a href="project.html" class="text-link" style="font-size: 13px;">View All Showcase →</a>
+          </div>
+
+          <div id="myProjectsList">
+            <div style="color: #64748b; padding: 20px 0; text-align: center;">Loading your projects...</div>
+          </div>
+
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #f1f5f9; text-align: center;">
+            <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700; width: 100%; border-radius: 50px; padding: 11px;" onclick="openProjectDrawer()">
+              + Upload Project
+            </button>
+          </div>
+        </section>
+
+        <!-- 1.6 PEER CONNECTIONS & REQUESTS PANEL -->
+        <section class="panel-box">
+          <div class="panel-box-head">
+            <div>
+              <p class="eyebrow" style="color: #16a34a; margin: 0 0 2px;">NETWORKING</p>
+              <h2>Peer Connections & Requests</h2>
+            </div>
+            <a href="teammates.html" class="text-link" style="font-size: 13px;">Find Teammates →</a>
+          </div>
+
+          <!-- Incoming Requests -->
+          <div style="margin-bottom: 22px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <h3 style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: #475569; letter-spacing: 0.5px; margin: 0;">
+                Incoming Requests
+              </h3>
+              <span id="incomingCountBadge" class="pill" style="font-size: 11px; padding: 2px 8px; background: #f1f5f9; color: #64748b;">(0)</span>
+            </div>
+            <div id="incomingRequestsList">
+              <div style="color: #94a3b8; font-size: 13px;">No pending connection requests.</div>
+            </div>
+          </div>
+
+          <!-- Connected Peers -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <h3 style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: #475569; letter-spacing: 0.5px; margin: 0;">
+                Connected Peers
+              </h3>
+              <span id="connectedCountBadge" class="pill pill-green" style="font-size: 11px; padding: 2px 8px;">(0)</span>
+            </div>
+            <div id="connectedPeersList">
+              <div style="color: #94a3b8; font-size: 13px;">No connected peers yet. Head to <a href="teammates.html" class="text-link">Find Teammates</a> to connect with fellow students!</div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: 1.7 UPCOMING CAMPUS HIGHLIGHTS FEED -->
+      <div class="right-col">
+
+        <section class="panel-box" style="position: sticky; top: 80px;">
+          <div class="panel-box-head" style="margin-bottom: 14px;">
+            <div>
+              <p class="eyebrow" style="color: #b45309; margin: 0 0 2px;">DISCOVER</p>
+              <h2>Upcoming Campus Highlights</h2>
+            </div>
+          </div>
+
+          <!-- Next 2 Hackathons -->
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h3 style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 0;">⚡ Next Hackathons</h3>
+              <a href="hackathons.html" class="text-link" style="font-size: 12px;">See all</a>
+            </div>
+            <div id="highlightHackathons">
+              <div style="color: #94a3b8; font-size: 13px;">Loading hackathons...</div>
+            </div>
+          </div>
+
+          <!-- Next 2 Events -->
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h3 style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 0;">🎉 Next Campus Events</h3>
+              <a href="events.html" class="text-link" style="font-size: 12px;">See all</a>
+            </div>
+            <div id="highlightEvents">
+              <div style="color: #94a3b8; font-size: 13px;">Loading events...</div>
+            </div>
+          </div>
+
+          <!-- Top 2 Opportunities -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h3 style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 0;">💼 Top Placements & Internships</h3>
+              <a href="opportunities.html" class="text-link" style="font-size: 12px;">See all</a>
+            </div>
+            <div id="highlightOpps">
+              <div style="color: #94a3b8; font-size: 13px;">Loading opportunities...</div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- RIGHT-SIDE SLIDE-IN PROJECT DRAWER (Same drawer as project.html) -->
+  <div class="drawer-overlay" id="projectDrawerOverlay" onclick="closeProjectDrawer()"></div>
+  <aside class="drawer" id="projectDrawer">
+    <div class="drawer-head">
+      <h2 id="projectDrawerTitle" style="margin: 0; font-size: 19px; font-weight: 700;">Share a Project</h2>
+      <button class="drawer-close" style="color: #fff;" onclick="closeProjectDrawer()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <form id="projectDrawerForm">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Project Title <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="pTitle" class="form-control" placeholder="e.g. Smart Campus Waste Tracker" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Tagline / One-liner</label>
+          <input type="text" id="pTagline" class="form-control" placeholder="Brief punchy summary">
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Technologies Used (Comma separated)</label>
+          <input type="text" id="pTech" class="form-control" placeholder="React, Node.js, MongoDB, MQTT">
+        </div>
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">GitHub Repo URL</label>
+            <input type="url" id="pGithub" class="form-control" placeholder="https://github.com/...">
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Live Demo Link</label>
+            <input type="url" id="pDemo" class="form-control" placeholder="https://myproject.com">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Project Description</label>
+          <textarea id="pDesc" class="form-control" rows="5" placeholder="Explain what problem your project solves and how students can use it."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+          <button type="button" class="button" style="background: #f1f5f9; color: #334155; margin: 0; border: 1px solid #cbd5e1;" onclick="closeProjectDrawer()">Cancel</button>
+          <button type="submit" class="button" style="background: #0f172a; color: #d7f05a; font-weight: 700; margin: 0;" id="saveProjectBtn">
+            🚀 Publish Project
+          </button>
+        </div>
+      </form>
+    </div>
+  </aside>
+
+  <!-- 2.4 SHARED REUSABLE STUDENT QUICK-VIEW MODAL -->
+  <div class="qv-overlay" id="quickViewOverlay" style="display: none;">
+    <div class="qv-card">
+      <button class="qv-close" onclick="closeQuickView()">&times;</button>
+      <div style="text-align: center; margin-bottom: 16px;">
+        <div id="qvAvatar" style="width: 64px; height: 64px; border-radius: 50%; background: #0f172a; color: #d7f05a; display: grid; place-items: center; font-size: 22px; font-weight: 800; margin: 0 auto 10px; border: 2px solid rgba(215, 240, 90, 0.4);">
+          ST
+        </div>
+        <h2 id="qvName" style="margin: 0; font-size: 20px; color: #0f172a; font-weight: 700;">Student Name</h2>
+        <div id="qvSubtitle" style="font-size: 13px; color: #64748b; margin-top: 4px;">B.Tech CSE • Year 3</div>
+        <div id="qvCollege" style="font-size: 12.5px; color: #334155; font-weight: 500; margin-top: 2px;">🏛️ Adani University</div>
+        <div id="qvStatusBadge" style="margin-top: 8px;"></div>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 6px;">Skills & Technologies</div>
+        <div id="qvSkills" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 6px;">Interests & Focus Areas</div>
+        <div id="qvInterests" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; color: #64748b;">College ID:</span>
+        <code id="qvCollegeId" style="font-size: 12px; font-weight: 700; color: #0f172a;">AU-2024-001</code>
+      </div>
+
+      <div id="qvActionBox">
+        <button class="button" style="margin: 0; width: 100%; text-align: center; background: #0f172a; color: #d7f05a; font-weight: 700;" onclick="toast('Messaging feature coming soon!', 'info')">
+          💬 Send Message (Coming Soon)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let editingProjectId = null;
+    let myProjectsCache = [];
+    let allConnectionsCache = [];
+
+    // Animated count-up helper (requestAnimationFrame)
+    function animateCountUp(elementId, targetValue, duration = 800) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const start = 0;
+      const target = Number(targetValue) || 0;
+      if (target === 0) {
+        el.textContent = '0';
+        return;
+      }
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+        const current = Math.floor(easeOutQuad * (target - start) + start);
+        el.textContent = current;
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target;
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // Toast Notice helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️');
+      toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(60px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      setupGreeting();
+      setupVerificationBanner();
+      loadMyProjects();
+      loadConnections();
+      loadQuickCountsAndHighlights();
+
+      // Keyboard ESC closes Quick View and Drawer
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeQuickView();
+          closeProjectDrawer();
+        }
+      });
+    });
+
+    // 1.1 GREETING BAR
+    function setupGreeting() {
+      const hour = new Date().getHours();
+      let greeting = 'Good evening';
+      if (hour < 12) greeting = 'Good morning';
+      else if (hour < 17) greeting = 'Good afternoon';
+
+      document.getElementById('greetingHeading').textContent = `${greeting}, ${currentUser.name || 'Student'}!`;
+      document.getElementById('greetingSub').textContent = `${currentUser.course || 'B.Tech'} • Year ${currentUser.year || '1'} • ${currentUser.college || 'Adani University'}`;
+    }
+
+    // 1.2 VERIFICATION BANNER
+    function setupVerificationBanner() {
+      const isDismissed = sessionStorage.getItem('vBannerDismissed');
+      const banner = document.getElementById('verificationBanner');
+      const icon = document.getElementById('vBannerIcon');
+      const title = document.getElementById('vBannerTitle');
+      const desc = document.getElementById('vBannerDesc');
+      const actions = document.getElementById('vBannerActionArea');
+      const statBadge = document.getElementById('statVStatus');
+      const collegeSub = document.getElementById('statCollegeSub');
+
+      collegeSub.textContent = currentUser.college || 'Adani University';
+
+      if (currentUser.verificationStatus === 'approved') {
+        statBadge.innerHTML = '<span style="color:#16a34a; font-weight:700;">✅ Verified</span>';
+        if (isDismissed) {
+          banner.style.display = 'none';
+          return;
+        }
+        banner.className = 'student-v-banner approved';
+        banner.style.display = 'flex';
+        icon.textContent = '✅';
+        title.innerHTML = '<span style="color:#15803d; font-weight:700;">Institutional Student Identity Verified</span>';
+        desc.textContent = `Your ID (${currentUser.collegeIdNumber || 'Verified'}) is authenticated by Adani University.`;
+        actions.innerHTML = `
+          <span class="badge badge-approved">Verified Student</span>
+          <button class="dismiss-btn" title="Dismiss for this session" onclick="dismissVerificationBanner()">&times;</button>
+        `;
+      } else if (currentUser.verificationStatus === 'rejected') {
+        statBadge.innerHTML = '<span style="color:#dc2626; font-weight:700;">❌ Action Needed</span>';
+        banner.className = 'student-v-banner rejected';
+        banner.style.display = 'flex';
+        icon.textContent = '❌';
+        title.innerHTML = '<span style="color:#b91c1c; font-weight:700;">Verification Request Needs Correction</span>';
+        desc.textContent = 'Your ID documentation was not approved. Please update your profile with your valid campus enrollment details.';
+        actions.innerHTML = `
+          <a href="profile.html#profileCollegeId" class="button" style="margin:0; padding:6px 14px; font-size:12px; background:#dc2626; color:#fff; border-radius:50px; font-weight:700;">
+            📝 Re-submit Verification
+          </a>
+        `;
+      } else {
+        statBadge.innerHTML = '<span style="color:#d97706; font-weight:700;">⏳ Pending</span>';
+        banner.className = 'student-v-banner pending';
+        banner.style.display = 'flex';
+        icon.textContent = '⏳';
+        title.innerHTML = '<span style="color:#b45309; font-weight:700;">Verification Pending Admin Review</span>';
+        desc.textContent = 'Your student credentials are currently under review by college administration.';
+        actions.innerHTML = `
+          <a href="profile.html" class="button" style="margin:0; padding:6px 14px; font-size:12px; background:#fef3c7; color:#92400e; border:1px solid #fde68a; border-radius:50px; font-weight:600;">
+            ✏️ Update College ID
+          </a>
+        `;
+      }
+    }
+
+    function dismissVerificationBanner() {
+      sessionStorage.setItem('vBannerDismissed', 'true');
+      const banner = document.getElementById('verificationBanner');
+      if (banner) banner.style.display = 'none';
+    }
+
+    // 1.5 MY PROJECTS PANEL
+    async function loadMyProjects() {
+      const container = document.getElementById('myProjectsList');
+      try {
+        const data = await api('/projects?mine=true');
+        myProjectsCache = data.projects || [];
+        animateCountUp('statMyProjectsCount', myProjectsCache.length);
+
+        if (myProjectsCache.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 32px 16px; color: #64748b;">
+              <div style="font-size: 40px; margin-bottom: 8px;">🚀</div>
+              <h3 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 4px;">No Projects Yet</h3>
+              <p style="font-size: 13px; margin: 0 0 16px; color: #64748b;">Showcase your semester assignments, hackathon prototypes, or hobby apps to the campus.</p>
+              <button class="button" style="margin: 0; background: #0f172a; color: #d7f05a; font-weight: 700; border-radius: 50px; padding: 8px 18px; font-size: 13px;" onclick="openProjectDrawer()">
+                Upload Your First Project →
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = myProjectsCache.slice(0, 4).map(p => {
+          const linksHtml = [];
+          if (p.github) linksHtml.push(`<a href="${escapeHtml(p.github)}" target="_blank" class="chip-link">💻 Code</a>`);
+          if (p.demo) linksHtml.push(`<a href="${escapeHtml(p.demo)}" target="_blank" class="chip-link">🚀 Demo</a>`);
+
+          return `
+            <div class="my-project-card" id="projectCard-${p._id}">
+              <div class="my-project-head">
+                <div>
+                  <h3 class="my-project-title">${escapeHtml(p.title)}</h3>
+                  <div class="my-project-tagline">${escapeHtml(p.tagline || 'Student Project')}</div>
+                </div>
+                <span class="pill" style="background:#fee2e2; color:#b91c1c; font-weight:700;">❤️ ${p.likesCount || 0}</span>
+              </div>
+
+              <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px;">
+                ${(p.technologies || []).map(t => `<span class="skill-tag">${escapeHtml(t)}</span>`).join('')}
+              </div>
+
+              ${linksHtml.length ? `<div style="display: flex; gap: 6px; margin-top: 8px;">${linksHtml.join('')}</div>` : ''}
+
+              <div class="my-project-actions" id="actions-${p._id}">
+                <button class="btn-action btn-action-edit" onclick="editProject('${p._id}')">
+                  ✏️ Edit
+                </button>
+                <button class="btn-action btn-action-del" onclick="showInlineDeleteConfirm('${p._id}', '${escapeHtml(p.title)}')">
+                  🗑️ Delete
+                </button>
+              </div>
+
+              <div class="delete-confirm-box" id="confirm-${p._id}" style="display: none;">
+                <span>⚠️ Delete this project?</span>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-action btn-action-del" onclick="confirmDeleteProject('${p._id}')">Yes, Delete</button>
+                  <button class="btn-action btn-action-edit" onclick="cancelInlineDelete('${p._id}')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div style="color:#ef4444; padding:15px 0;">Error loading projects: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    // Inline Delete Confirmation
+    function showInlineDeleteConfirm(id) {
+      const actions = document.getElementById(`actions-${id}`);
+      const confirmBox = document.getElementById(`confirm-${id}`);
+      if (actions) actions.style.display = 'none';
+      if (confirmBox) confirmBox.style.display = 'flex';
+    }
+
+    function cancelInlineDelete(id) {
+      const actions = document.getElementById(`actions-${id}`);
+      const confirmBox = document.getElementById(`confirm-${id}`);
+      if (confirmBox) confirmBox.style.display = 'none';
+      if (actions) actions.style.display = 'flex';
+    }
+
+    async function confirmDeleteProject(id) {
+      const card = document.getElementById(`projectCard-${id}`);
+      try {
+        await api(`/projects/${id}`, { method: 'DELETE' });
+        showToast('🗑️ Project removed from showcase.', 'success');
+        if (card) {
+          card.style.transition = 'all 0.3s ease';
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.95)';
+          card.style.maxHeight = '0';
+          card.style.padding = '0';
+          card.style.margin = '0';
+          card.style.overflow = 'hidden';
+          setTimeout(() => {
+            loadMyProjects();
+            loadQuickCountsAndHighlights();
+          }, 300);
+        } else {
+          loadMyProjects();
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+        cancelInlineDelete(id);
+      }
+    }
+
+    // Project Slide-in Drawer Controls
+    function openProjectDrawer(project = null) {
+      editingProjectId = project ? project._id : null;
+      document.getElementById('projectDrawerTitle').textContent = project ? 'Edit Project' : 'Share a Project';
+      const submitBtn = document.getElementById('saveProjectBtn');
+      submitBtn.innerHTML = project ? '💾 Save Changes' : '🚀 Publish Project';
+
+      if (project) {
+        document.getElementById('pTitle').value = project.title || '';
+        document.getElementById('pTagline').value = project.tagline || '';
+        document.getElementById('pTech').value = (project.technologies || []).join(', ');
+        document.getElementById('pGithub').value = project.github || '';
+        document.getElementById('pDemo').value = project.demo || '';
+        document.getElementById('pDesc').value = project.description || '';
+      } else {
+        document.getElementById('projectDrawerForm').reset();
+      }
+
+      document.getElementById('projectDrawerOverlay').classList.add('open');
+      document.getElementById('projectDrawer').classList.add('open');
+    }
+
+    function closeProjectDrawer() {
+      document.getElementById('projectDrawerOverlay').classList.remove('open');
+      document.getElementById('projectDrawer').classList.remove('open');
+    }
+
+    function editProject(id) {
+      const proj = myProjectsCache.find(p => p._id === id);
+      if (proj) openProjectDrawer(proj);
+    }
+
+    document.getElementById('projectDrawerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('saveProjectBtn');
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '⏳ Uploading...';
+
+      const payload = {
+        title: document.getElementById('pTitle').value.trim(),
+        tagline: document.getElementById('pTagline').value.trim(),
+        technologies: document.getElementById('pTech').value.split(',').map(s => s.trim()).filter(Boolean),
+        github: document.getElementById('pGithub').value.trim(),
+        demo: document.getElementById('pDemo').value.trim(),
+        description: document.getElementById('pDesc').value.trim()
+      };
+
+      try {
+        if (editingProjectId) {
+          await api(`/projects/${editingProjectId}`, { method: 'PUT', body: JSON.stringify(payload) });
+          submitBtn.innerHTML = '✅ Saved!';
+          showToast('✅ Project updated!', 'success');
+        } else {
+          await api('/projects', { method: 'POST', body: JSON.stringify(payload) });
+          submitBtn.innerHTML = '✅ Published!';
+          showToast('✅ Project published to campus!', 'success');
+        }
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          closeProjectDrawer();
+          loadMyProjects();
+          loadQuickCountsAndHighlights();
+        }, 1000);
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        showToast(err.message, 'error');
+      }
+    });
+
+    // 1.6 PEER CONNECTIONS & REQUESTS
+    async function loadConnections() {
+      try {
+        const data = await api('/connections');
+        allConnectionsCache = data.connections || [];
+
+        const incoming = allConnectionsCache.filter(c => c.status === 'pending' && String(c.to?._id) === String(currentUser._id));
+        const accepted = allConnectionsCache.filter(c => c.status === 'accepted');
+
+        animateCountUp('statPeersCount', accepted.length);
+        document.getElementById('statIncomingRequests').textContent = `${incoming.length} incoming requests`;
+
+        // Update Header Badges
+        const inBadge = document.getElementById('incomingCountBadge');
+        inBadge.textContent = `(${incoming.length})`;
+        inBadge.style.background = incoming.length > 0 ? '#fed7aa' : '#f1f5f9';
+        inBadge.style.color = incoming.length > 0 ? '#9a3412' : '#64748b';
+
+        const connBadge = document.getElementById('connectedCountBadge');
+        connBadge.textContent = `(${accepted.length})`;
+
+        // Render Incoming
+        const inBox = document.getElementById('incomingRequestsList');
+        if (incoming.length === 0) {
+          inBox.innerHTML = '<div style="color: #94a3b8; font-size: 13px;">No pending connection requests.</div>';
+        } else {
+          inBox.innerHTML = incoming.map(c => {
+            const sender = c.from || {};
+            const initials = (sender.name || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const skillsPills = (sender.skills || []).slice(0, 3).map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
+
+            return `
+              <div class="peer-card-mini" id="incomingCard-${c._id}" style="background: #fffbeb; border-color: #fde68a;">
+                <div class="peer-info">
+                  <div class="peer-avatar" style="background:#fef3c7; color:#92400e;">${initials}</div>
+                  <div>
+                    <div style="font-weight: 700; color: #0f172a; font-size: 13.5px;">${escapeHtml(sender.name || 'Student')}</div>
+                    <div style="font-size: 12px; color: #64748b;">${escapeHtml(sender.course || 'Student')} • ${escapeHtml(sender.college || 'Adani Uni')}</div>
+                    ${skillsPills ? `<div style="display:flex; gap:4px; margin-top:4px;">${skillsPills}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-shrink: 0;" id="inActions-${c._id}">
+                  <button class="btn-action btn-action-app" onclick="acceptConnectionOptimistic('${c._id}')">Accept</button>
+                  <button class="btn-action" style="border: 1px solid #cbd5e1; background: #fff; color: #64748b;" onclick="declineConnection('${c._id}')">Decline</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Render Accepted Peers
+        const connBox = document.getElementById('connectedPeersList');
+        if (accepted.length === 0) {
+          connBox.innerHTML = '<div style="color: #94a3b8; font-size: 13px;">No connected peers yet. Head to <a href="teammates.html" class="text-link">Find Teammates</a> to connect with fellow students!</div>';
+        } else {
+          connBox.innerHTML = accepted.slice(0, 6).map(c => {
+            const peer = String(c.from?._id) === String(currentUser._id) ? c.to : c.from;
+            if (!peer) return '';
+            const initials = (peer.name || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const skillsStr = (peer.skills || []).slice(0, 2).join(', ');
+
+            return `
+              <div class="peer-card-mini">
+                <div class="peer-info">
+                  <div class="peer-avatar">${initials}</div>
+                  <div>
+                    <div style="font-weight: 700; color: #0f172a; font-size: 13.5px;">${escapeHtml(peer.name)}</div>
+                    <div style="font-size: 11.5px; color: #64748b;">${escapeHtml(peer.course || 'Adani Uni')} ${skillsStr ? `• ${escapeHtml(skillsStr)}` : ''}</div>
+                  </div>
+                </div>
+                <button class="button" style="margin: 0; padding: 5px 12px; font-size: 11.5px; background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 50px; font-weight: 600;" onclick="openPeerQuickView('${peer._id}')">
+                  Message / View Profile
+                </button>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Failed to load connections:', err);
+      }
+    }
+
+    // Optimistic Accept
+    async function acceptConnectionOptimistic(id) {
+      const actions = document.getElementById(`inActions-${id}`);
+      if (actions) {
+        actions.innerHTML = '<span style="font-size:12px; font-weight:700; color:#16a34a;">🤝 Connected</span>';
+      }
+      try {
+        await api(`/connections/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'accepted' }) });
+        showToast('Connection request accepted!', 'success');
+        loadConnections();
+      } catch (err) {
+        showToast(err.message, 'error');
+        loadConnections();
+      }
+    }
+
+    // Animated Decline
+    async function declineConnection(id) {
+      const card = document.getElementById(`incomingCard-${id}`);
+      if (card) card.classList.add('slide-out');
+      try {
+        await api(`/connections/${id}`, { method: 'PUT', body: JSON.stringify({ status: 'rejected' }) });
+        showToast('Request declined.', 'info');
+        setTimeout(() => loadConnections(), 350);
+      } catch (err) {
+        showToast(err.message, 'error');
+        loadConnections();
+      }
+    }
+
+    // 2.4 SHARED QUICK-VIEW MODAL CONTROLLER
+    async function openPeerQuickView(peerId) {
+      try {
+        const data = await api(`/users/${peerId}`);
+        const user = data.user;
+        if (!user) return;
+
+        const initials = (user.name || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        document.getElementById('qvAvatar').textContent = initials;
+        document.getElementById('qvName').textContent = user.name || 'Student';
+        document.getElementById('qvSubtitle').textContent = `${user.course || 'B.Tech'} • Year ${user.year || '1'}`;
+        document.getElementById('qvCollege').textContent = `🏛️ ${user.college || 'Adani University'}`;
+        document.getElementById('qvCollegeId').textContent = user.collegeIdNumber || 'Verified Student';
+
+        const statusBadge = document.getElementById('qvStatusBadge');
+        if (user.verificationStatus === 'approved') {
+          statusBadge.innerHTML = '<span class="badge badge-approved" style="font-size:11px;">✓ Verified Student</span>';
+        } else {
+          statusBadge.innerHTML = '<span class="badge badge-pending" style="font-size:11px;">⏳ Pending Review</span>';
+        }
+
+        const skillsBox = document.getElementById('qvSkills');
+        skillsBox.innerHTML = (user.skills && user.skills.length > 0)
+          ? user.skills.map(s => `<span class="tag-pill" style="font-size:11.5px;">${escapeHtml(s)}</span>`).join('')
+          : '<span style="color:#94a3b8; font-size:12px;">No skills specified</span>';
+
+        const interestsBox = document.getElementById('qvInterests');
+        interestsBox.innerHTML = (user.interests && user.interests.length > 0)
+          ? user.interests.map(i => `<span class="tag-pill" style="font-size:11.5px; background:#fff; border:1px solid #cbd5e1;">${escapeHtml(i)}</span>`).join('')
+          : '<span style="color:#94a3b8; font-size:12px;">No interests listed</span>';
+
+        document.getElementById('quickViewOverlay').style.display = 'flex';
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function closeQuickView() {
+      document.getElementById('quickViewOverlay').style.display = 'none';
+    }
+
+    // 1.4 QUICK COUNTS & 1.7 HIGHLIGHTS FEED
+    async function loadQuickCountsAndHighlights() {
+      try {
+        const [hackData, eventData, oppData, projData, resData] = await Promise.all([
+          api('/hackathons'),
+          api('/events'),
+          api('/opportunities'),
+          api('/projects'),
+          api('/resources')
+        ]);
+
+        const hackathons = hackData.hackathons || [];
+        const events = eventData.events || [];
+        const opps = oppData.opportunities || [];
+        const projects = projData.projects || [];
+        const resources = resData.resources || [];
+
+        // Helper for quick cards: if 0 show "–" with "None yet"
+        function renderQcCount(elId, count) {
+          const el = document.getElementById(elId);
+          if (!el) return;
+          if (count === 0) {
+            el.innerHTML = '– <small style="display:block; font-size:11px; font-weight:normal; color:#94a3b8;">None yet</small>';
+          } else {
+            animateCountUp(elId, count);
+          }
+        }
+
+        renderQcCount('qcHackathonsCount', hackathons.length);
+        renderQcCount('qcEventsCount', events.length);
+        renderQcCount('qcProjectsCount', projects.length);
+        renderQcCount('qcOppsCount', opps.length);
+        renderQcCount('qcResourcesCount', resources.length);
+
+        animateCountUp('statOppsCount', opps.length);
+
+        // Next 2 Hackathons
+        const hBox = document.getElementById('highlightHackathons');
+        if (hackathons.length === 0) {
+          hBox.innerHTML = `
+            <div class="placeholder-card">
+              <span style="font-size:22px; display:block; margin-bottom:4px;">⚡</span>
+              <strong>Check back soon!</strong>
+              <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">No active hackathons at this moment.</div>
+            </div>
+          `;
+        } else {
+          hBox.innerHTML = hackathons.slice(0, 2).map(h => `
+            <div class="highlight-card">
+              <div class="highlight-header">
+                <span class="pill pill-blue">${escapeHtml(h.mode || 'Hybrid')}</span>
+                <span style="font-size:12px; font-weight:700; color:#854d0e;">${escapeHtml(h.prizePool || '')}</span>
+              </div>
+              <h4 class="highlight-title">${escapeHtml(h.name)}</h4>
+              <div class="highlight-meta">
+                <span>📅 ${escapeHtml(h.date || 'Upcoming')}</span>
+                <span>• 📍 ${escapeHtml(h.location || 'Adani Campus')}</span>
+              </div>
+              <div style="margin-top:8px;">
+                <a href="hackathons.html" class="button" style="margin:0; width:100%; text-align:center; padding:8px; font-size:12px; background:#0f172a; color:#d7f05a; font-weight:700; border-radius:8px;">
+                  Register Team →
+                </a>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Next 2 Events
+        const eBox = document.getElementById('highlightEvents');
+        if (events.length === 0) {
+          eBox.innerHTML = `
+            <div class="placeholder-card">
+              <span style="font-size:22px; display:block; margin-bottom:4px;">🎉</span>
+              <strong>Check back soon!</strong>
+              <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">No campus events scheduled right now.</div>
+            </div>
+          `;
+        } else {
+          eBox.innerHTML = events.slice(0, 2).map(e => {
+            const hasRsvp = e.isRsvpd || (e.rsvps || []).some(r => String(r.user?._id || r.user || r) === String(currentUser._id));
+            return `
+              <div class="highlight-card">
+                <div class="highlight-header">
+                  <span class="pill pill-green">${escapeHtml(e.category || 'Tech Fest')}</span>
+                  <span style="font-size:12px; color:#64748b;" id="rsvpCount-${e._id}">👥 ${e.rsvpCount || (e.rsvps || []).length} attending</span>
+                </div>
+                <h4 class="highlight-title">${escapeHtml(e.title)}</h4>
+                <div class="highlight-meta">
+                  <span>📅 ${escapeHtml(e.date || '')} (${escapeHtml(e.time || '')})</span>
+                  <span>• 📍 ${escapeHtml(e.venue || 'Auditorium')}</span>
+                </div>
+                <div style="margin-top:8px;">
+                  <button class="button" id="rsvpBtn-${e._id}" style="margin:0; width:100%; padding:8px; font-size:12px; border-radius:8px; font-weight:700; background:${hasRsvp ? '#dcfce7; color:#16a34a;' : '#0f172a; color:#fff;'}" onclick="${hasRsvp ? '' : `rsvpEventOptimistic('${e._id}')`}">
+                    ${hasRsvp ? '✅ Attending' : 'RSVP for Event'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Top 2 Opportunities
+        const oBox = document.getElementById('highlightOpps');
+        if (opps.length === 0) {
+          oBox.innerHTML = `
+            <div class="placeholder-card">
+              <span style="font-size:22px; display:block; margin-bottom:4px;">💼</span>
+              <strong>Check back soon!</strong>
+              <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">New placement opportunities open weekly.</div>
+            </div>
+          `;
+        } else {
+          oBox.innerHTML = opps.slice(0, 2).map(o => `
+            <div class="highlight-card">
+              <div class="highlight-header">
+                <span class="pill pill-purple">${escapeHtml(o.category || 'Internship')}</span>
+                <span style="font-size:12px; font-weight:700; color:#16a34a;">💰 ${escapeHtml(o.stipend || 'Competitive')}</span>
+              </div>
+              <h4 class="highlight-title">${escapeHtml(o.title)}</h4>
+              <div style="font-size:12.5px; font-weight:600; color:#334155; margin-top:2px;">🏢 ${escapeHtml(o.organization)}</div>
+              <div class="highlight-meta">
+                <span>⏰ Deadline: ${escapeHtml(o.deadline || 'Rolling')}</span>
+              </div>
+              <div style="margin-top:8px;">
+                <a href="${escapeHtml(o.applicationLink || o.link || 'opportunities.html')}" target="_blank" class="button" style="margin:0; width:100%; text-align:center; padding:8px; font-size:12px; background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; border-radius:8px; font-weight:600;">
+                  Apply Now ↗
+                </a>
+              </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (err) {
+        console.error('Failed to load highlights:', err);
+      }
+    }
+
+    // Optimistic Event RSVP
+    async function rsvpEventOptimistic(id) {
+      const btn = document.getElementById(`rsvpBtn-${id}`);
+      const countEl = document.getElementById(`rsvpCount-${id}`);
+      if (btn) {
+        btn.style.background = '#dcfce7';
+        btn.style.color = '#16a34a';
+        btn.textContent = '✅ Attending';
+        btn.onclick = null;
+      }
+      try {
+        const res = await api(`/events/${id}/rsvp`, { method: 'POST' });
+        showToast(res.message, 'success');
+        if (countEl && (res.count || res.rsvpCount)) {
+          countEl.textContent = `👥 ${res.count || res.rsvpCount} attending`;
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+        loadQuickCountsAndHighlights();
+      }
+    }
+  </script>
+</body>
+</html>

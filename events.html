@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Events | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .event-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    }
+    .event-banner {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #e2e8f0;
+    }
+    .event-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .event-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      margin: 8px 0 14px;
+      flex-wrap: wrap;
+    }
+    .event-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .speaker-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .speaker-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #cbd5e1;
+    }
+    .capacity-bar-wrap {
+      margin: 12px 0 18px;
+    }
+    .capacity-bar {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    .capacity-fill {
+      height: 100%;
+      background: #10b981;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    .capacity-fill.high {
+      background: #f59e0b;
+    }
+    .capacity-fill.full {
+      background: #ef4444;
+    }
+  </style>
+</head>
+<body class="app-shell">
+  <div id="app-nav"></div>
+
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" style="color: #667b00;">CAMPUS HAPPENINGS</p>
+        <h1>Adani Campus Events & Tech Fests</h1>
+        <p class="lede">Explore university symposiums, technical workshops, guest lectures, and coding leagues across Shantigram campus.</p>
+      </div>
+      <div>
+        <a href="hackathons.html" class="button outline">View Hackathons ⚡</a>
+      </div>
+    </div>
+
+    <!-- Search & Filter Toolbar -->
+    <section class="toolbar">
+      <div class="toolbar-group">
+        <input type="text" id="eventSearchInput" class="input-control" placeholder="Search by event title, venue, or speaker..." style="min-width: 280px;">
+        <select id="eventCategoryFilter" class="input-control">
+          <option value="all">All Event Categories</option>
+          <option value="Tech Fest">Tech Fest</option>
+          <option value="Workshop">Hands-on Workshops</option>
+          <option value="Guest Lecture">Guest Lectures</option>
+          <option value="Coding Contest">Coding Contests</option>
+          <option value="Orientation">Club Orientations</option>
+        </select>
+      </div>
+      <div class="toolbar-group">
+        <span id="eventsCountLabel" style="font-size: 13px; color: var(--muted); font-weight: 500;">Loading events...</span>
+      </div>
+    </section>
+
+    <!-- Events Grid -->
+    <section id="eventsGrid" class="grid-cards">
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+        Loading campus events from database...
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let allEvents = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await fetchEvents();
+
+      document.getElementById('eventSearchInput').addEventListener('input', filterEvents);
+      document.getElementById('eventCategoryFilter').addEventListener('change', filterEvents);
+    });
+
+    async function fetchEvents() {
+      try {
+        const data = await api('/events');
+        allEvents = data.events || [];
+        filterEvents();
+      } catch (err) {
+        document.getElementById('eventsGrid').innerHTML = `
+          <div class="panel" style="grid-column:1/-1; text-align:center;">
+            <h3>Could not load events</h3>
+            <p>${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    function filterEvents() {
+      const q = document.getElementById('eventSearchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('eventCategoryFilter').value;
+
+      const filtered = allEvents.filter(e => {
+        const matchCat = cat === 'all' || e.category === cat;
+        const matchQ = !q || 
+          e.title.toLowerCase().includes(q) || 
+          (e.venue && e.venue.toLowerCase().includes(q)) ||
+          (e.speaker && e.speaker.name && e.speaker.name.toLowerCase().includes(q)) ||
+          (e.agenda && e.agenda.toLowerCase().includes(q));
+        return matchCat && matchQ;
+      });
+
+      document.getElementById('eventsCountLabel').textContent = `${filtered.length} event${filtered.length === 1 ? '' : 's'} found`;
+      renderEvents(filtered);
+    }
+
+    function renderEvents(events) {
+      const grid = document.getElementById('eventsGrid');
+      if (events.length === 0) {
+        grid.innerHTML = `
+          <div class="panel" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+            <h3>No campus events matching your criteria</h3>
+            <p style="color: var(--muted);">Try selecting "All Event Categories" or clear your search query.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = events.map(e => {
+        const isRsvpd = Boolean(e.isRsvpd);
+        const capacity = e.capacity || 200;
+        const rsvps = e.rsvpCount || (e.rsvps ? e.rsvps.length : 0);
+        const percent = Math.min(100, Math.round((rsvps / capacity) * 100));
+        const fillClass = percent >= 95 ? 'full' : (percent >= 75 ? 'high' : '');
+
+        let pillColor = 'pill-blue';
+        if (e.category === 'Tech Fest') pillColor = 'pill-accent';
+        if (e.category === 'Workshop') pillColor = 'pill-green';
+        if (e.category === 'Coding Contest') pillColor = 'pill-purple';
+
+        const speakerHtml = e.speaker && e.speaker.name ? `
+          <div class="speaker-box">
+            <img class="speaker-avatar" src="${e.speaker.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}" alt="${escapeHtml(e.speaker.name)}">
+            <div>
+              <div style="font-weight: bold; font-size: 13px;">${escapeHtml(e.speaker.name)}</div>
+              <div style="font-size: 12px; color: var(--muted);">${escapeHtml(e.speaker.title || '')} · <b>${escapeHtml(e.speaker.company || 'Adani Group')}</b></div>
+            </div>
+          </div>
+        ` : '';
+
+        return `
+          <article class="event-card">
+            <img class="event-banner" src="${e.banner || 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'}" alt="${escapeHtml(e.title)}" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'">
+            
+            <div class="event-body">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span class="pill ${pillColor}">${escapeHtml(e.category || 'Event')}</span>
+                ${isRsvpd ? '<span class="badge badge-approved">🎟️ RSVP Confirmed</span>' : ''}
+              </div>
+
+              <h2 style="font-size: 20px; margin: 4px 0 8px; line-height: 1.3;">${escapeHtml(e.title)}</h2>
+
+              <div class="event-meta">
+                <span>📅 <b>${escapeHtml(e.date)}</b></span>
+                <span>⏰ ${escapeHtml(e.time || '10:00 AM')}</span>
+              </div>
+
+              <div style="font-size: 13px; color: #334155; margin-bottom: 8px;">
+                📍 <b>Venue:</b> ${escapeHtml(e.venue || 'Adani University Campus')}
+                ${e.virtualLink ? ` · <a href="${escapeHtml(e.virtualLink)}" target="_blank" class="text-link">Virtual Link ↗</a>` : ''}
+              </div>
+
+              ${speakerHtml}
+
+              <p style="font-size: 14px; color: #475569; margin: 10px 0 14px; flex: 1;">
+                ${escapeHtml(e.agenda || 'Join students and faculty for this campus event.')}
+              </p>
+
+              <div class="capacity-bar-wrap">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-weight: 500;">
+                  <span>Capacity</span>
+                  <span><b>${rsvps}</b> / ${capacity} seats (${percent}%)</span>
+                </div>
+                <div class="capacity-bar">
+                  <div class="capacity-fill ${fillClass}" style="width: ${percent}%;"></div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-top: auto;">
+                <button 
+                  class="button" 
+                  style="flex: 1; margin: 0; padding: 11px 18px; text-align: center; ${isRsvpd ? 'background:#ef4444; color:#fff;' : 'background:#111; color:#fff;'}"
+                  onclick="toggleRsvp('${e._id}')">
+                  ${isRsvpd ? '❌ Cancel My RSVP' : '🎟️ RSVP / Register Now'}
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function toggleRsvp(eventId) {
+      if (!currentUser) {
+        toast('Please log in to RSVP for this campus event.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1200);
+        return;
+      }
+
+      try {
+        const res = await api(`/events/${eventId}/rsvp`, { method: 'POST' });
+        toast(res.message, 'success');
+        await fetchEvents();
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>
+

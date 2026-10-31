@@ -1,1 +1,390 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hackathons | CampusConnect</title><link rel="stylesheet" href="style.css"></head><body class="app-shell"><div id="app-nav"></div><main class="page-wrap"><div class="page-heading"><div><p class="eyebrow">BUILD TOGETHER</p><h1>Hackathons</h1><p class="lede">Find a challenge, meet your team and make something useful.</p></div></div><section class="cards" id="hackathonList"><div class="panel"><h2>Loading hackathons...</h2></div></section></main><script src="app.js"></script><script src="nav.js"></script><script>document.addEventListener('DOMContentLoaded',async()=>{try{const data=await api('/hackathons');hackathonList.innerHTML=data.hackathons.map(h=>`<article class="card"><span class="eyebrow">${h.date||'UPCOMING'}</span><h2>${h.name}</h2><p>${h.description||'Bring your curiosity and build with other students.'}</p><p><b>${h.location||'Campus'}</b> · ${h.members?.length||0}/${h.teamSize||5} members</p><button class="button" onclick="joinHackathon('${h._id}')">Request to join</button></article>`).join('')||'<div class="panel"><h2>No hackathons posted yet.</h2></div>';}catch(error){hackathonList.innerHTML='<div class="panel"><h2>Log in to browse hackathons.</h2></div>';}});async function joinHackathon(id){try{await api('/hackathons/'+id+'/join',{method:'POST'});alert('You joined the hackathon team.');location.reload();}catch(error){alert(error.message);}}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hackathons | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hackathon-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    .hackathon-banner {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #1e293b;
+    }
+    .hackathon-body {
+      padding: 28px;
+    }
+    .prize-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .prize-item {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .prize-rank {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #854d0e;
+      letter-spacing: 0.5px;
+    }
+    .prize-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      margin-top: 4px;
+    }
+    .tracks-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 18px 0;
+    }
+    .track-row {
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .track-row:last-child {
+      margin-bottom: 0;
+    }
+    .track-name {
+      font-weight: bold;
+      color: #0f172a;
+    }
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 14px 0;
+      border-left: 2px solid #e2e8f0;
+      padding-left: 14px;
+    }
+    .timeline-item {
+      font-size: 13px;
+    }
+    .timeline-item b {
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body class="app-shell">
+  <div id="app-nav"></div>
+
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" style="color: #667b00;">BUILD & COMPETE</p>
+        <h1>Campus Hackathons & Innovation Sprints</h1>
+        <p class="lede">Assemble student teams, solve real industrial challenges for Adani Group & Gujarat tech ecosystems, and win prizes & pre-seed grants.</p>
+      </div>
+      <div>
+        <a href="project.html" class="button outline">Explore Student Projects 🚀</a>
+      </div>
+    </div>
+
+    <!-- Hackathons Container -->
+    <section id="hackathonList">
+      <div class="panel" style="text-align: center; padding: 40px; color: var(--muted);">
+        Loading campus hackathons from database...
+      </div>
+    </section>
+  </main>
+
+  <!-- Register Team Modal -->
+  <div id="registerModal" class="modal-overlay hidden">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
+      <p class="eyebrow">TEAM ENTRY</p>
+      <h2 id="modalHackathonName" style="margin: 0 0 10px;">Register Team for Hackathon</h2>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+        Submit your team details and select your problem statement track.
+      </p>
+
+      <form id="hackathonRegisterForm">
+        <input type="hidden" id="targetHackathonId">
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Team Name *</label>
+          <input type="text" id="regTeamName" class="input-control" style="width: 100%;" placeholder="e.g. Mundra Code Crafters" required>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Team Leader Email *</label>
+          <input type="email" id="regLeaderEmail" class="input-control" style="width: 100%;" placeholder="e.g. your.name@adaniuni.ac.in" required>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Selected Innovation Track *</label>
+          <select id="regTrack" class="input-control" style="width: 100%;" required>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Team Member College IDs (Comma separated)</label>
+          <input type="text" id="regMemberIds" class="input-control" style="width: 100%;" placeholder="e.g. AU-FSET-2023-0142, AU-FSET-2022-0089">
+          <small style="color: var(--muted); font-size: 11px;">Include Adani University student ID cards of your teammates.</small>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">GitHub / Project Portfolio Link</label>
+          <input type="url" id="regPortfolio" class="input-control" style="width: 100%;" placeholder="https://github.com/team-repo">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-sm btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+          <button type="submit" class="button" style="margin: 0; padding: 10px 20px; background: #111; color: #d7f05a;">Confirm Team Registration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let hackathonsCache = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await fetchHackathons();
+
+      document.getElementById('hackathonRegisterForm').addEventListener('submit', handleRegistrationSubmit);
+    });
+
+    async function fetchHackathons() {
+      try {
+        const data = await api('/hackathons');
+        hackathonsCache = data.hackathons || [];
+        renderHackathons(hackathonsCache);
+      } catch (err) {
+        document.getElementById('hackathonList').innerHTML = `
+          <div class="panel" style="text-align: center;">
+            <h3>Error loading hackathons</h3>
+            <p>${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderHackathons(hackathons) {
+      const container = document.getElementById('hackathonList');
+      if (hackathons.length === 0) {
+        container.innerHTML = `
+          <div class="panel" style="text-align: center; padding: 40px;">
+            <h3>No hackathons currently open</h3>
+            <p style="color: var(--muted);">Check back soon for upcoming campus code sprints!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = hackathons.map(h => {
+        const myReg = h.myRegistration;
+        const isRegistered = Boolean(h.isRegistered);
+        const registeredCount = h.registeredTeamsCount || (h.registrations ? h.registrations.length : 0);
+
+        const prizes = h.prizes || {};
+        const tracks = h.tracks || [];
+        const schedule = h.schedule || [];
+
+        const tracksHtml = tracks.length ? `
+          <div class="tracks-box">
+            <h4 style="margin: 0 0 10px; font-size: 14px;">🎯 Problem Statement Tracks:</h4>
+            ${tracks.map(t => `
+              <div class="track-row">
+                <span class="track-name">⚡ ${escapeHtml(t.name)}:</span> 
+                <span style="color: #475569;">${escapeHtml(t.description)}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : '';
+
+        const scheduleHtml = schedule.length ? `
+          <div style="margin: 16px 0;">
+            <h4 style="margin: 0 0 8px; font-size: 14px;">📅 Hackathon Schedule:</h4>
+            <div class="timeline-list">
+              ${schedule.map(s => `
+                <div class="timeline-item">
+                  <b>${escapeHtml(s.phase)} (${escapeHtml(s.time)}):</b> ${escapeHtml(s.detail)}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : '';
+
+        const skillsHtml = (h.skills || []).map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
+
+        let statusBox = '';
+        if (isRegistered && myReg) {
+          statusBox = `
+            <div style="background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; padding: 12px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #15803d; font-size: 15px;">✅ Registered: Team "${escapeHtml(myReg.teamName)}"</strong>
+                <p style="margin: 3px 0 0; font-size: 12px; color: #166534;">Track: <b>${escapeHtml(myReg.track)}</b> · Status: <span class="badge badge-approved">${escapeHtml(myReg.status || 'Confirmed')}</span></p>
+              </div>
+              <span style="font-size: 24px;">🏆</span>
+            </div>
+          `;
+        }
+
+        return `
+          <article class="hackathon-card">
+            <img class="hackathon-banner" src="${h.banner || 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80'}" alt="${escapeHtml(h.name)}">
+
+            <div class="hackathon-body">
+              ${statusBox}
+
+              <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <span class="pill pill-accent">${escapeHtml(h.mode || 'Hybrid')}</span>
+                  <span class="pill pill-blue" style="margin-left: 6px;">👥 Team Size: ${h.minTeamSize || 2} - ${h.teamSize || 4} Members</span>
+                  <span style="font-size: 12px; color: var(--muted); margin-left: 8px;">Organized by <b>${escapeHtml(h.organizer || 'Adani University')}</b></span>
+                </div>
+                <div style="font-size: 13px; font-weight: bold; color: #15803d;">
+                  ⚡ ${registeredCount} Team${registeredCount === 1 ? '' : 's'} Registered
+                </div>
+              </div>
+
+              <h2 style="font-size: 28px; margin: 12px 0 6px;">${escapeHtml(h.name)}</h2>
+              <p style="font-size: 15px; color: #334155; margin-bottom: 14px; font-style: italic;">
+                "${escapeHtml(h.tagline || 'Build the future of technology')}"
+              </p>
+
+              <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted); margin-bottom: 16px;">
+                <span>📅 <b>Date:</b> ${escapeHtml(h.date || 'Upcoming')}</span>
+                <span>📍 <b>Venue:</b> ${escapeHtml(h.location || 'Adani University Campus')}</span>
+                <span>⏳ <b>Deadline:</b> ${escapeHtml(h.registrationDeadline || 'Soon')}</span>
+              </div>
+
+              <p style="font-size: 15px; color: #475569; line-height: 1.6; margin-bottom: 16px;">
+                ${escapeHtml(h.description)}
+              </p>
+
+              <!-- Prizes Banner -->
+              <div class="prize-banner">
+                <div>
+                  <span style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: #854d0e;">Total Prize Pool</span>
+                  <div class="prize-amount">${escapeHtml(h.prizePool || '₹1,50,000')}</div>
+                </div>
+                <div style="font-size: 13px; color: #854d0e; font-weight: 500;">
+                  + Pre-Seed Incubation Grants & Fast-Track Adani Internships
+                </div>
+              </div>
+
+              <div class="prize-grid">
+                <div class="prize-item">
+                  <div class="prize-rank">🥇 1st Place Champion</div>
+                  <div class="prize-val">${escapeHtml(prizes.first || '₹75,000')}</div>
+                </div>
+                <div class="prize-item">
+                  <div class="prize-rank">🥈 2nd Place Runner Up</div>
+                  <div class="prize-val">${escapeHtml(prizes.second || '₹45,000')}</div>
+                </div>
+                <div class="prize-item">
+                  <div class="prize-rank">🥉 3rd Place</div>
+                  <div class="prize-val">${escapeHtml(prizes.third || '₹20,000')}</div>
+                </div>
+                <div class="prize-item">
+                  <div class="prize-rank">✨ Category Awards</div>
+                  <div class="prize-val">${escapeHtml(prizes.special || '₹10,000')}</div>
+                </div>
+              </div>
+
+              <!-- Tracks -->
+              ${tracksHtml}
+
+              <!-- Schedule -->
+              ${scheduleHtml}
+
+              <div style="margin: 14px 0;">
+                <span style="font-size: 12px; font-weight: bold; color: var(--muted);">Recommended Tech Skills:</span>
+                <div class="skill-tags">${skillsHtml}</div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid var(--line); padding-top: 20px;">
+                ${isRegistered ? `
+                  <button class="button" style="background: #15803d; color: #fff; cursor: default;">
+                    ✅ Team Registered
+                  </button>
+                ` : `
+                  <button class="button" onclick="openRegisterModal('${h._id}')" style="background: #111; color: #d7f05a; font-weight: bold; padding: 12px 28px;">
+                    ⚡ Register My Team Now →
+                  </button>
+                `}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function openRegisterModal(hackathonId) {
+      if (!currentUser) {
+        toast('Please log in to register your team for the hackathon.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1200);
+        return;
+      }
+
+      const h = hackathonsCache.find(x => x._id === hackathonId);
+      if (!h) return;
+
+      document.getElementById('targetHackathonId').value = hackathonId;
+      document.getElementById('modalHackathonName').textContent = `Register for ${h.name}`;
+      document.getElementById('regLeaderEmail').value = currentUser.email || '';
+
+      const trackSelect = document.getElementById('regTrack');
+      trackSelect.innerHTML = (h.tracks && h.tracks.length)
+        ? h.tracks.map(t => `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`).join('')
+        : '<option value="General Innovation">General Innovation</option>';
+
+      document.getElementById('registerModal').classList.remove('hidden');
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('registerModal').classList.add('hidden');
+    }
+
+    async function handleRegistrationSubmit(e) {
+      e.preventDefault();
+      const hackathonId = document.getElementById('targetHackathonId').value;
+      const teamName = document.getElementById('regTeamName').value.trim();
+      const leaderEmail = document.getElementById('regLeaderEmail').value.trim();
+      const track = document.getElementById('regTrack').value;
+      const memberIds = document.getElementById('regMemberIds').value.trim();
+      const portfolioUrl = document.getElementById('regPortfolio').value.trim();
+
+      try {
+        const res = await api(`/hackathons/${hackathonId}/register`, {
+          method: 'POST',
+          body: JSON.stringify({ teamName, leaderEmail, track, memberIds, portfolioUrl })
+        });
+
+        toast(res.message, 'success');
+        closeRegisterModal();
+        await fetchHackathons();
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

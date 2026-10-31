@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CampusConnect - Create Account</title>
 
@@ -67,7 +69,7 @@
 
 
             <label>College / University</label>
-            <input type="text" id="college" placeholder="Your college or university" required>
+            <input type="text" id="college" value="Adani University, Ahmedabad" placeholder="Adani University, Ahmedabad" required>
 
             <label>Course</label>
 
@@ -110,6 +112,9 @@
 
             </select>
 
+            <label>College ID / Roll Number</label>
+            <input type="text" id="collegeIdNumber" placeholder="e.g. AU-2024-CSE001" required>
+
             <label>Skills</label>
             <input type="text" id="skills" placeholder="Python, Web Development, UI/UX">
 
@@ -118,68 +123,59 @@
 
             <p class="message" data-message></p>
 
-
             <button type="submit" class="button">
-
                 Create Account
-
             </button>
-
-
         </form>
 
-
         <p>
-
             Already have an account?
-
             <a href="login.html">
                 <b>Login</b>
             </a>
-
         </p>
 
-
         <a href="index.html">
-
             ← Back to Home
-
         </a>
-
-
     </div>
-
 
     <script src="app.js"></script>
     <script>
+        document.getElementById("registerForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var college = document.getElementById("college").value;
+            var course = document.getElementById("course").value;
+            var year = document.getElementById("year").value;
+            var collegeIdNumber = document.getElementById("collegeIdNumber").value;
+            var skills = document.getElementById("skills").value;
+            var interests = document.getElementById("interests").value;
 
-        document
-            .getElementById("registerForm")
-            .addEventListener("submit", async function (event) {
-
-                event.preventDefault();
-
-
-                var name =
-                    document.getElementById("name").value;
-
-
-                var email =
-                    document.getElementById("email").value;
-
-
-                var course = document.getElementById("course").value;
-                var year = document.getElementById("year").value;
-                var college = document.getElementById("college").value;
-                try {
-                    await api('/auth/register', { method:'POST', body:JSON.stringify({name,email,password:document.getElementById('password').value,college,course,year,skills:document.getElementById('skills').value,interests:document.getElementById('interests').value}) });
-                    window.location.href = 'dashboard.html';
-                } catch (error) { showMessage(error.message, 'error'); }
-
-            });
-
+            try {
+                const data = await api('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                        college,
+                        course,
+                        year,
+                        collegeIdNumber,
+                        skills,
+                        interests
+                    })
+                });
+                setUser(data.user);
+                window.location.href = data.redirectUrl || 'dashboard.html';
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        });
     </script>
-
 
 </body>
 

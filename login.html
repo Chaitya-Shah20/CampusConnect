@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CampusConnect - Login</title>
 
@@ -190,46 +192,56 @@
             <input type="password" id="password" placeholder="Enter your password" required>
 
 
+            <div style="margin: 15px 0; padding-top: 15px; border-top: 1px dashed #ddd; font-size: 13px;">
+                <p style="margin-bottom: 8px; color: #666; font-weight: bold;">Quick Demo Logins (Adani University):</p>
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <button type="button" class="button" style="padding: 6px 12px; font-size: 12px; background: #111; color: #d7f05a; border-radius: 4px;" onclick="quickLogin('admin@adaniuni.ac.in', 'Admin@123')">🔑 Admin</button>
+                    <button type="button" class="button" style="padding: 6px 12px; font-size: 12px; background: #333; color: #fff; border-radius: 4px;" onclick="quickLogin('aarav.sharma@adaniuni.ac.in', 'Student@123')">🎓 Verified Student</button>
+                    <button type="button" class="button" style="padding: 6px 12px; font-size: 12px; background: #555; color: #fff; border-radius: 4px;" onclick="quickLogin('rohan.shah@adaniuni.ac.in', 'Student@123')">⏳ Pending Student</button>
+                </div>
+            </div>
+
             <p align="right">
-
                 <span class="message" data-message></span>
-
             </p>
 
-
             <button type="submit" class="login-button">
-
                 Login
-
             </button>
-
-
         </form>
 
-
         <p>
-
             Don't have an account?
-
-            <a href="register.html">
-                Create Account
-            </a>
-
+            <a href="register.html">Create Account</a>
         </p>
 
-
-        <!-- BACK TO HOME -->
-
-        <a href="index.html" class="home">
-
-            ← Back to Home
-
-        </a>
-
-
+        <a href="index.html" class="home">← Back to Home</a>
+        
     </div>
+
     <script src="app.js"></script>
-    <script>loginForm.addEventListener('submit', async event => { event.preventDefault(); try { const data = await api('/auth/login', { method:'POST', body:JSON.stringify({ email:email.value, password:password.value }) }); setUser(data.user); window.location.href='dashboard.html'; } catch(error) { showMessage(error.message,'error'); } });</script>
+    <script>
+        function quickLogin(demoEmail, demoPassword) {
+            document.getElementById('email').value = demoEmail;
+            document.getElementById('password').value = demoPassword;
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+
+        loginForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            try {
+                const data = await api('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: email.value, password: password.value })
+                });
+                setUser(data.user);
+                const redirectTarget = data.user.role === 'admin' ? 'admin-dashboard.html' : 'dashboard.html';
+                window.location.href = redirectTarget;
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        });
+    </script>
 
 
 </body>

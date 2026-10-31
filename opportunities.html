@@ -1,94 +1,397 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Campus Opportunities - CampusConnect</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Opportunities | CampusConnect Adani University</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .opp-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .opp-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .opp-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .company-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+    }
+    .stipend-badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin: 8px 0;
+    }
+    .prep-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+    .prep-box ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      color: #475569;
+    }
+    .prep-box li {
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
+<body class="app-shell">
+  <div id="app-nav"></div>
 
-<body>
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow" style="color: #667b00;">CAREERS & PLACEMENTS</p>
+        <h1>Campus Career & Placement Drives</h1>
+        <p class="lede">Explore vetted Adani Group internships, full-time engineering placements, FinTech roles in GIFT City, and research fellowships.</p>
+      </div>
+      <div>
+        <button class="button" onclick="openPostModal()">+ Post Opportunity</button>
+      </div>
+    </div>
 
-    <nav>
-
-        <h2>
-            <a href="index.html">CampusConnect</a>
-        </h2>
-
-        <div>
-            <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
-        </div>
-
-    </nav>
-
-
-    <section class="section">
-
-        <h1>Campus Opportunities</h1>
-
-        <p>
-            Discover internships, workshops, competitions and hackathons.
-        </p>
-
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Internships</h3>
-                <p>Find internship opportunities.</p>
-                <button class="button" onclick="show('Internships')">
-                    Explore
-                </button>
-            </div>
-
-
-            <div class="card">
-                <h3>Workshops</h3>
-                <p>Discover useful campus workshops.</p>
-                <button class="button" onclick="show('Workshops')">
-                    Explore
-                </button>
-            </div>
-
-
-            <div class="card">
-                <h3>Hackathons</h3>
-                <p>Find upcoming hackathons.</p>
-                <button class="button" onclick="show('Hackathons')">
-                    Explore
-                </button>
-            </div>
-
-
-            <div class="card">
-                <h3>Competitions</h3>
-                <p>Participate in student competitions.</p>
-                <button class="button" onclick="show('Competitions')">
-                    Explore
-                </button>
-            </div>
-
-        </div>
-
-        <br>
-
-        <a href="index.html" class="button">
-            ← Back to Home
-        </a>
-
+    <!-- Category Filter Tabs & Search -->
+    <section class="toolbar">
+      <div class="toolbar-group">
+        <input type="text" id="oppSearchInput" class="input-control" placeholder="Search by role, company, or required skill..." style="min-width: 280px;">
+        <select id="categorySelect" class="input-control">
+          <option value="all">All Opportunity Types</option>
+          <option value="Internship">Internships</option>
+          <option value="Full-Time Job">Full-Time Jobs</option>
+          <option value="Placement Drive">Placement Drives</option>
+          <option value="Workshop">Workshops</option>
+          <option value="Competition">Competitions</option>
+        </select>
+        <select id="modeSelect" class="input-control">
+          <option value="all">All Modes (On-site / Hybrid / Remote)</option>
+          <option value="On-site">On-site</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="Remote">Remote</option>
+        </select>
+      </div>
+      <div class="toolbar-group">
+        <span id="oppsCountLabel" style="font-size: 13px; color: var(--muted); font-weight: 500;">Loading opportunities...</span>
+      </div>
     </section>
 
+    <!-- Opportunities Grid -->
+    <section id="opportunitiesGrid" class="grid-cards">
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+        Fetching campus opportunities from database...
+      </div>
+    </section>
+  </main>
 
-    <script>
+  <!-- Post Opportunity Modal -->
+  <div id="postModal" class="modal-overlay hidden">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closePostModal()">&times;</button>
+      <p class="eyebrow">COMMUNITY NOTICE</p>
+      <h2 style="margin: 0 0 15px;">Post an Opportunity</h2>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+        Share an internship, job opening, or workshop with Adani University students.
+      </p>
 
-        function show(type) {
+      <form id="postOpportunityForm">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Role Title *</label>
+          <input type="text" id="oppTitle" class="input-control" style="width: 100%;" placeholder="e.g. Cloud Architecture Summer Intern" required>
+        </div>
 
-            alert(type + " opportunities will appear here.");
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Organization / Company *</label>
+            <input type="text" id="oppOrg" class="input-control" style="width: 100%;" placeholder="e.g. Adani AI Labs" required>
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Category *</label>
+            <select id="oppCategory" class="input-control" style="width: 100%;" required>
+              <option value="Internship">Internship</option>
+              <option value="Full-Time Job">Full-Time Job</option>
+              <option value="Placement Drive">Placement Drive</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Competition">Competition</option>
+            </select>
+          </div>
+        </div>
 
-        }
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Stipend / CTC</label>
+            <input type="text" id="oppStipend" class="input-control" style="width: 100%;" placeholder="e.g. ₹35,000 / month or ₹14 LPA">
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Work Mode</label>
+            <select id="oppWorkMode" class="input-control" style="width: 100%;">
+              <option value="On-site">On-site</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Remote">Remote</option>
+            </select>
+          </div>
+        </div>
 
-    </script>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Location</label>
+            <input type="text" id="oppLocation" class="input-control" style="width: 100%;" placeholder="e.g. Shantigram, Ahmedabad">
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Application Deadline</label>
+            <input type="text" id="oppDeadline" class="input-control" style="width: 100%;" placeholder="e.g. May 30, 2026">
+          </div>
+        </div>
 
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Required Skills (Comma separated)</label>
+          <input type="text" id="oppSkills" class="input-control" style="width: 100%;" placeholder="e.g. Python, PyTorch, REST APIs, SQL">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Description</label>
+          <textarea id="oppDesc" class="input-control" rows="3" style="width: 100%; resize: vertical;" placeholder="Overview of team, day-to-day responsibilities, and perks..."></textarea>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px;">Application URL / Portal Link</label>
+          <input type="url" id="oppLink" class="input-control" style="width: 100%;" placeholder="https://company.com/apply">
+        </div>
+
+        <div id="oppModalMsg" style="display: none; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 13px;"></div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-sm btn-secondary" onclick="closePostModal()">Cancel</button>
+          <button type="submit" class="button" style="margin: 0; padding: 10px 20px;">Submit Opportunity</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let allOpportunities = [];
+
+    function openPostModal() {
+      if (!currentUser) {
+        toast('Please log in to post an opportunity.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1200);
+        return;
+      }
+      document.getElementById('postModal').classList.remove('hidden');
+    }
+
+    function closePostModal() {
+      document.getElementById('postModal').classList.add('hidden');
+      document.getElementById('postOpportunityForm').reset();
+      document.getElementById('oppModalMsg').style.display = 'none';
+    }
+
+    async function loadOpportunities() {
+      try {
+        const data = await api('/opportunities');
+        allOpportunities = data.opportunities || [];
+        filterAndRenderOpportunities();
+      } catch (err) {
+        document.getElementById('opportunitiesGrid').innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: #dc2626; padding: 30px;">
+            Failed to load opportunities: ${err.message}
+          </div>
+        `;
+      }
+    }
+
+    function filterAndRenderOpportunities() {
+      const q = document.getElementById('oppSearchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('categorySelect').value;
+      const mode = document.getElementById('modeSelect').value;
+
+      let filtered = allOpportunities;
+
+      if (cat !== 'all') {
+        filtered = filtered.filter(o => o.category === cat);
+      }
+      if (mode !== 'all') {
+        filtered = filtered.filter(o => o.workMode === mode);
+      }
+
+      if (q) {
+        filtered = filtered.filter(o => {
+          const matchTitle = (o.title || '').toLowerCase().includes(q);
+          const matchOrg = (o.organization || '').toLowerCase().includes(q);
+          const matchDesc = (o.description || '').toLowerCase().includes(q);
+          const matchSkills = (o.requiredSkills || []).some(s => s.toLowerCase().includes(q));
+          return matchTitle || matchOrg || matchDesc || matchSkills;
+        });
+      }
+
+      document.getElementById('oppsCountLabel').textContent = `${filtered.length} opportunit${filtered.length === 1 ? 'y' : 'ies'} found`;
+      renderOpportunities(filtered);
+    }
+
+    function renderOpportunities(items) {
+      const grid = document.getElementById('opportunitiesGrid');
+      if (!items || items.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: #fff; border: 1px solid var(--line); border-radius: 8px;">
+            <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">No opportunities found</p>
+            <p style="color: var(--muted); margin-bottom: 20px;">Try adjusting your filter options or post a new notice.</p>
+            <button class="button" onclick="openPostModal()">+ Post Opportunity</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map(opp => {
+        let catPill = 'pill-blue';
+        if (opp.category === 'Internship') catPill = 'pill-green';
+        if (opp.category === 'Full-Time Job' || opp.category === 'Placement Drive') catPill = 'pill-accent';
+        if (opp.category === 'Workshop') catPill = 'pill-purple';
+
+        const skillsHtml = (opp.requiredSkills || []).map(s => `<span class="skill-tag">✓ ${escapeHtml(s)}</span>`).join('');
+
+        const prepTipsHtml = (opp.prepTips && opp.prepTips.length) ? `
+          <div class="prep-box">
+            <b style="color: #0f172a;">💡 Mandatory Preparation & Interview Tips:</b>
+            <ul>
+              ${opp.prepTips.map(tip => `<li>${escapeHtml(tip)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : '';
+
+        return `
+          <article class="opp-card">
+            <div class="opp-body">
+              <div class="company-header">
+                <img class="company-logo" src="${opp.companyLogo || 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=120&q=80'}" alt="${escapeHtml(opp.organization)}">
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="pill ${catPill}">${escapeHtml(opp.category || 'General')}</span>
+                    <span style="font-size: 12px; color: var(--muted); font-weight: 500;">${escapeHtml(opp.workMode || 'On-site')}</span>
+                  </div>
+                  <div style="font-size: 14px; font-weight: bold; color: #1e293b; margin-top: 3px;">
+                    ${escapeHtml(opp.organization)}
+                  </div>
+                </div>
+              </div>
+
+              <h2 style="font-size: 20px; margin: 4px 0 6px; line-height: 1.3;">
+                ${escapeHtml(opp.title)}
+              </h2>
+
+              <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px;">
+                <span>📍 ${escapeHtml(opp.location || 'Ahmedabad')}</span> · 
+                <span style="color: #b45309; font-weight: 600;">⏳ Deadline: ${escapeHtml(opp.deadline || 'Rolling')}</span>
+              </div>
+
+              ${opp.stipend ? `<div><span class="stipend-badge">💰 Compensation: ${escapeHtml(opp.stipend)}</span></div>` : ''}
+
+              <p style="font-size: 14px; color: #475569; line-height: 1.5; margin: 8px 0 12px; flex: 1;">
+                ${escapeHtml(opp.description || 'Join this exciting campus opportunity.')}
+              </p>
+
+              ${opp.eligibility ? `<div style="font-size: 12px; color: #64748b; margin-bottom: 10px;"><b>Eligibility:</b> ${escapeHtml(opp.eligibility)}</div>` : ''}
+
+              ${skillsHtml ? `
+                <div style="margin-bottom: 10px;">
+                  <span style="font-size: 12px; font-weight: bold; color: #334155;">Required Skills:</span>
+                  <div class="skill-tags">${skillsHtml}</div>
+                </div>
+              ` : ''}
+
+              ${prepTipsHtml}
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px;">
+                <span style="font-size: 12px; color: var(--muted);">Campus Verified</span>
+                ${opp.link ? `
+                  <a href="${escapeHtml(opp.link)}" target="_blank" rel="noopener noreferrer" class="button" style="margin: 0; padding: 9px 20px; font-size: 13px; background: #111; color: #d7f05a; font-weight: bold;">
+                    Apply Directly Now ↗
+                  </a>
+                ` : `
+                  <button class="button outline" style="margin: 0; padding: 8px 16px; font-size: 13px;" onclick="toast('Please visit the campus placement cell for application guidelines.', 'info')">
+                    Placement Cell Notice
+                  </button>
+                `}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('postOpportunityForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('oppModalMsg');
+      try {
+        const payload = {
+          title: document.getElementById('oppTitle').value,
+          organization: document.getElementById('oppOrg').value,
+          category: document.getElementById('oppCategory').value,
+          stipend: document.getElementById('oppStipend').value,
+          workMode: document.getElementById('oppWorkMode').value,
+          location: document.getElementById('oppLocation').value,
+          deadline: document.getElementById('oppDeadline').value,
+          requiredSkills: document.getElementById('oppSkills').value,
+          description: document.getElementById('oppDesc').value,
+          link: document.getElementById('oppLink').value
+        };
+
+        await api('/opportunities', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        toast('Opportunity posted successfully!', 'success');
+        closePostModal();
+        await loadOpportunities();
+      } catch (err) {
+        msg.style.display = 'block';
+        msg.style.background = '#fee2e2';
+        msg.style.color = '#b91c1c';
+        msg.textContent = err.message;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await loadOpportunities();
+      document.getElementById('oppSearchInput').addEventListener('input', filterAndRenderOpportunities);
+      document.getElementById('categorySelect').addEventListener('change', filterAndRenderOpportunities);
+      document.getElementById('modeSelect').addEventListener('change', filterAndRenderOpportunities);
+    });
+  </script>
 </body>
-
 </html>

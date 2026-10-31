@@ -1,113 +1,260 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Mentorship - CampusConnect</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mentorship | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="app-shell">
+  <div id="app-nav"></div>
 
-<body>
+  <main class="page-wrap">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow">ACADEMIC & CAREER GUIDANCE</p>
+        <h1>Senior Mentorship Network</h1>
+        <p class="lede">Learn from senior students, researchers, and alumni who have navigated internship seasons, thesis research, and technical interviews.</p>
+      </div>
+    </div>
 
-    <nav>
+    <!-- Mentorship Pillars -->
+    <div class="cards" style="margin-bottom: 30px;">
+      <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="filterMentors('Career')">
+        <h3 style="margin-top: 0;">🧭 Career Guidance</h3>
+        <p>Resume teardowns, placement strategies, choosing domains, and navigating higher studies.</p>
+      </div>
+      <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="filterMentors('System')">
+        <h3 style="margin-top: 0;">💻 Project & Research Guidance</h3>
+        <p>Architectural feedback, debugging complex codebases, open source contributions, and paper submissions.</p>
+      </div>
+      <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="filterMentors('DSA')">
+        <h3 style="margin-top: 0;">🎯 Technical Interview Prep</h3>
+        <p>Mock interviews, DSA problem solving strategies, behavioral answers, and system design rounds.</p>
+      </div>
+    </div>
 
-        <h2>
-            <a href="index.html">CampusConnect</a>
-        </h2>
-
-        <div>
-            <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
-        </div>
-
-    </nav>
-
-
-    <section class="section">
-
-        <h1>Mentorship</h1>
-
-        <p>
-            Connect with seniors and alumni for guidance and career advice.
-        </p>
-
-
-        <div class="cards">
-
-            <div class="card">
-
-                <h3>Career Guidance</h3>
-
-                <p>
-                    Get guidance about career paths and opportunities.
-                </p>
-
-                <button class="button" onclick="openMentor()">
-                    Find Mentor
-                </button>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Project Guidance</h3>
-
-                <p>
-                    Get help from experienced students.
-                </p>
-
-                <button class="button" onclick="openMentor()">
-                    Find Mentor
-                </button>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Interview Preparation</h3>
-
-                <p>
-                    Prepare for interviews with experienced mentors.
-                </p>
-
-                <button class="button" onclick="openMentor()">
-                    Get Help
-                </button>
-
-            </div>
-
-        </div>
-
-        <br>
-
-        <a href="index.html" class="button">
-            ← Back to Home
-        </a>
-
+    <!-- Search & Filter Toolbar -->
+    <section class="toolbar">
+      <div class="toolbar-group" style="flex: 1;">
+        <input type="text" id="mentorSearchInput" class="input-control" placeholder="Search mentors by expertise (e.g. Machine Learning, System Design), college, or name..." style="width: 100%; max-width: 480px;">
+      </div>
+      <div class="toolbar-group">
+        <span id="mentorsCountLabel" style="font-size: 13px; color: var(--muted); font-weight: 500;">Loading mentors...</span>
+      </div>
     </section>
 
+    <!-- Toast Notification -->
+    <div id="mentorToast" style="display: none; padding: 12px 18px; border-radius: 6px; margin-bottom: 20px; font-weight: 500;"></div>
 
-    <script>
+    <!-- Mentors Directory Grid -->
+    <section id="mentorsGrid" class="grid-cards">
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">
+        Fetching senior mentors from database...
+      </div>
+    </section>
+  </main>
 
-        function openMentor() {
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    let currentUser = null;
+    let allMentors = [];
+    let myConnections = [];
 
-            if (!localStorage.getItem("campusUser")) {
+    function showFeedback(msg, isSuccess = true) {
+      const toast = document.getElementById('mentorToast');
+      toast.style.display = 'block';
+      toast.textContent = msg;
+      if (isSuccess) {
+        toast.style.background = '#dcfce7';
+        toast.style.color = '#15803d';
+        toast.style.border = '1px solid #bbf7d0';
+      } else {
+        toast.style.background = '#fee2e2';
+        toast.style.color = '#b91c1c';
+        toast.style.border = '1px solid #fecaca';
+      }
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    }
 
-                alert("Please login first.");
+    async function loadMentors() {
+      try {
+        const res = await api('/mentors');
+        allMentors = res.mentors || [];
+        renderMentors(allMentors);
+      } catch (err) {
+        document.getElementById('mentorsGrid').innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: #dc2626; padding: 30px;">
+            Error loading mentors: ${err.message}
+          </div>
+        `;
+      }
+    }
 
-                window.location.href = "login.html";
+    async function loadConnections() {
+      try {
+        const data = await api('/connections');
+        myConnections = data.connections || [];
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
-            } else {
+    function getConnectionStatus(targetUserId) {
+      for (const c of myConnections) {
+        const fromId = c.from ? (c.from._id || c.from) : null;
+        const toId = c.to ? (c.to._id || c.to) : null;
+        if (String(fromId) === String(targetUserId) || String(toId) === String(targetUserId)) {
+          return c.status;
+        }
+      }
+      return null;
+    }
 
-                alert("Available mentors will appear here.");
+    function filterMentors(keyword) {
+      document.getElementById('mentorSearchInput').value = keyword;
+      filterAndRender();
+    }
 
-            }
+    function filterAndRender() {
+      const q = document.getElementById('mentorSearchInput').value.toLowerCase().trim();
+      let filtered = allMentors;
 
+      if (q) {
+        filtered = filtered.filter(m => {
+          const matchName = (m.name || '').toLowerCase().includes(q);
+          const matchCollege = (m.college || '').toLowerCase().includes(q);
+          const matchCourse = (m.course || '').toLowerCase().includes(q);
+          const matchSkills = (m.skills || []).some(s => s.toLowerCase().includes(q));
+          const matchInterests = (m.interests || []).some(i => i.toLowerCase().includes(q));
+          return matchName || matchCollege || matchCourse || matchSkills || matchInterests;
+        });
+      }
+
+      renderMentors(filtered);
+    }
+
+    function renderMentors(mentors) {
+      document.getElementById('mentorsCountLabel').textContent = `${mentors.length} mentor${mentors.length === 1 ? '' : 's'} available`;
+      const grid = document.getElementById('mentorsGrid');
+
+      if (!mentors || mentors.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: #fff; border: 1px solid var(--line); border-radius: 8px;">
+            <p style="font-size: 18px; font-weight: bold; margin-bottom: 6px;">No mentors found</p>
+            <p style="color: var(--muted);">Try clearing your search query to see all available senior mentors.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = mentors.map(mentor => {
+        const initials = (mentor.name || 'M').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const connState = getConnectionStatus(mentor._id);
+
+        let buttonHtml = '';
+        if (connState === 'accepted') {
+          buttonHtml = `<button class="btn-sm btn-secondary" disabled style="opacity:0.8;">🤝 Connected Mentor</button>`;
+        } else if (connState === 'pending') {
+          buttonHtml = `<button class="btn-sm btn-secondary" disabled style="opacity:0.8;">⏳ Request Pending</button>`;
+        } else {
+          buttonHtml = `<button class="button" style="margin:0; padding:8px 16px; font-size:13px;" onclick="requestMentorship('${mentor._id}', this)">Request Mentorship</button>`;
         }
 
-    </script>
+        let verifiedBadge = '';
+        if (mentor.verificationStatus === 'approved') {
+          verifiedBadge = '<span class="badge badge-approved" style="font-size: 11px; padding: 2px 7px;">✓ Verified Senior</span>';
+        }
 
+        return `
+          <article class="interactive-card">
+            <div>
+              <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 12px;">
+                <div class="avatar" style="margin: 0; width: 50px; height: 50px; font-size: 17px; background: #111; color: var(--accent);">${initials}</div>
+                <div>
+                  <div style="font-weight: bold; font-size: 17px;">${escapeHtml(mentor.name)}</div>
+                  <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">
+                    ${escapeHtml(mentor.year)} · ${escapeHtml(mentor.course)}
+                  </div>
+                  <div style="font-size: 12px; font-weight: 500; color: #444;">
+                    🏛️ ${escapeHtml(mentor.college)}
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 14px;">
+                ${verifiedBadge}
+              </div>
+
+              <div style="margin-bottom: 14px;">
+                <div style="font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase; margin-bottom: 6px;">Mentorship Expertise</div>
+                <div>
+                  ${(mentor.skills || []).map(s => `<span class="tag-pill" style="cursor:pointer;" onclick="filterMentors('${escapeHtml(s)}')">${escapeHtml(s)}</span>`).join('')}
+                </div>
+              </div>
+
+              ${(mentor.interests && mentor.interests.length > 0) ? `
+                <div style="margin-bottom: 14px;">
+                  <div style="font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase; margin-bottom: 5px;">Focus Areas</div>
+                  <div>
+                    ${mentor.interests.map(i => `<span class="tag-pill" style="background:#fff;border:1px solid #e0e0dc;">${escapeHtml(i)}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="card-actions" style="margin-top: 15px;">
+              <span style="font-size: 12px; color: var(--muted);">ID: ${escapeHtml(mentor.collegeIdNumber || 'Verified')}</span>
+              ${buttonHtml}
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function requestMentorship(mentorId, btn) {
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Connecting...';
+        const res = await api(`/connections/${mentorId}`, { method: 'POST' });
+        showFeedback(res.message || 'Mentorship request sent successfully!', true);
+
+        btn.className = 'btn-sm btn-secondary';
+        btn.textContent = '⏳ Request Pending';
+        btn.style.opacity = '0.8';
+
+        await loadConnections();
+      } catch (err) {
+        showFeedback(err.message, false);
+        btn.disabled = false;
+        btn.textContent = 'Request Mentorship';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await loadUser();
+      await loadConnections();
+      loadMentors();
+
+      let debounceTimer = null;
+      document.getElementById('mentorSearchInput').addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(filterAndRender, 300);
+      });
+    });
+  </script>
 </body>
-
 </html>

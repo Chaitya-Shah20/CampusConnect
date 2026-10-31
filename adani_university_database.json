@@ -1,0 +1,1084 @@
+{
+  "databaseName": "campusconnect",
+  "institution": "Adani University, Ahmedabad",
+  "campusLocation": "Shantigram, SG Highway, Ahmedabad, Gujarat 382421",
+  "coordinates": {
+    "latitude": 23.1539,
+    "longitude": 72.5446
+  },
+  "exportedAt": "2026-10-31T13:56:13.951Z",
+  "summary": {
+    "totalUsers": 6,
+    "totalProjects": 4,
+    "totalOpportunities": 4,
+    "totalHackathons": 4,
+    "totalEvents": 6,
+    "totalResources": 6,
+    "totalConnections": 3,
+    "totalQuestions": 2
+  },
+  "collections": {
+    "users": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db8c",
+        "name": "Dr. Rajesh Parikh (Admin)",
+        "email": "admin@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "Faculty of Science, Technology & Management (Dean)",
+        "year": "Faculty Administrator",
+        "skills": [
+          "Academic Administration",
+          "Student Affairs",
+          "Research Collaboration",
+          "Institutional Mentorship"
+        ],
+        "interests": [
+          "Campus Innovations",
+          "Adani Group Tie-ups",
+          "Student Hackathons"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        "role": "admin",
+        "verificationStatus": "approved",
+        "collegeIdNumber": "AU-ADM-2024-001",
+        "createdAt": "2026-10-31T11:31:41.635Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db8e",
+        "name": "Aarav Sharma",
+        "email": "aarav.sharma@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "B.Tech Information & Communication Technology",
+        "year": "3rd Year",
+        "skills": [
+          "React",
+          "Node.js",
+          "Python",
+          "AWS",
+          "IoT",
+          "Computer Vision"
+        ],
+        "interests": [
+          "Smart Port Automation",
+          "Clean Energy AI",
+          "Hackathons"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
+        "role": "student",
+        "verificationStatus": "approved",
+        "collegeIdNumber": "AU-FSET-2023-0142",
+        "createdAt": "2026-10-31T11:31:41.641Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db90",
+        "name": "Diya Patel",
+        "email": "diya.patel@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "B.Tech Computer Science and Engineering (AI & ML)",
+        "year": "4th Year",
+        "skills": [
+          "Machine Learning",
+          "PyTorch",
+          "Data Science",
+          "System Design",
+          "FastAPI"
+        ],
+        "interests": [
+          "Predictive Maintenance",
+          "Solar Grid Optimization",
+          "Placements"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
+        "role": "student",
+        "verificationStatus": "approved",
+        "collegeIdNumber": "AU-FSET-2022-0089",
+        "createdAt": "2026-10-31T11:31:41.642Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db92",
+        "name": "Rohan Shah",
+        "email": "rohan.shah@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "B.Tech Civil & Infrastructure Engineering",
+        "year": "2nd Year",
+        "skills": [
+          "AutoCAD",
+          "BIM",
+          "Python",
+          "GIS Mapping",
+          "Smart City Planning"
+        ],
+        "interests": [
+          "High-speed Rail Infrastructure",
+          "Green Building",
+          "BIM Modelling"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+        "role": "student",
+        "verificationStatus": "approved",
+        "collegeIdNumber": "AU-FSET-2024-0312",
+        "createdAt": "2026-10-31T11:31:41.643Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db94",
+        "name": "Ananya Mehta",
+        "email": "ananya.mehta@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "MBA Big Data Analytics (AIDTM)",
+        "year": "2nd Year (Post-Grad)",
+        "skills": [
+          "Financial Modelling",
+          "PowerBI",
+          "SQL",
+          "FinTech",
+          "Tableau",
+          "Python"
+        ],
+        "interests": [
+          "GIFT City FinTech",
+          "Algorithmic Trading",
+          "ESG Investing"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+        "role": "student",
+        "verificationStatus": "approved",
+        "collegeIdNumber": "AU-AIDTM-2024-0045",
+        "createdAt": "2026-10-31T11:31:41.644Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db96",
+        "name": "Varun Joshi",
+        "email": "varun.joshi@adaniuni.ac.in",
+        "college": "Adani University, Ahmedabad",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "1st Year",
+        "skills": [
+          "C++",
+          "HTML",
+          "CSS",
+          "JavaScript"
+        ],
+        "interests": [
+          "Web Development",
+          "Competitive Programming"
+        ],
+        "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+        "role": "student",
+        "verificationStatus": "rejected",
+        "collegeIdNumber": "AU-FSET-2025-0520",
+        "createdAt": "2026-10-31T11:31:41.644Z",
+        "__v": 0
+      }
+    ],
+    "projects": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db98",
+        "title": "Adani Smart Port IoT Cargo Monitor",
+        "tagline": "Real-time telemetry and predictive container temperature monitoring for Mundra Port",
+        "description": "An end-to-end telemetry system deployed with ESP32 sensors, MQTT gateway, and React dashboard that monitors perishable refrigerated containers across Mundra Port terminals with instant anomaly alerts.",
+        "technologies": [
+          "React",
+          "Node.js",
+          "MQTT",
+          "InfluxDB",
+          "Docker",
+          "AWS IoT Core"
+        ],
+        "github": "https://github.com/aaravsharma/adani-smart-port-iot",
+        "demo": "https://adani-port-iot.demo.app",
+        "featured": true,
+        "creator": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "email": "aarav.sharma@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad",
+          "course": "B.Tech Information & Communication Technology"
+        },
+        "likes": [
+          "6ae5d19db0c4bc62fbd1db90",
+          "6ae5d19db0c4bc62fbd1db94",
+          "6ae5d19db0c4bc62fbd1db92"
+        ],
+        "createdAt": "2026-10-31T11:31:41.645Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db9a",
+        "title": "SolarGrid AI: Khavda Solar Farm Output Predictor",
+        "tagline": "Deep learning irradiance forecasting for the world's largest 30GW renewable park",
+        "description": "Utilizing PyTorch LSTM models trained on satellite weather data and historical solar radiation metrics to predict hourly power output from Adani Green Khavda Renewable Park with 94.6% accuracy.",
+        "technologies": [
+          "Python",
+          "PyTorch",
+          "FastAPI",
+          "Pandas",
+          "Next.js",
+          "PostgreSQL"
+        ],
+        "github": "https://github.com/diyapatel/solargrid-ai-khavda",
+        "demo": "https://solargrid-ai.demo.app",
+        "featured": true,
+        "creator": {
+          "_id": "6ae5d19db0c4bc62fbd1db90",
+          "name": "Diya Patel",
+          "email": "diya.patel@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad",
+          "course": "B.Tech Computer Science and Engineering (AI & ML)"
+        },
+        "likes": [
+          "6ae5d19db0c4bc62fbd1db8e",
+          "6ae5d19db0c4bc62fbd1db94"
+        ],
+        "createdAt": "2026-10-31T11:31:41.646Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db9c",
+        "title": "Shantigram Campus BIM 3D Digital Twin",
+        "tagline": "Interactive 3D model of Adani University campus facilities for smart energy tracking",
+        "description": "A 3D WebGL building information model of Adani University FSET & AIDTM academic blocks, enabling facility managers to track HVAC power consumption and room occupancy heatmaps in real time.",
+        "technologies": [
+          "Three.js",
+          "AutoCAD BIM",
+          "Node.js",
+          "WebGL",
+          "TailwindCSS"
+        ],
+        "github": "https://github.com/rohanshah/shantigram-bim-digital-twin",
+        "demo": "https://shantigram-bim.demo.app",
+        "featured": false,
+        "creator": {
+          "_id": "6ae5d19db0c4bc62fbd1db92",
+          "name": "Rohan Shah",
+          "email": "rohan.shah@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad",
+          "course": "B.Tech Civil & Infrastructure Engineering"
+        },
+        "likes": [
+          "6ae5d19db0c4bc62fbd1db8e"
+        ],
+        "createdAt": "2026-10-31T11:31:41.647Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1db9e",
+        "title": "GIFT City FinTech Algorithmic Arbitrage Engine",
+        "tagline": "High-frequency cross-exchange order-book arbitrage simulator for IFSC exchanges",
+        "description": "Built during the GIFT City FinTech sandbox sprint to analyze microsecond order books between NSE IFSC and international bullion markets, incorporating automated risk controls.",
+        "technologies": [
+          "Python",
+          "Rust",
+          "WebSockets",
+          "Redis",
+          "React"
+        ],
+        "github": "https://github.com/ananyamehta/gift-fintech-arbitrage",
+        "demo": "https://gift-arbitrage.demo.app",
+        "featured": true,
+        "creator": {
+          "_id": "6ae5d19db0c4bc62fbd1db94",
+          "name": "Ananya Mehta",
+          "email": "ananya.mehta@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad",
+          "course": "MBA Big Data Analytics (AIDTM)"
+        },
+        "likes": [
+          "6ae5d19db0c4bc62fbd1db8e",
+          "6ae5d19db0c4bc62fbd1db90",
+          "6ae5d19db0c4bc62fbd1db92"
+        ],
+        "createdAt": "2026-10-31T11:31:41.648Z",
+        "__v": 0
+      }
+    ],
+    "opportunities": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbc1",
+        "title": "Machine Learning Engineering Intern",
+        "organization": "Adani AI Labs & Digital Solutions",
+        "companyLogo": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=120&q=80",
+        "category": "Internship",
+        "workMode": "Hybrid",
+        "location": "Shantigram, SG Highway, Ahmedabad",
+        "stipend": "₹40,000 / month",
+        "deadline": "May 20, 2026",
+        "description": "Work with the principal research scientists on large-scale multimodal vision and time-series forecasting models for smart infrastructure assets.",
+        "eligibility": "B.Tech 3rd/4th year (CSE, AI/ML, ICT) or M.Tech students with CGPA 7.5+",
+        "requiredSkills": [
+          "Python",
+          "PyTorch",
+          "TensorFlow",
+          "REST APIs",
+          "Docker",
+          "DSA"
+        ],
+        "prepTips": [
+          "Review deep learning fundamentals: CNNs, Transformers, and Time Series LSTM architectures.",
+          "Be prepared for a live 45-minute coding interview covering LeetCode Medium algorithms.",
+          "Showcase at least one public GitHub repository demonstrating an end-to-end ML deployment."
+        ],
+        "link": "https://adani.careers/students/ml-intern-2026",
+        "createdAt": "2026-10-31T11:31:41.661Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbc3",
+        "title": "Full-Stack Software Engineer (Campus Placement)",
+        "organization": "Adani Ports and Special Economic Zone Ltd (APSEZ)",
+        "companyLogo": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=120&q=80",
+        "category": "Full-Time Job",
+        "workMode": "On-site",
+        "location": "Ahmedabad & Mundra Port Campus",
+        "stipend": "₹12.5 - 16.0 LPA",
+        "deadline": "June 10, 2026",
+        "description": "Design and implement critical cloud services powering terminal automation systems, digital gate clearance, and smart tracking for millions of TEU shipping containers.",
+        "eligibility": "Final Year B.Tech students graduating in 2026 with no active backlogs",
+        "requiredSkills": [
+          "Java or Go",
+          "React or Vue.js",
+          "PostgreSQL",
+          "Kubernetes",
+          "Microservices"
+        ],
+        "prepTips": [
+          "Strong focus on System Design: caching with Redis, message queues (Kafka), and ACID transactions.",
+          "Brush up on relational schema design and SQL query optimizations.",
+          "Prepare your past project stories using the STAR method."
+        ],
+        "link": "https://adani.careers/fset/campus-placements-2026",
+        "createdAt": "2026-10-31T11:31:41.661Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbc5",
+        "title": "FinTech Quantitative Analyst Trainee",
+        "organization": "GIFT City International Exchange Consortium",
+        "companyLogo": "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=120&q=80",
+        "category": "Placement Drive",
+        "workMode": "On-site",
+        "location": "GIFT City IFSC, Gandhinagar / Ahmedabad",
+        "stipend": "₹14.0 - 18.0 LPA",
+        "deadline": "May 30, 2026",
+        "description": "Join the quantitative trading research desk developing statistical arbitrage models, volatility surfaces, and risk management frameworks for multi-currency contracts.",
+        "eligibility": "Open to B.Tech (All branches) & MBA AIDTM students with strong mathematical aptitude",
+        "requiredSkills": [
+          "Python",
+          "Quantitative Finance",
+          "Statistics",
+          "SQL",
+          "Excel / PowerBI"
+        ],
+        "prepTips": [
+          "Study derivatives pricing, Black-Scholes model, and portfolio optimization basics.",
+          "Practice probability and brain-teaser puzzle questions common in quantitative interviews.",
+          "Familiarize yourself with IFSC guidelines and GIFT City financial regulations."
+        ],
+        "link": "https://giftcity.ifsc.gov.in/careers/quant-2026",
+        "createdAt": "2026-10-31T11:31:41.662Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbc7",
+        "title": "IoT & Firmware Engineering Summer Intern",
+        "organization": "Adani Solar Manufacturing Hub",
+        "companyLogo": "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=120&q=80",
+        "category": "Internship",
+        "workMode": "On-site",
+        "location": "Mundra & Ahmedabad Labs",
+        "stipend": "₹30,000 / month",
+        "deadline": "May 15, 2026",
+        "description": "Hands-on embedded firmware development for smart solar string inverters, battery management systems, and Modbus/Zigbee industrial gateways.",
+        "eligibility": "B.Tech 2nd & 3rd Year (ICT, Electrical, Electronics, CSE)",
+        "requiredSkills": [
+          "Embedded C",
+          "FreeRTOS",
+          "I2C/SPI",
+          "MQTT",
+          "Microcontrollers (STM32/ESP32)"
+        ],
+        "prepTips": [
+          "Demonstrate hands-on hobby projects with Arduino or ESP32.",
+          "Review memory management and interrupt service routines in C.",
+          "Understand standard industrial communication protocols like RS485 and Modbus."
+        ],
+        "link": "https://adanisolar.com/careers/internships",
+        "createdAt": "2026-10-31T11:31:41.663Z",
+        "__v": 0
+      }
+    ],
+    "hackathons": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dba0",
+        "name": "HackAdani 2026: AI & Smart Infrastructure",
+        "tagline": "Build groundbreaking solutions in Smart Logistics, Clean Tech & Renewable Energy",
+        "banner": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+        "organizer": "Adani University FSET & Adani Group Innovation Hub",
+        "date": "April 18 - 20, 2026",
+        "location": "Adani University Shantigram Campus (Auditorium & Labs) / Hybrid",
+        "mode": "Hybrid",
+        "description": "The flagship national hackathon of Adani University. 36 hours of intense building, expert mentorship from Adani AI Labs engineers, and direct pilot deployment opportunities for winning prototypes.",
+        "skills": [
+          "Machine Learning",
+          "Full Stack",
+          "IoT",
+          "CleanTech",
+          "Cloud Architecture"
+        ],
+        "teamSize": 4,
+        "minTeamSize": 2,
+        "eligibility": "All enrolled undergraduate, graduate, and diploma engineering students",
+        "registrationDeadline": "April 12, 2026",
+        "prizePool": "₹2,50,000",
+        "prizes": {
+          "first": "₹1,25,000 + Adani Innovation Incubator Pre-Seed Grant",
+          "second": "₹75,000 + Cloud Credits & Fast-track Internship",
+          "third": "₹35,000 + Tech Goodies & Mentorship",
+          "special": "₹15,000 Best CleanTech / ESG Solution"
+        },
+        "tracks": [
+          {
+            "name": "Smart Logistics & Port Robotics",
+            "description": "Autonomous container stacking, predictive berth scheduling, vision-based defect inspection.",
+            "_id": "6ae5d19db0c4bc62fbd1dba1"
+          },
+          {
+            "name": "Clean Energy & Smart Grid",
+            "description": "AI forecasting for solar/wind farms, microgrid battery optimization, carbon footprint tracking.",
+            "_id": "6ae5d19db0c4bc62fbd1dba2"
+          },
+          {
+            "name": "Smart Campus & Sustainable Infra",
+            "description": "Digital twin campus navigation, intelligent HVAC conservation, smart water stewardship.",
+            "_id": "6ae5d19db0c4bc62fbd1dba3"
+          },
+          {
+            "name": "FinTech & Supply Chain Finance",
+            "description": "Blockchain bill of lading, ESG compliance verification, cross-border settlement.",
+            "_id": "6ae5d19db0c4bc62fbd1dba4"
+          }
+        ],
+        "schedule": [
+          {
+            "phase": "Registrations Open",
+            "time": "March 1, 2026",
+            "detail": "Team formation and idea submission portal opens online.",
+            "_id": "6ae5d19db0c4bc62fbd1dba5"
+          },
+          {
+            "phase": "Shortlisting & Mentorship",
+            "time": "April 14, 2026",
+            "detail": "Top 50 teams invited to Shantigram campus for hackathon kickoff.",
+            "_id": "6ae5d19db0c4bc62fbd1dba6"
+          },
+          {
+            "phase": "36-Hour Hackathon Sprint",
+            "time": "April 18 09:00 AM",
+            "detail": "Hacking commences with milestone reviews at hours 12, 24, and 32.",
+            "_id": "6ae5d19db0c4bc62fbd1dba7"
+          },
+          {
+            "phase": "Grand Jury Demos & Awards",
+            "time": "April 20 03:00 PM",
+            "detail": "Live presentations before Adani Executive Leadership and academic deans.",
+            "_id": "6ae5d19db0c4bc62fbd1dba8"
+          }
+        ],
+        "members": [
+          {
+            "_id": "6ae5d19db0c4bc62fbd1db8e",
+            "name": "Aarav Sharma",
+            "email": "aarav.sharma@adaniuni.ac.in",
+            "college": "Adani University, Ahmedabad"
+          },
+          {
+            "_id": "6ae5d19db0c4bc62fbd1db90",
+            "name": "Diya Patel",
+            "email": "diya.patel@adaniuni.ac.in",
+            "college": "Adani University, Ahmedabad"
+          }
+        ],
+        "registrations": [
+          {
+            "teamName": "Mundra Innovators",
+            "leader": "6ae5d19db0c4bc62fbd1db8e",
+            "leaderEmail": "aarav.sharma@adaniuni.ac.in",
+            "memberIds": [
+              "AU-FSET-2023-0142",
+              "AU-FSET-2022-0089"
+            ],
+            "track": "Smart Logistics & Port Robotics",
+            "portfolioUrl": "https://github.com/aaravsharma",
+            "status": "confirmed",
+            "registeredAt": "2026-10-31T11:31:41.650Z",
+            "_id": "6ae5d19db0c4bc62fbd1dba9"
+          }
+        ],
+        "createdAt": "2026-10-31T11:31:41.652Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbab",
+        "name": "Adani GreenTech Clean Energy Sprint 2026",
+        "tagline": "Pioneering net-zero energy systems and grid resilience algorithms",
+        "banner": "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
+        "organizer": "Adani Institute of Infrastructure (AII) & Energy Club",
+        "date": "May 8 - 10, 2026",
+        "location": "FSET Energy Simulation Lab & Virtual Discord",
+        "mode": "In-person",
+        "description": "Collaborate with fellow innovators to solve real engineering bottlenecks in renewable energy integration, high-capacity battery degradation models, and green hydrogen supply chains.",
+        "skills": [
+          "Python",
+          "Energy Systems",
+          "Data Science",
+          "Embedded C",
+          "Simulink"
+        ],
+        "teamSize": 3,
+        "minTeamSize": 2,
+        "eligibility": "B.Tech (all disciplines), M.Tech, and Research Scholars",
+        "registrationDeadline": "May 2, 2026",
+        "prizePool": "₹1,50,000",
+        "prizes": {
+          "first": "₹80,000 + Sponsored R&D Prototyping Budget",
+          "second": "₹45,000 + Summer Fellowship at Adani Solar R&D",
+          "third": "₹25,000 + Certifications & Equipment Vouchers",
+          "special": "Special ESG Green Innovation Trophy"
+        },
+        "tracks": [
+          {
+            "name": "Solar PV Soiling Detection",
+            "description": "Computer vision drones detecting dust accumulation on solar panel arrays.",
+            "_id": "6ae5d19db0c4bc62fbd1dbac"
+          },
+          {
+            "name": "Battery Health AI",
+            "description": "Li-Ion degradation prediction using physics-informed neural networks.",
+            "_id": "6ae5d19db0c4bc62fbd1dbad"
+          }
+        ],
+        "schedule": [
+          {
+            "phase": "Team Registration",
+            "time": "April 20, 2026",
+            "detail": "Register teams of 2 to 3 students.",
+            "_id": "6ae5d19db0c4bc62fbd1dbae"
+          },
+          {
+            "phase": "Hackathon Sprint",
+            "time": "May 8, 2026",
+            "detail": "48 hours hands-on sprint at Shantigram Energy Lab.",
+            "_id": "6ae5d19db0c4bc62fbd1dbaf"
+          }
+        ],
+        "members": [
+          {
+            "_id": "6ae5d19db0c4bc62fbd1db90",
+            "name": "Diya Patel",
+            "email": "diya.patel@adaniuni.ac.in",
+            "college": "Adani University, Ahmedabad"
+          }
+        ],
+        "registrations": [],
+        "createdAt": "2026-10-31T11:31:41.655Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5ec7ef412f4c6f8a92f83",
+        "name": "Adani AI Robotics Cup 2026",
+        "tagline": "Autonomous systems challenge",
+        "banner": "",
+        "organizer": "Adani University Tech Council",
+        "date": "October 25 - 27, 2026",
+        "location": "Shantigram Robotics Lab",
+        "mode": "In-person",
+        "description": "Build autonomous robotics solutions for port automation.",
+        "featured": false,
+        "skills": [
+          "ROS",
+          "Python",
+          "Computer Vision",
+          "C++"
+        ],
+        "teamSize": 4,
+        "minTeamSize": 2,
+        "eligibility": "All enrolled students",
+        "registrationDeadline": "",
+        "prizePool": "₹2,00,000",
+        "prizes": {
+          "first": "₹75,000",
+          "second": "₹45,000",
+          "third": "₹20,000",
+          "special": "₹10,000",
+          "featured": false,
+          "requiredSkills": []
+        },
+        "tracks": [],
+        "schedule": [],
+        "members": [],
+        "registrations": [],
+        "createdAt": "2026-10-31T13:26:22.300Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5f37d180a182ce5020515",
+        "name": "Adani AI Robotics Cup 2026",
+        "tagline": "Autonomous systems challenge",
+        "banner": "",
+        "organizer": "Adani University Tech Council",
+        "date": "October 25 - 27, 2026",
+        "location": "Shantigram Robotics Lab",
+        "mode": "In-person",
+        "description": "Build autonomous robotics solutions for port automation.",
+        "featured": false,
+        "skills": [
+          "ROS",
+          "Python",
+          "Computer Vision",
+          "C++"
+        ],
+        "teamSize": 4,
+        "minTeamSize": 2,
+        "eligibility": "All enrolled students",
+        "registrationDeadline": "",
+        "prizePool": "₹2,00,000",
+        "prizes": {
+          "first": "₹75,000",
+          "second": "₹45,000",
+          "third": "₹20,000",
+          "special": "₹10,000",
+          "featured": false,
+          "requiredSkills": []
+        },
+        "tracks": [],
+        "schedule": [],
+        "members": [
+          {
+            "_id": "6ae5d19db0c4bc62fbd1db8e",
+            "name": "Aarav Sharma",
+            "email": "aarav.sharma@adaniuni.ac.in",
+            "college": "Adani University, Ahmedabad"
+          }
+        ],
+        "registrations": [
+          {
+            "teamName": "Adani Alpha Bots",
+            "leader": "6ae5d19db0c4bc62fbd1db8e",
+            "leaderEmail": "aarav.sharma@adaniuni.ac.in",
+            "memberIds": [
+              "AU-FSET-2023-0142",
+              "AU-FSET-2022-0089"
+            ],
+            "track": "Autonomous Navigation",
+            "portfolioUrl": "https://github.com/aaravsharma/alpha-bot",
+            "status": "confirmed",
+            "registeredAt": "2026-10-31T13:56:13.919Z",
+            "_id": "6ae5f37d180a182ce5020520"
+          }
+        ],
+        "createdAt": "2026-10-31T13:56:13.694Z",
+        "__v": 1
+      }
+    ],
+    "events": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbb1",
+        "title": "Adani University Annual TechFest 2026 — Keynote & Expo",
+        "category": "Tech Fest",
+        "banner": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80",
+        "date": "April 25, 2026",
+        "time": "09:30 AM - 05:30 PM",
+        "venue": "Adani University Shantigram Grand Auditorium",
+        "virtualLink": "https://youtube.com/live/adani-techfest-2026",
+        "speaker": {
+          "name": "Dr. Vikram Chandra",
+          "title": "Chief Technology Officer",
+          "company": "Adani AI & Digital Labs",
+          "bio": "Leading enterprise AI transformations across ports, green hydrogen, and renewable grids with over 20 years in industrial automation.",
+          "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80"
+        },
+        "agenda": "09:30 AM Keynote Address: The Future of Industrial AI | 11:30 AM Student Innovation Expo | 02:00 PM Robotics Battle Ground | 04:30 PM Awards & Felicitations.",
+        "capacity": 350,
+        "rsvps": [
+          {
+            "user": "6ae5d19db0c4bc62fbd1db8e",
+            "registeredAt": "2026-10-31T11:31:41.657Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbb2"
+          },
+          {
+            "user": "6ae5d19db0c4bc62fbd1db90",
+            "registeredAt": "2026-10-31T11:31:41.657Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbb3"
+          },
+          {
+            "user": "6ae5d19db0c4bc62fbd1db92",
+            "registeredAt": "2026-10-31T11:31:41.657Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbb4"
+          }
+        ],
+        "createdAt": "2026-10-31T11:31:41.657Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbb6",
+        "title": "Hands-on Workshop: Scalable Full-Stack Engineering with Next.js & AWS",
+        "category": "Workshop",
+        "banner": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+        "date": "May 3, 2026",
+        "time": "02:00 PM - 05:30 PM",
+        "venue": "Computer Lab 4 (FSET Building, 2nd Floor)",
+        "virtualLink": "https://meet.google.com/adani-fset-workshop",
+        "speaker": {
+          "name": "Neha Singhal",
+          "title": "Senior Cloud Architect",
+          "company": "Amazon Web Services (AWS)",
+          "bio": "Specialist in serverless cloud patterns, micro-frontends, and high-throughput databases.",
+          "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
+        },
+        "agenda": "Hands-on session where students will build, test, and deploy a containerized microservice to AWS ECS with CI/CD GitHub Actions pipeline.",
+        "capacity": 80,
+        "rsvps": [
+          {
+            "user": "6ae5d19db0c4bc62fbd1db8e",
+            "registeredAt": "2026-10-31T11:31:41.658Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbb7"
+          },
+          {
+            "user": "6ae5d19db0c4bc62fbd1db94",
+            "registeredAt": "2026-10-31T11:31:41.658Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbb8"
+          }
+        ],
+        "createdAt": "2026-10-31T11:31:41.658Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbba",
+        "title": "Guest Lecture: FinTech & Cross-Border Regulatory Sandboxes in GIFT City",
+        "category": "Guest Lecture",
+        "banner": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+        "date": "May 12, 2026",
+        "time": "11:00 AM - 01:00 PM",
+        "venue": "AIDTM Seminar Hall (Room 105)",
+        "virtualLink": "https://zoom.us/j/adani-aidtm-lecture",
+        "speaker": {
+          "name": "Saurabh Varma",
+          "title": "Executive Director, Market Innovations",
+          "company": "IFSCA (GIFT City Authority)",
+          "bio": "Key architect of the unified financial regulatory framework governing foreign institutions in GIFT City IFSC.",
+          "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80"
+        },
+        "agenda": "Overview of IFSC regulatory exemptions, algorithmic trading guidelines, and student internship pathways in GIFT City.",
+        "capacity": 120,
+        "rsvps": [
+          {
+            "user": "6ae5d19db0c4bc62fbd1db94",
+            "registeredAt": "2026-10-31T11:31:41.659Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbbb"
+          }
+        ],
+        "createdAt": "2026-10-31T11:31:41.659Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbbd",
+        "title": "CodeSprint 2026: Campus Competitive Programming League",
+        "category": "Coding Contest",
+        "banner": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+        "date": "May 16, 2026",
+        "time": "04:00 PM - 07:00 PM",
+        "venue": "Online on HackerRank & FSET Central Computing Centre",
+        "virtualLink": "https://hackerrank.com/adani-codesprint-2026",
+        "speaker": {
+          "name": "Adani Coding Club Coordinators",
+          "title": "Student Leads",
+          "company": "CampusConnect Tech Team",
+          "bio": "Organized by Senior competitive programmers and ICPC regionalists.",
+          "avatar": ""
+        },
+        "agenda": "6 algorithmic problem statements ranging from dynamic programming to graph theory. Live leaderboard displayed in campus canteen!",
+        "capacity": 250,
+        "rsvps": [
+          {
+            "user": "6ae5d19db0c4bc62fbd1db8e",
+            "registeredAt": "2026-10-31T11:31:41.660Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbbe"
+          },
+          {
+            "user": "6ae5d19db0c4bc62fbd1db90",
+            "registeredAt": "2026-10-31T11:31:41.660Z",
+            "_id": "6ae5d19db0c4bc62fbd1dbbf"
+          }
+        ],
+        "createdAt": "2026-10-31T11:31:41.660Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5ec7ef412f4c6f8a92f86",
+        "title": "Green Hydrogen Systems Symposium 2026",
+        "category": "Tech Fest",
+        "banner": "",
+        "date": "July 5, 2026",
+        "time": "10:00 AM - 04:00 PM",
+        "venue": "Shantigram Grand Auditorium",
+        "virtualLink": "",
+        "speakerName": "",
+        "speakerTitle": "",
+        "featured": false,
+        "speaker": {
+          "name": "",
+          "title": "",
+          "company": "",
+          "bio": "",
+          "avatar": ""
+        },
+        "agenda": "Symposium on green hydrogen production.",
+        "capacity": 300,
+        "rsvps": [],
+        "createdAt": "2026-10-31T13:26:22.310Z",
+        "__v": 2
+      },
+      {
+        "_id": "6ae5f37d180a182ce5020518",
+        "title": "Green Hydrogen Systems Symposium 2026",
+        "category": "Tech Fest",
+        "banner": "",
+        "date": "July 5, 2026",
+        "time": "10:00 AM - 04:00 PM",
+        "venue": "Shantigram Grand Auditorium",
+        "virtualLink": "",
+        "speakerName": "",
+        "speakerTitle": "",
+        "featured": false,
+        "speaker": {
+          "name": "",
+          "title": "",
+          "company": "",
+          "bio": "",
+          "avatar": ""
+        },
+        "agenda": "Symposium on green hydrogen production.",
+        "capacity": 300,
+        "rsvps": [
+          {
+            "user": "6ae5d19db0c4bc62fbd1db8e",
+            "registeredAt": "2026-10-31T13:56:13.912Z",
+            "_id": "6ae5f37d180a182ce502051c"
+          }
+        ],
+        "createdAt": "2026-10-31T13:56:13.702Z",
+        "__v": 1
+      }
+    ],
+    "resources": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbc9",
+        "title": "Data Structures & Algorithms (CS301) — Comprehensive Lecture Notes & Cheat Sheets",
+        "subject": "Data Structures & Algorithms",
+        "subjectCode": "CS301",
+        "branch": "CSE",
+        "semester": "Semester 3",
+        "category": "Lecture Notes",
+        "fileType": "PDF",
+        "url": "https://drive.google.com/file/d/adani-cs301-dsa-notes/view",
+        "description": "Complete verified classroom lecture notes covering Arrays, Linked Lists, Trees, Heaps, Graphs, Dynamic Programming and amortized time complexity analysis.",
+        "downloads": 342,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db90",
+          "name": "Diya Patel",
+          "email": "diya.patel@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.663Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbcb",
+        "title": "Database Management Systems (CS402) — Previous 5-Year Solved Question Papers (PYQs)",
+        "subject": "Database Management Systems",
+        "subjectCode": "CS402",
+        "branch": "CSE",
+        "semester": "Semester 4",
+        "category": "PYQs",
+        "fileType": "PDF",
+        "url": "https://drive.google.com/file/d/adani-cs402-dbms-pyqs/view",
+        "description": "Mid-semester and End-semester university exam question papers with detailed step-by-step solutions for BCNF normalization, SQL queries, and transaction recovery.",
+        "downloads": 489,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "email": "aarav.sharma@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.664Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbcd",
+        "title": "Machine Learning & Predictive Analytics (AI501) — Official University Syllabus & Lab Manual",
+        "subject": "Machine Learning",
+        "subjectCode": "AI501",
+        "branch": "AI/DS",
+        "semester": "Semester 5",
+        "category": "Official Syllabus",
+        "fileType": "PDF",
+        "url": "https://drive.google.com/file/d/adani-ai501-syllabus-lab/view",
+        "description": "Complete course blueprint with 12 lab experiment problem statements, datasets (CIFAR, Boston Housing, Iris), and evaluation rubrics.",
+        "downloads": 215,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db8c",
+          "name": "Dr. Rajesh Parikh (Admin)",
+          "email": "admin@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.665Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbcf",
+        "title": "Computer Networks (CS503) — Curated Video Playlist & Packet Tracing Labs",
+        "subject": "Computer Networks",
+        "subjectCode": "CS503",
+        "branch": "IT",
+        "semester": "Semester 5",
+        "category": "Curated Video Playlists",
+        "fileType": "Video Playlist",
+        "url": "https://youtube.com/playlist?list=adani-cs503-networks",
+        "description": "18 high-yield video lectures covering TCP/IP protocol stack, subnetting calculations, routing algorithms (OSPF, BGP), and Wireshark traffic analysis.",
+        "downloads": 178,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "email": "aarav.sharma@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.666Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbd1",
+        "title": "Cloud Computing & DevOps (CS601) — Recommended Reference Book & Architecture Guide",
+        "subject": "Cloud Computing",
+        "subjectCode": "CS601",
+        "branch": "CSE",
+        "semester": "Semester 6",
+        "category": "Recommended Textbooks",
+        "fileType": "PDF",
+        "url": "https://drive.google.com/file/d/adani-cs601-cloud-book/view",
+        "description": "Core reference text on distributed systems, container orchestration with Kubernetes, 12-factor apps, and microservice resilience patterns.",
+        "downloads": 310,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db8c",
+          "name": "Dr. Rajesh Parikh (Admin)",
+          "email": "admin@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.666Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbd3",
+        "title": "Smart Infrastructure & BIM Technologies (CE502) — Lecture Slides & AutoCAD Assets",
+        "subject": "BIM & Infrastructure Modelling",
+        "subjectCode": "CE502",
+        "branch": "Civil/Infra",
+        "semester": "Semester 5",
+        "category": "Lecture Notes",
+        "fileType": "Drive Link",
+        "url": "https://drive.google.com/drive/folders/adani-ce502-bim-assets",
+        "description": "Class presentation slides and sample 3D Revit architectural floorplans for green infrastructure design exercises.",
+        "downloads": 145,
+        "uploadedBy": {
+          "_id": "6ae5d19db0c4bc62fbd1db92",
+          "name": "Rohan Shah",
+          "email": "rohan.shah@adaniuni.ac.in",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.666Z",
+        "__v": 0
+      }
+    ],
+    "connections": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbd5",
+        "from": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "college": "Adani University, Ahmedabad"
+        },
+        "to": {
+          "_id": "6ae5d19db0c4bc62fbd1db90",
+          "name": "Diya Patel",
+          "college": "Adani University, Ahmedabad"
+        },
+        "status": "accepted",
+        "createdAt": "2026-10-31T11:31:41.667Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbd7",
+        "from": {
+          "_id": "6ae5d19db0c4bc62fbd1db92",
+          "name": "Rohan Shah",
+          "college": "Adani University, Ahmedabad"
+        },
+        "to": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "college": "Adani University, Ahmedabad"
+        },
+        "status": "pending",
+        "createdAt": "2026-10-31T11:31:41.668Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbd9",
+        "from": {
+          "_id": "6ae5d19db0c4bc62fbd1db94",
+          "name": "Ananya Mehta",
+          "college": "Adani University, Ahmedabad"
+        },
+        "to": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "college": "Adani University, Ahmedabad"
+        },
+        "status": "accepted",
+        "createdAt": "2026-10-31T11:31:41.668Z",
+        "__v": 0
+      }
+    ],
+    "questions": [
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbdb",
+        "title": "What are the recommended prerequisites for the Adani AI Labs summer internship interview?",
+        "description": "I am a 3rd year ICT student preparing for the upcoming campus interview. Should I focus more on LeetCode DSA or PyTorch model implementation?",
+        "category": "Career",
+        "author": {
+          "_id": "6ae5d19db0c4bc62fbd1db8e",
+          "name": "Aarav Sharma",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.669Z",
+        "__v": 0
+      },
+      {
+        "_id": "6ae5d19db0c4bc62fbd1dbdd",
+        "title": "How do I get access to the Shantigram High Performance Computing (HPC) GPU cluster for my final year project?",
+        "description": "My team is training a 7B parameter LLM for logistics telemetry. Whom should I approach in FSET for cluster credentials?",
+        "category": "Projects",
+        "author": {
+          "_id": "6ae5d19db0c4bc62fbd1db90",
+          "name": "Diya Patel",
+          "college": "Adani University, Ahmedabad"
+        },
+        "createdAt": "2026-10-31T11:31:41.669Z",
+        "__v": 0
+      }
+    ]
+  }
+}
